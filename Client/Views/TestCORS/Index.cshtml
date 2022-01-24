@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+    $.ajax({
+        url:"https://localhost:44316/API/Employees/TestCORS",
+        success: function (result) {
+            console.log(result);
+        }
+    })
+</script>
