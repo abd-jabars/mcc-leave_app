@@ -72,8 +72,8 @@ namespace API.Repository.Data
         {
             var manager = myContext.Employees.Where(e => e.NIK == employee.ManagerId).FirstOrDefault();
 
-            string from = "mccreg61net@gmail.com";
-            string pwdFrom = "61mccregnet";
+            string from = employee.Email;
+            string pwdFrom = leaveRequest.Password;
             string to = manager.Email;
 
             var leave = myContext.Leaves.Find(leaveRequest.LeaveId);
