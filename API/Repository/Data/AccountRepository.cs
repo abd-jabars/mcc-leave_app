@@ -83,10 +83,21 @@ namespace API.Repository.Data
             string pwdFrom = "61mccregnet";
             string to = employee.Email;
 
+            //var time = $"{string.Format("{0:hh:mm tt}", account.ExpiredToken)}";
+            var time = account.ExpiredToken.Value.ToString("dd MMMM yyyy HH:mm tt");
+            var mailBody = $"Hello, {employee.FirstName} {employee.LastName}" +
+                           $"<br>" +
+                           $"We’ve received a password change request for your account. To complete your request, enter the following verification code:" +
+                           $"<br>" +
+                           $"<p style=text-align:left;font-size:30px;font-weight:bold;>{account.OTP}</p>" +
+                           $"<br>" +
+                           $"The OTP will be valid until {time}";
+
             // email message
             MailMessage mailMessage = new MailMessage(from, to);
             mailMessage.Subject = "Forgot Password";
-            mailMessage.Body = $"Hello {employee.FirstName} {employee.LastName}. \n\nThis is the otp to change your password: {account.OTP}. \nPlease use it before {string.Format("{0:hh:mm tt}", account.ExpiredToken)}"; // {account.ExpiredToken.Hour}.{account.ExpiredToken.Minute}";
+            mailMessage.Body = mailBody;
+            mailMessage.IsBodyHtml = true;
 
             // set smtp  
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
