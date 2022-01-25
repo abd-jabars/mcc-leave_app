@@ -78,10 +78,26 @@ namespace API.Repository.Data
 
             var leave = myContext.Leaves.Find(leaveRequest.LeaveId);
 
+            // set body
+            var department = myContext.Departments.Where(d => d.Id == employee.DepartmentId).FirstOrDefault();
+            var emailBody = $"Yth. {manager.FirstName} {manager.LastName},\n" +
+                            $"Manager Departemen {department.Name}\n" +
+                            $"di Tempat\n\n" +
+                            $"Yang bertanda tangan di bawah ini:\n\n" +
+                            $"NIK \t: {employee.NIK}\n" +
+                            $"Nama \t: {employee.FirstName} {employee.LastName}\n\n" +
+                            $"dengan ini saya bermaksud untuk mengajukan {leave.Name}, " +
+                            $"terhitung mulai tanggal {leaveRequest.StartDate.ToString("dd MMMM yyyy")} sampai dengan {leaveRequest.EndDate.ToString("dd MMMM yyyy")}.\n\n" +
+                            $"Demikianlah surat pengajuan ini saya buat untuk dapat dipertimbangkan sebagaimana mestinya. Atas izin yang diberikan saya ucapkan terima kasih.\n\n" +
+                            $"Hormat saya,\n\n" +
+                            $"{employee.FirstName} {employee.LastName}\n" +
+                            $"NIK.{employee.NIK}";
+
             // email message
             MailMessage mailMessage = new MailMessage(from, to);
-            mailMessage.Subject = "Pengajuan Cuti";
-            mailMessage.Body = $"Tipe Cuti: {leave.Type}. Body: {leaveRequest.Attachment}";
+            mailMessage.Subject = $"Pengajuan Cuti - {employee.FirstName} {employee.LastName}";
+            //mailMessage.Body = $"Tipe Cuti: {leave.Type}. Body: {leaveRequest.Attachment}";
+            mailMessage.Body = emailBody;
 
             // set smtp  
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
