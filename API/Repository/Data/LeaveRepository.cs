@@ -128,7 +128,7 @@ namespace API.Repository.Data
                             $"Yang bertanda tangan di bawah ini:\n\n" +
                             $"NIK \t: {employee.NIK}\n" +
                             $"Nama \t: {employee.FirstName} {employee.LastName}\n\n" +
-                            $"dengan ini saya bermaksud untuk mengajukan {leave.Name}, " +
+                            $"dengan ini saya bermaksud untuk mengajukan Cuti {leave.Name}, " +
                             $"terhitung mulai tanggal {leaveRequest.StartDate.ToString("dd MMMM yyyy")} sampai dengan {leaveRequest.EndDate.ToString("dd MMMM yyyy")}.\n\n" +
                             $"Demikianlah surat pengajuan ini saya buat untuk dapat dipertimbangkan sebagaimana mestinya. Atas izin yang diberikan saya ucapkan terima kasih.\n\n" +
                             $"Hormat saya,\n\n" +
