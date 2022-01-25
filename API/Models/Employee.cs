@@ -36,6 +36,8 @@ namespace API.Models
 
         [JsonIgnore]
         public virtual ICollection<LeaveEmployee> LeaveEmployees { get; set; }
+
+        [JsonIgnore]
         public virtual Account Account { get; set; }
     }
 
