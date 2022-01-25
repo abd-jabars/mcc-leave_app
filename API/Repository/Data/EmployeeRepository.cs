@@ -17,7 +17,7 @@ namespace API.Repository.Data
             this.myContext = myContext;
         }
 
-        public int Register(Register register)
+        public int Register(RegisterVM register)
         {
             int increment = myContext.Employees.ToList().Count;
             string formatedNik = "";
@@ -105,7 +105,7 @@ namespace API.Repository.Data
             return registeredData;
         }
 
-        public Register GetRegisteredData(string NIK)
+        public RegisterVM GetRegisteredData(string NIK)
         {
             var query = myContext.Employees.Where(e => e.NIK == NIK)
                                     .Include(e => e.Account)
@@ -113,7 +113,7 @@ namespace API.Repository.Data
             if (query == null)
                 return null;
 
-            var registeredData = new Register
+            var registeredData = new RegisterVM
             {
                 NIK = query.NIK,
                 FirstName = query.FirstName,
@@ -128,7 +128,7 @@ namespace API.Repository.Data
             return registeredData;
         }
 
-        public int UpdateRegisteredData(Register register)
+        public int UpdateRegisteredData(RegisterVM register)
         {
             if (CheckPhoneMail(register) == 1 || CheckPhoneMail(register) == 7)
             {
@@ -166,7 +166,7 @@ namespace API.Repository.Data
             }
         }
 
-        public int CheckEmail(Register register)
+        public int CheckEmail(RegisterVM register)
         {
             var checkEmail = myContext.Employees.Where(e => e.Email == register.Email).FirstOrDefault();
             if (checkEmail != null)
@@ -175,7 +175,7 @@ namespace API.Repository.Data
                 return 0;
         }
 
-        public int CheckPhone(Register register)
+        public int CheckPhone(RegisterVM register)
         {
             var checkPhone = myContext.Employees.Where(e => e.Phone == register.Phone).FirstOrDefault();
             if (checkPhone != null)
@@ -184,7 +184,7 @@ namespace API.Repository.Data
                 return 0;
         }
 
-        public int CheckPhoneMail(Register register)
+        public int CheckPhoneMail(RegisterVM register)
         {
             var checkData = myContext.Employees.Where(e => e.NIK == register.NIK).FirstOrDefault();
             if (checkData != null)

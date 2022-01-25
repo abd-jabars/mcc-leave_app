@@ -23,7 +23,7 @@ namespace API.Controllers.Data
 
         [HttpPost]
         [Route("Register")]
-        public ActionResult Register(Register register)
+        public ActionResult Register(RegisterVM register)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace API.Controllers.Data
 
         [HttpGet]
         [Route("RegisteredData")]
-        public ActionResult<Register> GetRegisterVM()
+        public ActionResult<RegisterVM> GetRegisterVM()
         {
             try
             {
@@ -64,7 +64,7 @@ namespace API.Controllers.Data
 
         [HttpGet]
         [Route("RegisteredData/{NIK}")]
-        public ActionResult<Register> GetRegisteredData(string NIK)
+        public ActionResult<RegisterVM> GetRegisteredData(string NIK)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace API.Controllers.Data
 
         [HttpPut]
         [Route("UpdateRegistered")]
-        public ActionResult UpdateRegisteredData(Register register)
+        public ActionResult UpdateRegisteredData(RegisterVM register)
         {
             try
             {
