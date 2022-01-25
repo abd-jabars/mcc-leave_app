@@ -16,9 +16,9 @@ namespace API.Models
         public string Password { get; set; }
         public int LeaveQuota { get; set; }
         public bool LeaveStatus { get; set; }
-        public int OTP { get; set; }
-        public DateTime ExpiredToken { get; set; }
-        public bool IsUsed { get; set; }
+        public int? OTP { get; set; }
+        public DateTime? ExpiredToken { get; set; }
+        public bool? IsUsed { get; set; }
 
         [JsonIgnore]
         public virtual Employee Employee { get; set; }

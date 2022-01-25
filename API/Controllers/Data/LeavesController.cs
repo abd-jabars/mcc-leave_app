@@ -45,6 +45,28 @@ namespace API.Controllers.Data
             }
         }
 
+        [HttpPost]
+        [Route("Approval")]
+        public ActionResult LeaveApproval(LeaveVM leaveApproval)
+        {
+            var result = leaveRepository.LeaveApproval(leaveApproval);
+            if (result == 1)
+            {
+                return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Cuti Disetujui" });
 
+            }
+            else if (result == 2)
+            {
+                return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Data cuti tidak ditemukan" });
+            }
+            else if (result == 3)
+            {
+                return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Cuti Ditolak" });
+            }
+            else
+            {
+                return Ok(new { status = HttpStatusCode.OK, result = result, message = "Error" });
+            }
+        }
     }
 }
