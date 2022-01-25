@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace API.Repository.Data
 {
-    public class LeaveRepository : GeneralRepository<MyContext, Leave, int>
+    public class LeaveRepository : GeneralRepository<MyContext, Models.Leave, int>
     {
         private readonly MyContext myContext;
         public LeaveRepository(MyContext myContext) : base(myContext)
@@ -18,7 +18,7 @@ namespace API.Repository.Data
             this.myContext = myContext;
         }
 
-        public int LeaveRequest(LeaveRequest leaveRequest)
+        public int LeaveRequest(ViewModel.Leave leaveRequest)
         {
             var employee = myContext.Employees.Find(leaveRequest.NIK);
             if (employee == null)
@@ -52,7 +52,7 @@ namespace API.Repository.Data
             }
         }
 
-        public void SubmitForm(LeaveRequest leaveRequest)
+        public void SubmitForm(ViewModel.Leave leaveRequest)
         {
             var leaveEmployee = new LeaveEmployee
             {
@@ -62,18 +62,18 @@ namespace API.Repository.Data
                 Attachment = leaveRequest.Attachment,
                 NIK = leaveRequest.NIK,
                 LeaveId = leaveRequest.LeaveId,
-                ApprovalStatus = false,
+                Status = 0
             };
             myContext.LeaveEmployees.Add(leaveEmployee);
             myContext.SaveChanges();
         }
 
-        public int SendEmail(Employee employee, LeaveRequest leaveRequest)
+        public int SendEmail(Employee employee, ViewModel.Leave leaveRequest)
         {
             var manager = myContext.Employees.Where(e => e.NIK == employee.ManagerId).FirstOrDefault();
 
-            string from = employee.Email;
-            string pwdFrom = leaveRequest.Password;
+            string from = "mccreg61net@gmail.com";
+            string pwdFrom = "61mccregnet";
             string to = manager.Email;
 
             var leave = myContext.Leaves.Find(leaveRequest.LeaveId);

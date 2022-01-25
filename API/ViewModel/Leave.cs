@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.ViewModel
 {
-    public class LeaveRequest
+    public class Leave
     {
         public string NIK { get; set; }
         public string FirstName { get; set; }
@@ -16,6 +16,5 @@ namespace API.ViewModel
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Attachment { get; set; }
-        public string Password { get; set; }
     }
 }

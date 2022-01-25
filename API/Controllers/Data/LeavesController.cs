@@ -13,7 +13,7 @@ namespace API.Controllers.Data
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LeavesController : BaseController<Leave, LeaveRepository, int>
+    public class LeavesController : BaseController<Models.Leave, LeaveRepository, int>
     {
         private readonly LeaveRepository leaveRepository;
         public LeavesController(LeaveRepository leaveRepository) : base(leaveRepository)
@@ -23,7 +23,7 @@ namespace API.Controllers.Data
 
         [HttpPost]
         [Route("Request")]
-        public ActionResult LeaveRequest(LeaveRequest leaveRequest)
+        public ActionResult LeaveRequest(ViewModel.Leave leaveRequest)
         {
             var result = leaveRepository.LeaveRequest(leaveRequest);
             if (result == 1)

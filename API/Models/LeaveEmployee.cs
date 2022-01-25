@@ -14,7 +14,7 @@ namespace API.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Attachment { get; set; }
-        public bool ApprovalStatus { get; set; }
+        public Approval Status { get; set; }
 
         [JsonIgnore]
         public virtual Employee Employee { get; set; }
@@ -23,5 +23,12 @@ namespace API.Models
         [JsonIgnore]
         public virtual Leave Leave { get; set; }
         public int LeaveId { get; set; }
+    }
+
+    public enum Approval
+    { 
+        Diproses,
+        Disetujui,
+        Ditolak
     }
 }
