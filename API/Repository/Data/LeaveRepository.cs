@@ -1,6 +1,7 @@
 ﻿using API.Context;
 using API.Models;
 using API.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace API.Repository.Data
 
             var account = myContext.Accounts.Where(a => a.NIK == employee.NIK).FirstOrDefault();
 
-            if (leave.Type == "Cuti Normal")
+            if (leave.Type == leaveType.normal)
             {
                 // periksa jatah cuti
                 if (account.LeaveQuota < 1)
@@ -52,11 +53,52 @@ namespace API.Repository.Data
             }
         }
 
+        public int LeaveApproval(LeaveVM leaveApproval)
+        {
+            var acc = myContext.Accounts.AsNoTracking().Where(a => a.NIK == leaveApproval.NIK).FirstOrDefault();
+            var temp = myContext.LeaveEmployees.AsNoTracking().Where(le => le.Id == leaveApproval.LeaveId).FirstOrDefault();
+            var leave = myContext.Leaves.AsNoTracking().Where(l => l.Id == temp.LeaveId).FirstOrDefault();
+            var totalLeave = acc.LeaveQuota;
+            if (temp != null)
+            {
+
+                //myContext.Entry(myContext.LeaveEmployees).State = EntityState.Detached;
+
+                if (leave.Type == leaveType.normal)
+                //cuti normal
+                {
+                    totalLeave = acc.LeaveQuota - Convert.ToInt32((temp.EndDate - temp.StartDate).TotalDays);
+                }
+
+                if (leaveApproval.leaveStatus == 1)
+                {
+                    acc.LeaveQuota = totalLeave;
+                    temp.Status = Approval.Disetujui;
+                    myContext.Entry(acc).State = EntityState.Modified;
+                    myContext.Entry(temp).State = EntityState.Modified;
+                    var result = myContext.SaveChanges();
+                    return 1; //approval approved saved
+                }
+                else
+                {
+                    temp.Status = Approval.Ditolak;
+                    myContext.Entry(temp).State = EntityState.Modified;
+                    var result = myContext.SaveChanges();
+                    return 3; //approval declined saved
+                }
+            }
+            else
+            {
+                //Leave Approval not found
+                return 2;
+            }
+        }
+
         public void SubmitForm(LeaveVM leaveRequest)
         {
             var leaveEmployee = new LeaveEmployee
             {
-                Id = myContext.LeaveEmployees.ToList().Count,
+                Id = myContext.LeaveEmployees.ToList().Count + 1,
                 StartDate = leaveRequest.StartDate,
                 EndDate = leaveRequest.EndDate,
                 Attachment = leaveRequest.Attachment,

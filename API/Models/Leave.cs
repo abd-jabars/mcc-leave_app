@@ -12,10 +12,16 @@ namespace API.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Type { get; set; }
+        public leaveType Type { get; set; }
         public int Period { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<LeaveEmployee> LeaveEmployees { get; set; }
+    }
+
+    public enum leaveType
+    {
+        normal,
+        special
     }
 }
