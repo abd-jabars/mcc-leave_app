@@ -14,6 +14,7 @@ namespace API.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Attachment { get; set; }
+        public bool ApprovalStatus { get; set; }
 
         [JsonIgnore]
         public virtual Employee Employee { get; set; }
