@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.ViewModel
 {
-    public class Leave
+    public class LeaveVM
     {
         public string NIK { get; set; }
         public string FirstName { get; set; }

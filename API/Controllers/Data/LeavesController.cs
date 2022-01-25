@@ -23,7 +23,7 @@ namespace API.Controllers.Data
 
         [HttpPost]
         [Route("Request")]
-        public ActionResult LeaveRequest(ViewModel.Leave leaveRequest)
+        public ActionResult LeaveRequest(LeaveVM leaveRequest)
         {
             var result = leaveRepository.LeaveRequest(leaveRequest);
             if (result == 1)

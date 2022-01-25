@@ -19,7 +19,7 @@ namespace API.Repository.Data
             this.myContext = myContext;
         }
 
-        public int Login(Login login)
+        public int Login(LoginVM login)
         {
             var getEmail = myContext.Employees.Where(emp => emp.Email == login.Email).FirstOrDefault();
             if (getEmail != null)
@@ -37,14 +37,14 @@ namespace API.Repository.Data
             }
         }
 
-        public IEnumerable<Object> GetRoles(Login login)
+        public IEnumerable<Object> GetRoles(LoginVM login)
         {
             var getMail = myContext.Employees.Where(employee => employee.Email == login.Email).FirstOrDefault();
             var getRoleName = myContext.AccountRoles.Where(acr => acr.AccountId == getMail.NIK).Select(acr => acr.Role.Name).ToList();
             return getRoleName;
         }
 
-        public int ForgotPassword(ForgotPassword forgotPassword)
+        public int ForgotPassword(ForgotPasswordVM forgotPassword)
         {
             var checkEmail = myContext.Employees.Where(emp => emp.Email == forgotPassword.Email).FirstOrDefault();
             if (checkEmail != null)
@@ -107,7 +107,7 @@ namespace API.Repository.Data
             }
         }
 
-        public int ChangePassword(ForgotPassword forgotPassword)
+        public int ChangePassword(ForgotPasswordVM forgotPassword)
         {
             // email received -> insert otp + set datetime when user insert the otp
             var checkEmail = myContext.Employees.Where(emp => emp.Email == forgotPassword.Email).FirstOrDefault();

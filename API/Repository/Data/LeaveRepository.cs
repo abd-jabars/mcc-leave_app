@@ -18,7 +18,7 @@ namespace API.Repository.Data
             this.myContext = myContext;
         }
 
-        public int LeaveRequest(ViewModel.Leave leaveRequest)
+        public int LeaveRequest(LeaveVM leaveRequest)
         {
             var employee = myContext.Employees.Find(leaveRequest.NIK);
             if (employee == null)
@@ -39,7 +39,7 @@ namespace API.Repository.Data
                 // jatah cuti masih ada dan simpan data ke database
                 SubmitForm(leaveRequest);
                 // kirim email
-                SendEmail(employee, leaveRequest);
+                SendEmailRequest(employee, leaveRequest);
                 return 4;
             }
             else
@@ -47,12 +47,12 @@ namespace API.Repository.Data
                 // cuti spesial langsung simpan data ke database
                 SubmitForm(leaveRequest);
                 // kirim email
-                SendEmail(employee, leaveRequest);
+                SendEmailRequest(employee, leaveRequest);
                 return 5;
             }
         }
 
-        public void SubmitForm(ViewModel.Leave leaveRequest)
+        public void SubmitForm(LeaveVM leaveRequest)
         {
             var leaveEmployee = new LeaveEmployee
             {
@@ -68,7 +68,7 @@ namespace API.Repository.Data
             myContext.SaveChanges();
         }
 
-        public int SendEmail(Employee employee, ViewModel.Leave leaveRequest)
+        public int SendEmailRequest(Employee employee, LeaveVM leaveRequest)
         {
             var manager = myContext.Employees.Where(e => e.NIK == employee.ManagerId).FirstOrDefault();
 

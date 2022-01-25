@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.ViewModel
 {
-    public class Register
+    public class RegisterVM
     {
         public string NIK { get; set; }
         public string FirstName { get; set; }

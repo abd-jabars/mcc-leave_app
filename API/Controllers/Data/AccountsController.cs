@@ -30,7 +30,7 @@ namespace API.Controllers.Data
 
         [HttpPost]
         [Route("Login")]
-        public ActionResult Login(Login login)
+        public ActionResult Login(LoginVM login)
         {
             var result = accountRepository.Login(login);
             if (result == 1)
@@ -77,7 +77,7 @@ namespace API.Controllers.Data
 
         [HttpPut]
         [Route("ForgotPassword")]
-        public ActionResult ForgotPassword(ForgotPassword forgotPassword)
+        public ActionResult ForgotPassword(ForgotPasswordVM forgotPassword)
         {
             var result = accountRepository.ForgotPassword(forgotPassword);
             if (result == 1)
@@ -96,7 +96,7 @@ namespace API.Controllers.Data
 
         [HttpPut]
         [Route("ChangePassword")]
-        public ActionResult ChangePassword(ForgotPassword forgotPassword)
+        public ActionResult ChangePassword(ForgotPasswordVM forgotPassword)
         {
             var result = accountRepository.ChangePassword(forgotPassword);
             if (result == 1)
