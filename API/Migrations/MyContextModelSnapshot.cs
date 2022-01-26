@@ -24,10 +24,10 @@ namespace API.Migrations
                     b.Property<string>("NIK")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("ExpiredToken")
+                    b.Property<DateTime?>("ExpiredToken")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsUsed")
+                    b.Property<bool?>("IsUsed")
                         .HasColumnType("bit");
 
                     b.Property<int>("LeaveQuota")
@@ -36,11 +36,14 @@ namespace API.Migrations
                     b.Property<bool>("LeaveStatus")
                         .HasColumnType("bit");
 
-                    b.Property<int>("OTP")
+                    b.Property<int?>("OTP")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PrevLeaveQuota")
+                        .HasColumnType("int");
 
                     b.HasKey("NIK");
 
@@ -134,8 +137,8 @@ namespace API.Migrations
                     b.Property<int>("Period")
                         .HasColumnType("int");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
