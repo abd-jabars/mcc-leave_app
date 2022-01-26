@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,6 +27,26 @@ namespace Client.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("NotFound")]
+        public IActionResult NotFound()
+        {
+            return View("404", "home");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Unauthorized")]
+        public IActionResult Unauthorized()
+        {
+            return View("401", "home");
+        }
+
+        [HttpGet("Forbidden")]
+        public IActionResult Forbidden()
+        {
+            return View("403", "home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
