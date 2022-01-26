@@ -124,11 +124,9 @@ function RegisterEmployee() {
 
     var myTable = $('#dataTableRegister').DataTable();
     $.ajax({
-        url: "https://localhost:44316/API/Employees/Register",
-        contentType: "application/json;charset=utf-8",
+        url: "https://localhost:44367/Employees/Register",
         type: "POST",
-        data: JSON.stringify(register)
-        //data: register
+        data: register
     }).done((result) => {
         console.log(result);
         console.log(result.result);
