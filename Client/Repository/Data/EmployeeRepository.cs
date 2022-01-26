@@ -39,5 +39,18 @@ namespace Client.Repository.Data
             return entity;
         }
 
+        public async Task<Object> RegisteredData()
+        {
+            //List<RegisterVM> entities = new List<RegisterVM>();
+            Object entities = new Object();
+
+            using (var response = await httpClient.GetAsync(request + "RegisteredData"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entities;
+        }
+
     }
 }

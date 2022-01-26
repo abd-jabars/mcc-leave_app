@@ -35,5 +35,12 @@ namespace Client.Controllers
             return Json(result);
         }
 
+        [HttpGet]
+        public async Task<JsonResult> RegisteredData()
+        {
+            var result = await repository.RegisteredData();
+            return Json(result);
+        }
+
     }
 }

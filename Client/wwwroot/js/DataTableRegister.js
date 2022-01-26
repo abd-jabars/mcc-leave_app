@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $('#dataTableRegister').DataTable({
         'ajax': {
-            'url': "https://localhost:44316/API/Employees/RegisteredData",
+            'url': "https://localhost:44367/Employees/RegisteredData",
             'dataSrc': 'result'
         },
         'columns': [
@@ -84,8 +84,7 @@ function GetDepartmentManager() {
 
 function Insert() {
     GetDepartmentManager();
-    console.log("tes");
-
+    
     $('#password').attr("readonly", false);
 
     $('#employeeForm').trigger("reset");
@@ -128,11 +127,6 @@ function RegisterEmployee() {
         type: "POST",
         data: register
     }).done((result) => {
-        console.log(result);
-        console.log(result.result);
-        console.log(result.status);
-        console.log(result.message);
-
         myTable.ajax.reload();
         var swalIcon;
         if (result.status == 200) {
@@ -169,7 +163,4 @@ $('#employeeForm').submit(function (e) {
         $('#employeeForm').trigger("reset");
         $('#employeeModal').modal('hide');
     }
-    //RegisterEmployee();
-    //$('#employeeForm').trigger("reset");
-    //$('#employeeModal').modal('hide');
 });
