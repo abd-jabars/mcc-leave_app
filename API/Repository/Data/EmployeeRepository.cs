@@ -67,6 +67,7 @@ namespace API.Repository.Data
                 { 
                     NIK = employee.NIK,
                     Password = BCrypt.Net.BCrypt.HashPassword(register.Password),
+                    PrevLeaveQuota = 0,
                     LeaveQuota = 0,
                     LeaveStatus = false
                 };

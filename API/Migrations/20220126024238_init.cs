@@ -13,7 +13,7 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     Period = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -84,7 +84,11 @@ namespace API.Migrations
                     NIK = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LeaveQuota = table.Column<int>(type: "int", nullable: false),
-                    LeaveStatus = table.Column<bool>(type: "bit", nullable: false)
+                    PrevLeaveQuota = table.Column<int>(type: "int", nullable: false),
+                    LeaveStatus = table.Column<bool>(type: "bit", nullable: false),
+                    OTP = table.Column<int>(type: "int", nullable: true),
+                    ExpiredToken = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -123,7 +127,8 @@ namespace API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     EmployeeNIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     NIK = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LeaveId = table.Column<int>(type: "int", nullable: false)

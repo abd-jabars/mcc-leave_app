@@ -34,8 +34,12 @@ namespace API.Repository.Data
             if (leave.Type == leaveType.normal)
             {
                 // periksa jatah cuti
-                if (account.LeaveQuota < 1)
+                if ((account.LeaveQuota + account.PrevLeaveQuota) < 1)
                     return 3; // jatah cuti habis
+                else if ((account.LeaveQuota + account.PrevLeaveQuota) - Convert.ToInt32((leaveRequest.EndDate - leaveRequest.StartDate).TotalDays) < 1)
+                {
+                    return 3; // jatah cuti kurang
+                }
 
                 // jatah cuti masih ada dan simpan data ke database
                 SubmitForm(leaveRequest);
@@ -67,10 +71,10 @@ namespace API.Repository.Data
                 if (leave.Type == leaveType.normal)
                 //cuti normal
                 {
-                    totalLeave = acc.LeaveQuota - Convert.ToInt32((temp.EndDate - temp.StartDate).TotalDays);
+                    totalLeave = (acc.LeaveQuota + acc.PrevLeaveQuota) - Convert.ToInt32((temp.EndDate - temp.StartDate).TotalDays);
                 }
 
-                if (leaveApproval.leaveStatus == 1)
+                if (leaveApproval.LeaveStatus == 1)
                 {
                     acc.LeaveQuota = totalLeave;
                     temp.Status = Approval.Disetujui;
@@ -91,6 +95,60 @@ namespace API.Repository.Data
             {
                 //Leave Approval not found
                 return 2;
+            }
+        }
+
+        public void LeaveQuotaTransfer()
+        {
+            Console.WriteLine("It's Running");
+            var date = DateTime.Now;
+            var year = date.Year;
+            DateTime expDate = new DateTime(year, 07, 01);
+            DateTime nyDate = new DateTime(year, 01, 01);
+            var acc = myContext.Accounts;
+            try
+            {
+                if (date >= expDate)
+                {
+                    foreach (var i in acc)
+                    {
+                        i.PrevLeaveQuota = 0;
+                    }
+                }
+
+                if (date == nyDate)
+                {
+                    foreach (var i in acc)
+                    {
+                        i.PrevLeaveQuota = i.LeaveQuota;
+                    }
+                }
+                myContext.Entry(acc).State = EntityState.Modified;
+                myContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public int LeaveQuota(LeaveVM leaveQuota)
+        {
+            var acc = myContext.Accounts;
+            if (acc != null)
+            {
+                foreach (var i in acc)
+                {
+                    i.LeaveQuota = leaveQuota.Quota;
+                    myContext.Entry(i).State = EntityState.Modified;
+                }
+
+                var result = myContext.SaveChanges();
+                return result; //New Quota saved succeed
+            }
+            else
+            {
+                return 0; //New Quota error
             }
         }
 
@@ -159,6 +217,5 @@ namespace API.Repository.Data
                 return 2;
             }
         }
-
     }
 }
