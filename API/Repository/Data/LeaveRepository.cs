@@ -100,7 +100,7 @@ namespace API.Repository.Data
 
         public void LeaveQuotaTransfer()
         {
-            Console.WriteLine("It's Running");
+            Console.WriteLine("LeaveQuotaTransfer is Running...");
             var date = DateTime.Now;
             var year = date.Year;
             DateTime expDate = new DateTime(year, 07, 01);
@@ -110,6 +110,7 @@ namespace API.Repository.Data
             {
                 if (date >= expDate)
                 {
+                    Console.WriteLine("Previous Leave Quota is Expired...");
                     foreach (var i in acc)
                     {
                         i.PrevLeaveQuota = 0;
@@ -119,6 +120,7 @@ namespace API.Repository.Data
 
                 if (date == nyDate)
                 {
+                    Console.WriteLine("Leave Quota is moved to previous leave quota...");
                     foreach (var i in acc)
                     {
                         i.PrevLeaveQuota = i.LeaveQuota;
