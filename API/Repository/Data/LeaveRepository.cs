@@ -40,16 +40,22 @@ namespace API.Repository.Data
                 // jatah cuti masih ada dan simpan data ke database
                 SubmitForm(leaveRequest);
                 // kirim email
-                SendEmailRequest(employee, leaveRequest);
-                return 4;
+                if (SendEmailRequest(employee, leaveRequest) == 1)
+                {
+                    return 4; // successfully sent email
+                }
+                return 5; // failed to send email
             }
             else
             {
                 // cuti spesial langsung simpan data ke database
                 SubmitForm(leaveRequest);
                 // kirim email
-                SendEmailRequest(employee, leaveRequest);
-                return 5;
+                if (SendEmailRequest(employee, leaveRequest) == 1)
+                {
+                    return 4; // successfully sent email
+                }
+                return 5; // failed to send email
             }
         }
 
