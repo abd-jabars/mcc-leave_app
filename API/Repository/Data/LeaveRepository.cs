@@ -1,4 +1,4 @@
-﻿using API.Context;
+using API.Context;
 using API.Models;
 using API.ViewModel;
 using Microsoft.EntityFrameworkCore;

@@ -51,10 +51,11 @@ namespace API.Controllers.Data
             {
                 var result = employeeRepository.GetRegisteredData();
                 if (result.Count() <= 0)
-                    return NotFound(result);
+                    //return NotFound(result);
+                    return Ok(new { status = HttpStatusCode.NoContent, result = result, message = "There is no data" });
                 else
-                    return Ok(result);
-                //return Ok(new ReturnMessage(HttpStatusCode.OK, result, "Data found"));
+                    //return Ok(result);
+                    return Ok(new { status = HttpStatusCode.OK, result = result, message = "Data found" });
             }
             catch (Exception ex)
             {
@@ -70,9 +71,11 @@ namespace API.Controllers.Data
             {
                 var result = employeeRepository.GetRegisteredData(NIK);
                 if (result == null)
-                    return NotFound(result);
+                    //return NotFound(result);
+                    return Ok(new { status = HttpStatusCode.NoContent, result = result, message = "There is no data" });
                 else
-                    return Ok(result);
+                    //return Ok(result);
+                    return Ok(new { status = HttpStatusCode.OK, result = result, message = "Data found" });
             }
             catch (Exception ex)
             {
