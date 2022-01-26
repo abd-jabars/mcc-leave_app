@@ -76,7 +76,7 @@ namespace API.Repository.Data
                     totalLeave = acc.LeaveQuota - Convert.ToInt32((temp.EndDate - temp.StartDate).TotalDays);
                 }
 
-                if (leaveApproval.leaveStatus == 1)
+                if (leaveApproval.LeaveStatus == 1)
                 {
                     acc.LeaveQuota = totalLeave;
                     temp.Status = Approval.Disetujui;
@@ -165,6 +165,8 @@ namespace API.Repository.Data
                 return 2;
             }
         }
+
+
 
     }
 }

@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "DataTable";
+    Layout = "_LayoutTes";
+}
+
+<h1>DataTable</h1>
+
+<div class="container">
+    <div class="row">
+        <button data-toggle="modal" data-target="#registerNewEmployee" class="d-inline btn btn-success fa fa-plus ml-auto my-1" onclick="Insert()"> Insert new </button>
+    </div>
+
+    <table class="table table-hover mt-sm-5" id="tes">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>NIK</th>
+                <th>Name</th>
+                <th>Birth Date</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Roles</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody class="employee">
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/DataTableRegister.js"></script>
+}
+
