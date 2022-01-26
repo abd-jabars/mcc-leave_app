@@ -113,6 +113,7 @@ namespace API.Repository.Data
                     foreach (var i in acc)
                     {
                         i.PrevLeaveQuota = 0;
+                        myContext.Entry(i).State = EntityState.Modified;
                     }
                 }
 
@@ -121,9 +122,9 @@ namespace API.Repository.Data
                     foreach (var i in acc)
                     {
                         i.PrevLeaveQuota = i.LeaveQuota;
+                        myContext.Entry(i).State = EntityState.Modified;
                     }
                 }
-                myContext.Entry(acc).State = EntityState.Modified;
                 myContext.SaveChanges();
             }
             catch (Exception e)
