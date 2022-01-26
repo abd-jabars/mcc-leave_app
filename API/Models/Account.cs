@@ -15,6 +15,7 @@ namespace API.Models
         public string NIK { get; set; }
         public string Password { get; set; }
         public int LeaveQuota { get; set; }
+        public int PrevLeaveQuota { get; set; }
         public bool LeaveStatus { get; set; }
         public int? OTP { get; set; }
         public DateTime? ExpiredToken { get; set; }

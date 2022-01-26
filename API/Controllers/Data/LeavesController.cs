@@ -49,14 +49,14 @@ namespace API.Controllers.Data
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("Approval")]
         public ActionResult LeaveApproval(LeaveVM leaveApproval)
         {
             var result = leaveRepository.LeaveApproval(leaveApproval);
             if (result == 1)
             {
-                return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Cuti Disetujui" });
+                return Ok(new { status = HttpStatusCode.OK, result = result, message = "Cuti Disetujui" });
 
             }
             else if (result == 2)
@@ -65,11 +65,30 @@ namespace API.Controllers.Data
             }
             else if (result == 3)
             {
-                return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Cuti Ditolak" });
+                return Ok(new { status = HttpStatusCode.OK, result = result, message = "Cuti Ditolak" });
             }
             else
             {
-                return Ok(new { status = HttpStatusCode.OK, result = result, message = "Error" });
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Error" });
+            }
+        }
+
+        [HttpPut]
+        [Route("Quota")]
+        public ActionResult leaveQuota(LeaveVM leaveQuota)
+        {
+            var result = leaveRepository.LeaveQuota(leaveQuota);
+            if (result > 1)
+            {
+                return Ok(new { status = HttpStatusCode.OK, result = result, message = "Masa Cuti berhasil ditambahkan" });
+            }
+            else if (result < 1)
+            {
+                return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Masa Cuti gagal ditambahkan" });
+            }
+            else
+            {
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Error" });
             }
         }
     }

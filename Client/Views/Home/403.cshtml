@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Forbidden";
+    <link rel="stylesheet" href="~/css/Error.css" />
+}
+<div class="box">
+    <div class="box__ghost">
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+        <div class="symbol"></div>
+
+        <div class="box__ghost-container">
+            <div class="box__ghost-eyes">
+                <div class="box__eye-left"></div>
+                <div class="box__eye-right"></div>
+            </div>
+            <div class="box__ghost-bottom">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div class="box__ghost-shadow"></div>
+    </div>
+
+    <div class="box__description">
+        <div class="box__description-container">
+            <div class="box__description-title">Whoops!</div>
+            <div class="box__description-text">It seems like you don't have access to visit this page</div>
+        </div>
+        <p></p>
+        <p class="redirect">You will redirected in <span id="time"> 5 </span></p>
+
+    </div>
+
+</div>
+
+<script>
+    var seconds = 5;
+    window.onload = function () {
+        var timer = setInterval(function () {
+            if (seconds <= 0) {
+                document.getElementById("time").innerHTML = 0;
+                clearInterval(timer);
+            }
+            else {
+                document.getElementById("time").innerHTML = seconds - 1;
+            }
+            seconds -= 1;
+        }, 1000);
+
+        setTimeout(function () {
+            window.location.href = '/';
+        }, seconds * 1000);
+    }
+</script>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/Error.js"></script>
+}

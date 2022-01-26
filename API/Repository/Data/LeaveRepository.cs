@@ -1,4 +1,4 @@
-﻿using API.Context;
+using API.Context;
 using API.Models;
 using API.ViewModel;
 using Microsoft.EntityFrameworkCore;
@@ -34,28 +34,26 @@ namespace API.Repository.Data
             if (leave.Type == leaveType.normal)
             {
                 // periksa jatah cuti
-                if (account.LeaveQuota < 1)
+                if ((account.LeaveQuota + account.PrevLeaveQuota) < 1)
                     return 3; // jatah cuti habis
+                else if ((account.LeaveQuota + account.PrevLeaveQuota) - Convert.ToInt32((leaveRequest.EndDate - leaveRequest.StartDate).TotalDays) < 1)
+                {
+                    return 3; // jatah cuti kurang
+                }
 
                 // jatah cuti masih ada dan simpan data ke database
                 SubmitForm(leaveRequest);
                 // kirim email
-                if (SendEmailRequest(employee, leaveRequest) == 1)
-                {
-                    return 4; // successfully sent email
-                }
-                return 5; // failed to send email
+                SendEmailRequest(employee, leaveRequest);
+                return 4;
             }
             else
             {
                 // cuti spesial langsung simpan data ke database
                 SubmitForm(leaveRequest);
                 // kirim email
-                if (SendEmailRequest(employee, leaveRequest) == 1)
-                {
-                    return 4; // successfully sent email
-                }
-                return 5; // failed to send email
+                SendEmailRequest(employee, leaveRequest);
+                return 5;
             }
         }
 
@@ -73,7 +71,7 @@ namespace API.Repository.Data
                 if (leave.Type == leaveType.normal)
                 //cuti normal
                 {
-                    totalLeave = acc.LeaveQuota - Convert.ToInt32((temp.EndDate - temp.StartDate).TotalDays);
+                    totalLeave = (acc.LeaveQuota + acc.PrevLeaveQuota) - Convert.ToInt32((temp.EndDate - temp.StartDate).TotalDays);
                 }
 
                 if (leaveApproval.LeaveStatus == 1)
@@ -97,6 +95,63 @@ namespace API.Repository.Data
             {
                 //Leave Approval not found
                 return 2;
+            }
+        }
+
+        public void LeaveQuotaTransfer()
+        {
+            Console.WriteLine("LeaveQuotaTransfer is Running...");
+            var date = DateTime.Now;
+            var year = date.Year;
+            DateTime expDate = new DateTime(year, 07, 01);
+            DateTime nyDate = new DateTime(year, 01, 01);
+            var acc = myContext.Accounts;
+            try
+            {
+                if (date >= expDate)
+                {
+                    Console.WriteLine("Previous Leave Quota is Expired...");
+                    foreach (var i in acc)
+                    {
+                        i.PrevLeaveQuota = 0;
+                        myContext.Entry(i).State = EntityState.Modified;
+                    }
+                }
+
+                if (date == nyDate)
+                {
+                    Console.WriteLine("Leave Quota is moved to previous leave quota...");
+                    foreach (var i in acc)
+                    {
+                        i.PrevLeaveQuota = i.LeaveQuota;
+                        myContext.Entry(i).State = EntityState.Modified;
+                    }
+                }
+                myContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public int LeaveQuota(LeaveVM leaveQuota)
+        {
+            var acc = myContext.Accounts;
+            if (acc != null)
+            {
+                foreach (var i in acc)
+                {
+                    i.LeaveQuota = leaveQuota.Quota;
+                    myContext.Entry(i).State = EntityState.Modified;
+                }
+
+                var result = myContext.SaveChanges();
+                return result; //New Quota saved succeed
+            }
+            else
+            {
+                return 0; //New Quota error
             }
         }
 
@@ -134,7 +189,7 @@ namespace API.Repository.Data
                             $"Yang bertanda tangan di bawah ini:\n\n" +
                             $"NIK \t: {employee.NIK}\n" +
                             $"Nama \t: {employee.FirstName} {employee.LastName}\n\n" +
-                            $"dengan ini saya bermaksud untuk mengajukan Cuti {leave.Name}, " +
+                            $"dengan ini saya bermaksud untuk mengajukan {leave.Name}, " +
                             $"terhitung mulai tanggal {leaveRequest.StartDate.ToString("dd MMMM yyyy")} sampai dengan {leaveRequest.EndDate.ToString("dd MMMM yyyy")}.\n\n" +
                             $"Demikianlah surat pengajuan ini saya buat untuk dapat dipertimbangkan sebagaimana mestinya. Atas izin yang diberikan saya ucapkan terima kasih.\n\n" +
                             $"Hormat saya,\n\n" +
@@ -165,8 +220,5 @@ namespace API.Repository.Data
                 return 2;
             }
         }
-
-
-
     }
 }

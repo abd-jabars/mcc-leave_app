@@ -43,7 +43,7 @@ namespace API.Controllers
                 var result = repository.Get();
                 if (result.Count() > 0)
                 {
-                    return Ok(new { status = HttpStatusCode.OK, result = result, message = "Data found" });
+                    return Ok(result);
                 }
                 else
                 {
