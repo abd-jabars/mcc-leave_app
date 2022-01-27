@@ -47,7 +47,7 @@ namespace Client.Repository
             var content = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri(address.link),
+                RequestUri = new Uri(address.link + request),
                 Content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json")
             };
             var response = await httpClient.SendAsync(content);
