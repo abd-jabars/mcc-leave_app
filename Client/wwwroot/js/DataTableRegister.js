@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    $('#dataTableRegister').DataTable({
+    var table = $('#dataTableRegister').DataTable({
         'scrollX': true,
         'ajax': {
             'url': "https://localhost:44367/Employees/RegisteredData",
@@ -52,10 +52,15 @@
                 'width': '150px',
                 'render': function (data, type, row) {
                     return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
-                            <button data-toggle="modal" class="btn btn-danger fa fa-trash" onclick="ConfirmDelete(${row["nik"]})"></button>`;
+                            <button data-toggle="modal" id="btn-delete" class="btn btn-danger fa fa-trash"></button>`;
                 }
             }
         ]
+    });
+    $('#dataTableRegister').on('click', '#btn-delete', function () {
+        var data = table.row($(this).closest('tr')).data();
+        console.log(data);
+        ConfirmDelete(data);
     });
 });
 
@@ -267,7 +272,7 @@ function UpdateData() {
     });
 }
 
-function ConfirmDelete() {
+function ConfirmDelete(data) {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -281,9 +286,15 @@ function ConfirmDelete() {
         if (result.isConfirmed) {
             var myTable = $('#dataTabelEmployee').DataTable();
 
+            var obj = new Object();
+            obj.nik = data.nik;
+
+            console.log(obj);
+
             $.ajax({
-                url: "Employees/Delete",
-                type: "DELETE"
+                url: "/Employees/Delete",
+                type: "DELETE",
+                data: obj
             }).done((result) => {
 
                 console.log(result);
