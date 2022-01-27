@@ -40,6 +40,10 @@ namespace API.Repository.Data
                 {
                     return 3; // jatah cuti kurang
                 }
+                else if (Convert.ToInt32((leaveRequest.EndDate - leaveRequest.StartDate).TotalDays) < 0)
+                {
+                    return 3; // jatah cuti minus
+                }
 
                 // jatah cuti masih ada dan simpan data ke database
                 if (SubmitForm(leaveRequest) == 1) // tanggal pengajuan logis

@@ -2,7 +2,7 @@
     var table = $('#dataTableRegister').DataTable({
         'scrollX': true,
         'ajax': {
-            'url': "https://localhost:44367/Employees/RegisteredData",
+            'url': "/Employees/RegisteredData",
             'dataSrc': 'result'
         },
         'columns': [
