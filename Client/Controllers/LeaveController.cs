@@ -12,5 +12,13 @@ namespace Client.Controllers
         {
             return View();
         }
+        public IActionResult Approval()
+        {
+            return View();
+        }
+        public IActionResult Calendar()
+        {
+            return View();
+        }
     }
 }
