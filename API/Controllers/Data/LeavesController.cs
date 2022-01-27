@@ -43,9 +43,13 @@ namespace API.Controllers.Data
             {
                 return Ok(new { status = HttpStatusCode.OK, result = result, message = "Pengajuan cuti telah dikirim" });
             }
-            else
+            else if (result == 5)
             {
                 return Ok(new { status = HttpStatusCode.UnprocessableEntity, result = result, message = "Gagal mengirim pengajuan" });
+            }
+            else 
+            {
+                return Ok(new { status = HttpStatusCode.OK, result = result, message = "Tanggal cutinya kok gitu" });
             }
         }
 
