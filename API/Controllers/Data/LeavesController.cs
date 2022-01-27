@@ -49,7 +49,7 @@ namespace API.Controllers.Data
             }
             else 
             {
-                return Ok(new { status = HttpStatusCode.OK, result = result, message = "Tanggal cutinya kok gitu" });
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Tanggal cutinya kok gitu" });
             }
         }
 
