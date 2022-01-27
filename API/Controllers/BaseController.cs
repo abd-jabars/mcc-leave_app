@@ -64,7 +64,7 @@ namespace API.Controllers
                 var result = repository.Get(key);
                 if (result != null)
                 {
-                    return Ok(new { status = HttpStatusCode.OK, result = result, message = $"Data with id {key} found" });
+                    return Ok(result);
                 }
                 else
                 {

@@ -29,6 +29,7 @@ namespace Client
             services.AddControllersWithViews();
             services.AddScoped<Address>();
             services.AddScoped<EmployeeRepository>();
+            services.AddScoped<LeaveRepository>();
             services.AddScoped<DepartmentRepository>();
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllersWithViews()
