@@ -43,7 +43,7 @@
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees',
+            'url': 'https://localhost:44316/api/leaveemployees/approval',
             'dataType': 'json',
             'dataSrc': ''
         },
