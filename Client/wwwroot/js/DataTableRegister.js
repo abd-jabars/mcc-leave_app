@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $('#dataTableRegister').DataTable({
+        'scrollX': true,
         'ajax': {
             'url': "https://localhost:44367/Employees/RegisteredData",
             'dataSrc': 'result'
@@ -63,6 +64,8 @@ function GetDepartmentManager() {
         'url': "https://localhost:44367/Department/GetAll",
         'dataSrc': ''
     }).done((result) => {
+        console.log(result);
+
         var departmentOptions = "";
 
         $.each(result, function (key, val) {
@@ -71,9 +74,13 @@ function GetDepartmentManager() {
         $("#department").html(departmentOptions);
 
         var managerOptions = "";
-
+        // var empty = null;
+        managerOptions += `<option value="null">Tidak Ada</option>`
         $.each(result, function (key, val) {
-            managerOptions += `<option value="${val.managerId}">${val.managerId}</option>`
+            // console.log(val.manager);
+            if (val.manager != null) {
+                managerOptions += `<option value="${result[key].manager.nik}">${result[key].manager.firstName} ${result[key].manager.lastName}</option>`
+            }
         });
         $("#manager").html(managerOptions);
 
@@ -106,7 +113,12 @@ function RegisterEmployee() {
     var birthDate = $('#birthDate').val();
     var gender = $('#gender').val();
     var department = $('#department').val();
+    //var manager = $('#manager').val();
+    
     var manager = $('#manager').val();
+    if (manager == "null") {
+        manager = null;
+    }
 
     var register = Object();
     register.FirstName = firstName;
@@ -208,7 +220,13 @@ function UpdateData() {
     let birthDate = $('#birthDate').val();
     let gender = $('#gender').val();
     let department = $('#department').val();
+    //let manager = $('#manager').val();
+
     let manager = $('#manager').val();
+
+    if (manager == "null") {
+        manager = null;
+    }
 
     let registeredData = Object();
     registeredData.NIK = $("#nik").val();
@@ -254,7 +272,48 @@ function UpdateData() {
 }
 
 function ConfirmDelete() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
 
+        if (result.isConfirmed) {
+            var myTable = $('#dataTabelEmployee').DataTable();
+
+            $.ajax({
+                url: "https://localhost:44367/Employees/Delete",
+                type: "DELETE"
+            }).done((result) => {
+
+                console.log(result);
+
+                if (result === 200) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                } else {
+                    Swal.fire(
+                        'Something went wrong',
+                        'Hmmmm',
+                        'error'
+                    )
+                }
+
+                myTable.ajax.reload();
+
+            }).fail((error) => {
+                console.log(error);
+            });
+
+        }
+    })
 }
 
 $('#employeeForm').submit(function (e) {

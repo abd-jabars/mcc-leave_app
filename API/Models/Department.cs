@@ -16,7 +16,7 @@ namespace API.Models
         [JsonIgnore]
         public virtual ICollection<Employee> Employees { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Employee Manager { get; set; }
         public string ManagerId { get; set; }
     }

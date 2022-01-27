@@ -40,20 +40,20 @@ namespace Client.Repository
 
         //public HttpStatusCode Delete(TEntity entity)
         //{
-        //    //StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-        //    //var result = httpClient.DeleteAsync(address.link + request, content).Result;
-        //    //return result.StatusCode;
+        //    StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+        //    var result = httpClient.DeleteAsync(address.link + request, content).Result;
+        //    return result.StatusCode;
 
-        //    HttpClient client = new HttpClient();
-        //    var content = new HttpRequestMessage
-        //    {
-        //        Method = HttpMethod.Delete,
-        //        RequestUri = new Uri($"{address.link}/{request}"),
-        //        Content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json")
-        //    };
-        //    var response = client.SendAsync(content);
+        //    //HttpClient client = new HttpClient();
+        //    //var content = new HttpRequestMessage
+        //    //{
+        //    //    Method = HttpMethod.Delete,
+        //    //    //RequestUri = new Uri(address.link),
+        //    //    Content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json")
+        //    //};
+        //    //var response = httpClient.SendAsync(content);
 
-        //    return response.
+        //    //return HttpStatusCode.OK;
         //}
 
         public async Task<List<TEntity>> Get()
