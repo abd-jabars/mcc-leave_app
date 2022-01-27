@@ -51,7 +51,7 @@
                 'width': '150px',
                 'render': function (data, type, row) {
                     return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
-                            <button data-toggle="modal" class="btn btn-danger fa fa-trash" onclick="Delete(${row["nik"]})"></button>`;
+                            <button data-toggle="modal" class="btn btn-danger fa fa-trash" onclick="ConfirmDelete(${row["nik"]})"></button>`;
                 }
             }
         ]
@@ -116,8 +116,8 @@ function RegisterEmployee() {
     register.Password = password;
     register.BirthDate = birthDate;
     register.Gender = gender;
-    register.Department = department;
-    register.Manager = manager;
+    register.DepartmentId = department;
+    register.ManagerId = manager;
 
     console.log(register);
 
@@ -218,8 +218,8 @@ function UpdateData() {
     registeredData.BirthDate = birthDate;
     registeredData.Phone = phone;
     registeredData.Email = email;
-    registeredData.Department = department;
-    registeredData.Manager = manager;
+    registeredData.DepartmentId = department;
+    registeredData.ManagerId = manager;
     //registeredData.Password = password;
 
     var myTable = $('#dataTableRegister').DataTable();
@@ -251,6 +251,10 @@ function UpdateData() {
             text: error.message,
         });
     });
+}
+
+function ConfirmDelete() {
+
 }
 
 $('#employeeForm').submit(function (e) {
