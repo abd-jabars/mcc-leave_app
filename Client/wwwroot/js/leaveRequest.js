@@ -188,6 +188,9 @@ function requestLeave() {
     obj.endDate = $("#endDate").val();
     obj.attachment = $("#attachment").val();
 
+    const diffInMs = new Date(obj.endDate) - new Date(obj.startDate)
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+    console.log("total Leave: " + diffInDays);
     console.log(JSON.stringify(obj))
 
     $.ajax({
