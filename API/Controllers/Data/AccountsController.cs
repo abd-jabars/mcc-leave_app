@@ -36,6 +36,7 @@ namespace API.Controllers.Data
             if (result == 1)
             {
                 var getRole = accountRepository.GetRoles(login);
+                var getNik = accountRepository.GetNik(login);
 
                 var claims = new List<Claim>
                 {
@@ -45,6 +46,7 @@ namespace API.Controllers.Data
                 {
                     claims.Add(new Claim("roles", item.ToString()));
                 };
+                claims.Add(new Claim("nik", getNik));
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var siginIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
