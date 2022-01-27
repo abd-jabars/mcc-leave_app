@@ -16,5 +16,6 @@ namespace API.ViewModel
         public DateTime EndDate { get; set; }
         public string Attachment { get; set; }
         public int Quota { get; set; }
+        public int totalLeave { get; set; }
     }
 }
