@@ -123,6 +123,8 @@ namespace API.Repository.Data
                 BirthDate = query.BirthDate,
                 Email = query.Email,
                 Phone = query.Phone,
+                DepartmentId = query.DepartmentId,
+                ManagerId = query.ManagerId,
                 RoleName = myContext.AccountRoles.Where(acr => acr.AccountId== query.NIK).Select(acr => acr.Role.Name).ToList()
             };
 

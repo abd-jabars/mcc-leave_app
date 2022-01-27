@@ -50,8 +50,8 @@
                 'data': null,
                 'width': '150px',
                 'render': function (data, type, row) {
-                    return `<button data-toggle="modal" data-target="#registerNewEmployee" class="btn btn-warning fa fa-pencil" onclick="Update(${row["nik"]})"></button>
-                            <button data-toggle="modal" data-target="#getEmployeeDetail" class="btn btn-danger fa fa-trash" onclick="Delete(${row["nik"]})"></button>`;
+                    return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
+                            <button data-toggle="modal" class="btn btn-danger fa fa-trash" onclick="Delete(${row["nik"]})"></button>`;
                 }
             }
         ]
@@ -60,19 +60,19 @@
 
 function GetDepartmentManager() {
     $.ajax({
-        url: "https://localhost:44316/API/Departments"
-
+        'url': "https://localhost:44367/Department/GetAll",
+        'dataSrc': ''
     }).done((result) => {
         var departmentOptions = "";
 
-        $.each(result.result, function (key, val) {
+        $.each(result, function (key, val) {
             departmentOptions += `<option value="${val.id}">${val.name}</option>`
         });
         $("#department").html(departmentOptions);
 
         var managerOptions = "";
 
-        $.each(result.result, function (key, val) {
+        $.each(result, function (key, val) {
             managerOptions += `<option value="${val.managerId}">${val.managerId}</option>`
         });
         $("#manager").html(managerOptions);
@@ -82,7 +82,7 @@ function GetDepartmentManager() {
     });
 }
 
-function Insert() {
+function InsertModal() {
     GetDepartmentManager();
     
     $('#password').attr("readonly", false);
@@ -150,6 +150,52 @@ function RegisterEmployee() {
         });
     });
 
+}
+
+function SetFormValue(result) {
+    var updateTitle = "";
+    updateTitle += `<h3 class="mx-auto my-1"> Update data: ${result.nik} - ${result.firstName} ${result.lastName} </h3>`;
+    $("#employeeModal .modal-header").html(updateTitle);
+
+    const splitBirthDate = result.birthDate.split("T");
+
+    let nik = result.nik;
+    let firstName = result.firstName;
+    let lastName = result.lastName;
+    let birthDate = splitBirthDate[0];
+    let email = result.email;
+    let phone = result.phone;
+    let gender = result.gender;
+    let departmentId = result.departmentId;
+    let managerId = result.managerId;
+    
+    $("#nik").val(nik);
+    $("#firstName").val(firstName);
+    $("#lastName").val(lastName);
+    $("#birthDate").val(birthDate);
+    $("#email").val(email);
+    $('#password').attr("readonly", true);
+    $("#phone").val(phone);
+    $("#gender").val(gender);
+    $("#department").val(departmentId);
+    $("#manager").val(managerId);
+    $("#submitButton").html("Update");
+}
+
+function UpdateModal(nik) {
+    GetDepartmentManager();
+    $.ajax({
+        'url': "https://localhost:44367/Employees/RegisteredData/" + nik,
+        'dataSrc': ''
+    }).done((result) => {
+
+        console.log(result);
+
+        SetFormValue(result);
+
+    }).fail((error) => {
+        console.log(error);
+    });
 }
 
 $('#employeeForm').submit(function (e) {

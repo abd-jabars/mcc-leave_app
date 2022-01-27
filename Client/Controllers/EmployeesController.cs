@@ -42,5 +42,12 @@ namespace Client.Controllers
             return Json(result);
         }
 
+        [HttpGet("Employees/RegisteredData/{NIK}")]
+        public async Task<JsonResult> GetRegisteredById(string NIK)
+        {
+            var result = await repository.RegisteredData(NIK);
+            return Json(result);
+        }
+
     }
 }
