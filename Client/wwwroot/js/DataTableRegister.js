@@ -67,21 +67,16 @@ function GetDepartmentManager() {
         console.log(result);
 
         var departmentOptions = "";
+        var managerOptions = "";
+        managerOptions += `<option value="null">Tidak Ada</option>`
 
         $.each(result, function (key, val) {
             departmentOptions += `<option value="${val.id}">${val.name}</option>`
-        });
-        $("#department").html(departmentOptions);
-
-        var managerOptions = "";
-        // var empty = null;
-        managerOptions += `<option value="null">Tidak Ada</option>`
-        $.each(result, function (key, val) {
-            // console.log(val.manager);
-            if (val.manager != null) {
+            if (val.manager != null && val.id == val.manager.departmentId) {
                 managerOptions += `<option value="${result[key].manager.nik}">${result[key].manager.firstName} ${result[key].manager.lastName}</option>`
             }
         });
+        $("#department").html(departmentOptions);
         $("#manager").html(managerOptions);
 
     }).fail((error) => {
@@ -191,6 +186,7 @@ function SetFormValue(result) {
     $("#gender").val(gender);
     $("#department").val(departmentId);
     $("#manager").val(managerId);
+    $("#manager").prop('disabled', true);
     $("#submitButton").html("Update");
 }
 
