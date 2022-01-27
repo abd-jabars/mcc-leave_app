@@ -189,12 +189,67 @@ function UpdateModal(nik) {
         'dataSrc': ''
     }).done((result) => {
 
-        console.log(result);
+        // console.log(result);
 
         SetFormValue(result);
 
     }).fail((error) => {
         console.log(error);
+    });
+}
+
+function UpdateData() {
+    let nik = $('#nik').val();
+    let firstName = $('#firstName').val();
+    let lastName = $('#lastName').val();
+    let email = $('#email').val();
+    //let password = $('#password').attr("readonly", true);
+    let phone = $('#phone').val();
+    let birthDate = $('#birthDate').val();
+    let gender = $('#gender').val();
+    let department = $('#department').val();
+    let manager = $('#manager').val();
+
+    let registeredData = Object();
+    registeredData.NIK = $("#nik").val();
+    registeredData.FirstName = firstName;
+    registeredData.LastName = lastName;
+    registeredData.Gender = gender;
+    registeredData.BirthDate = birthDate;
+    registeredData.Phone = phone;
+    registeredData.Email = email;
+    registeredData.Department = department;
+    registeredData.Manager = manager;
+    //registeredData.Password = password;
+
+    var myTable = $('#dataTableRegister').DataTable();
+    $.ajax({
+        url: "https://localhost:44367/Employees/UpdateRegisteredData",
+        type: "PUT",
+        data: registeredData
+    }).done((result) => {
+        // console.log(result);
+        myTable.ajax.reload();
+        var swalIcon;
+        if (result.status == 200) {
+            swalIcon = 'success';
+            swalTitle = 'Success';
+        } else {
+            swalIcon = 'error'
+            swalTitle = 'Oops!'
+        }
+        Swal.fire({
+            icon: swalIcon,
+            title: swalTitle,
+            text: result.message,
+        });
+    }).fail((error) => {
+        console.log(error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Something went wrong',
+            text: error.message,
+        });
     });
 }
 

@@ -64,6 +64,18 @@ namespace Client.Repository.Data
             return register;
         }
 
+        public Object UpdateRegisteredData(RegisterVM register)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(register), Encoding.UTF8, "application/json");
+
+            Object entity = new Object();
+            using (var response = httpClient.PutAsync(request + "UpdateRegistered", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entity = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entity;
+        }
 
     }
 }
