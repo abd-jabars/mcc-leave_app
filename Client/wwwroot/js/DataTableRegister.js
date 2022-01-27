@@ -50,8 +50,8 @@
                 'data': null,
                 'width': '150px',
                 'render': function (data, type, row) {
-                    return `<button data-toggle="modal" data-target="#registerNewEmployee" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
-                            <button data-toggle="modal" data-target="#getEmployeeDetail" class="btn btn-danger fa fa-trash" onclick="Delete(${row["nik"]})"></button>`;
+                    return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
+                            <button data-toggle="modal" class="btn btn-danger fa fa-trash" onclick="Delete(${row["nik"]})"></button>`;
                 }
             }
         ]
@@ -152,6 +152,36 @@ function RegisterEmployee() {
 
 }
 
+function SetFormValue(result) {
+    var updateTitle = "";
+    updateTitle += `<h3 class="mx-auto my-1"> Update data: ${result.nik} - ${result.firstName} ${result.lastName} </h3>`;
+    $("#employeeModal .modal-header").html(updateTitle);
+
+    const splitBirthDate = result.birthDate.split("T");
+
+    let nik = result.nik;
+    let firstName = result.firstName;
+    let lastName = result.lastName;
+    let birthDate = splitBirthDate[0];
+    let email = result.email;
+    let phone = result.phone;
+    let gender = result.gender;
+    let departmentId = result.departmentId;
+    let managerId = result.managerId;
+    
+    $("#nik").val(nik);
+    $("#firstName").val(firstName);
+    $("#lastName").val(lastName);
+    $("#birthDate").val(birthDate);
+    $("#email").val(email);
+    $('#password').attr("readonly", true);
+    $("#phone").val(phone);
+    $("#gender").val(gender);
+    $("#department").val(departmentId);
+    $("#manager").val(managerId);
+    $("#submitButton").html("Update");
+}
+
 function UpdateModal(nik) {
     GetDepartmentManager();
     $.ajax({
@@ -161,7 +191,7 @@ function UpdateModal(nik) {
 
         console.log(result);
 
-        //setFormValue(result);
+        SetFormValue(result);
 
     }).fail((error) => {
         console.log(error);
