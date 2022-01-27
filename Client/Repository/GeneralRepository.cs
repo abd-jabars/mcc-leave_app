@@ -32,29 +32,28 @@ namespace Client.Repository
             //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", _contextAccessor.HttpContext.Session.GetString("JWToken"));
         }
 
-        public HttpStatusCode Delete(TEntity entity)
-        {
-            var result = httpClient.DeleteAsync(request).Result;
-            return result.StatusCode;
-        }
-
         //public HttpStatusCode Delete(TEntity entity)
         //{
-        //    StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-        //    var result = httpClient.DeleteAsync(address.link + request, content).Result;
+        //    var result = httpClient.DeleteAsync(request).Result;
         //    return result.StatusCode;
-
-        //    //HttpClient client = new HttpClient();
-        //    //var content = new HttpRequestMessage
-        //    //{
-        //    //    Method = HttpMethod.Delete,
-        //    //    //RequestUri = new Uri(address.link),
-        //    //    Content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json")
-        //    //};
-        //    //var response = httpClient.SendAsync(content);
-
-        //    //return HttpStatusCode.OK;
         //}
+
+        public async Task<HttpResponseMessage> Delete(TEntity entity)
+        {
+            //StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            //var result = httpClient.DeleteAsync(address.link + request, content).Result;
+            //return result.StatusCode;
+
+            var content = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(address.link),
+                Content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json")
+            };
+            var response = await httpClient.SendAsync(content);
+
+            return response;
+        }
 
         public async Task<List<TEntity>> Get()
         {

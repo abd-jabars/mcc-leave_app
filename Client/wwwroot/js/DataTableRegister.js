@@ -282,7 +282,7 @@ function ConfirmDelete() {
             var myTable = $('#dataTabelEmployee').DataTable();
 
             $.ajax({
-                url: "https://localhost:44367/Employees/Delete",
+                url: "Employees/Delete",
                 type: "DELETE"
             }).done((result) => {
 
