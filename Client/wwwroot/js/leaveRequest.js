@@ -198,10 +198,17 @@ function requestLeave() {
         data: JSON.stringify(obj)
     }).done((result) => {
         console.log(result)
+        if (result.status == 200) {
+            swalIcon = 'success';
+            swalTitle = 'Input Success';
+        } else {
+            swalIcon = 'error';
+            swalTitle = 'Oops...';
+        }
         Swal.fire({
-            title: 'Input Success!',
-            /*    text: 'Input Success!',*/
-            icon: 'success'
+            title: swalTitle,
+            icon: swalIcon,
+            text: result.message
         })
         $('#insertModal').modal('hide');
     }).fail((error) => {
