@@ -52,7 +52,7 @@
                 'width': '150px',
                 'render': function (data, type, row) {
                     return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
-                            <button data-toggle="modal" id="btn-delete" class="btn btn-danger fa fa-trash"></button>`;
+                            <button id="btn-delete" class="btn btn-danger fa fa-trash"></button>`;
                 }
             }
         ]
@@ -69,7 +69,7 @@ function GetDepartmentManager() {
         'url': "https://localhost:44367/Department/GetAll",
         'dataSrc': ''
     }).done((result) => {
-        console.log(result);
+        // console.log(result);
 
         var departmentOptions = "";
         var managerOptions = "";
@@ -92,9 +92,9 @@ function GetDepartmentManager() {
 function InsertModal() {
     GetDepartmentManager();
     
-    $('#password').attr("readonly", false);
-
     $('#employeeForm').trigger("reset");
+
+    $('#password').attr("readonly", false);
         
     var insertTitle = "";
     insertTitle += `<h3 class="mx-auto my-1"> Register an Employee </h3>`;
