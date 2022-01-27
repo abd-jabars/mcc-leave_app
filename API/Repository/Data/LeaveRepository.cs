@@ -42,18 +42,44 @@ namespace API.Repository.Data
                 }
 
                 // jatah cuti masih ada dan simpan data ke database
-                SubmitForm(leaveRequest);
-                // kirim email
-                SendEmailRequest(employee, leaveRequest);
-                return 4;
+                if (SubmitForm(leaveRequest) == 1) // tanggal pengajuan logis
+                {
+                    // kirim email
+                    if (SendEmailRequest(employee, leaveRequest) == 1)
+                    {
+                        return 4; // pengajuan berhasil dikirim
+                    }
+                    else
+                    {
+                        return 5; // gagal mengirim pengajuan
+                    }
+                }
+                else
+                {
+                    return 6; // tanggal pengajuan cuti tidak logis
+                }
+                
+                
             }
             else
             {
                 // cuti spesial langsung simpan data ke database
-                SubmitForm(leaveRequest);
-                // kirim email
-                SendEmailRequest(employee, leaveRequest);
-                return 5;
+                if (SubmitForm(leaveRequest) == 1) // tanggal pengajuan logis
+                {
+                    // kirim email
+                    if (SendEmailRequest(employee, leaveRequest) == 1)
+                    {
+                        return 4; // pengajuan berhasil dikirim
+                    }
+                    else
+                    {
+                        return 5; // gagal mengirim pengajuan
+                    }
+                }
+                else
+                {
+                    return 6; // tanggal pengajuan cuti tidak logis
+                }
             }
         }
 
@@ -155,20 +181,25 @@ namespace API.Repository.Data
             }
         }
 
-        public void SubmitForm(LeaveVM leaveRequest)
+        public int SubmitForm(LeaveVM leaveRequest)
         {
-            var leaveEmployee = new LeaveEmployee
+            if (leaveRequest.StartDate < leaveRequest.EndDate)
             {
-                Id = myContext.LeaveEmployees.ToList().Count + 1,
-                StartDate = leaveRequest.StartDate,
-                EndDate = leaveRequest.EndDate,
-                Attachment = leaveRequest.Attachment,
-                NIK = leaveRequest.NIK,
-                LeaveId = leaveRequest.LeaveId,
-                Status = 0
-            };
-            myContext.LeaveEmployees.Add(leaveEmployee);
-            myContext.SaveChanges();
+                var leaveEmployee = new LeaveEmployee
+                {
+                    Id = myContext.LeaveEmployees.ToList().Count + 1,
+                    StartDate = leaveRequest.StartDate,
+                    EndDate = leaveRequest.EndDate,
+                    Attachment = leaveRequest.Attachment,
+                    NIK = leaveRequest.NIK,
+                    LeaveId = leaveRequest.LeaveId,
+                    Status = 0
+                };
+                myContext.LeaveEmployees.Add(leaveEmployee);
+                myContext.SaveChanges();
+                return 1;
+            }
+            return 0;
         }
 
         public int SendEmailRequest(Employee employee, LeaveVM leaveRequest)

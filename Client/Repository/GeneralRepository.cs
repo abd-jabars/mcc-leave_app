@@ -32,10 +32,27 @@ namespace Client.Repository
             //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", _contextAccessor.HttpContext.Session.GetString("JWToken"));
         }
 
-        public HttpStatusCode Delete(TEntity entity)
+        //public HttpStatusCode Delete(TEntity entity)
+        //{
+        //    var result = httpClient.DeleteAsync(request).Result;
+        //    return result.StatusCode;
+        //}
+
+        public async Task<HttpResponseMessage> Delete(TEntity entity)
         {
-            var result = httpClient.DeleteAsync(request).Result;
-            return result.StatusCode;
+            //StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            //var result = httpClient.DeleteAsync(address.link + request, content).Result;
+            //return result.StatusCode;
+
+            var content = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(address.link + request),
+                Content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json")
+            };
+            var response = await httpClient.SendAsync(content);
+
+            return response;
         }
 
         public async Task<List<TEntity>> Get()
