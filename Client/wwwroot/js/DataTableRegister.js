@@ -60,19 +60,19 @@
 
 function GetDepartmentManager() {
     $.ajax({
-        url: "https://localhost:44316/API/Departments"
-
+        'url': "https://localhost:44367/Department/GetAll",
+        'dataSrc': ''
     }).done((result) => {
         var departmentOptions = "";
 
-        $.each(result.result, function (key, val) {
+        $.each(result, function (key, val) {
             departmentOptions += `<option value="${val.id}">${val.name}</option>`
         });
         $("#department").html(departmentOptions);
 
         var managerOptions = "";
 
-        $.each(result.result, function (key, val) {
+        $.each(result, function (key, val) {
             managerOptions += `<option value="${val.managerId}">${val.managerId}</option>`
         });
         $("#manager").html(managerOptions);
