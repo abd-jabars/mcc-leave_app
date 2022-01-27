@@ -52,5 +52,18 @@ namespace Client.Repository.Data
             return entities;
         }
 
+        public async Task<RegisterVM> RegisteredData(string NIK)
+        {
+            RegisterVM register = null;
+
+            using (var response = await httpClient.GetAsync(request + "RegisteredData/" + NIK))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                register = JsonConvert.DeserializeObject<RegisterVM>(apiResponse);
+            }
+            return register;
+        }
+
+
     }
 }

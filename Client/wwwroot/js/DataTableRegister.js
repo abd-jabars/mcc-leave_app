@@ -50,7 +50,7 @@
                 'data': null,
                 'width': '150px',
                 'render': function (data, type, row) {
-                    return `<button data-toggle="modal" data-target="#registerNewEmployee" class="btn btn-warning fa fa-pencil" onclick="Update(${row["nik"]})"></button>
+                    return `<button data-toggle="modal" data-target="#registerNewEmployee" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
                             <button data-toggle="modal" data-target="#getEmployeeDetail" class="btn btn-danger fa fa-trash" onclick="Delete(${row["nik"]})"></button>`;
                 }
             }
@@ -82,7 +82,7 @@ function GetDepartmentManager() {
     });
 }
 
-function Insert() {
+function InsertModal() {
     GetDepartmentManager();
     
     $('#password').attr("readonly", false);
@@ -150,6 +150,22 @@ function RegisterEmployee() {
         });
     });
 
+}
+
+function UpdateModal(nik) {
+    GetDepartmentManager();
+    $.ajax({
+        'url': "https://localhost:44367/Employees/RegisteredData/" + nik,
+        'dataSrc': ''
+    }).done((result) => {
+
+        console.log(result);
+
+        //setFormValue(result);
+
+    }).fail((error) => {
+        console.log(error);
+    });
 }
 
 $('#employeeForm').submit(function (e) {

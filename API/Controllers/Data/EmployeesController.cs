@@ -71,11 +71,11 @@ namespace API.Controllers.Data
             {
                 var result = employeeRepository.GetRegisteredData(NIK);
                 if (result == null)
-                    //return NotFound(result);
-                    return Ok(new { status = HttpStatusCode.NoContent, result = result, message = "There is no data" });
+                    return NotFound(result);
+                    //return Ok(new { status = HttpStatusCode.NoContent, result = result, message = "There is no data" });
                 else
-                    //return Ok(result);
-                    return Ok(new { status = HttpStatusCode.OK, result = result, message = "Data found" });
+                            return Ok(result);
+                    //return Ok(new { status = HttpStatusCode.OK, result = result, message = "Data found" });
             }
             catch (Exception ex)
             {
