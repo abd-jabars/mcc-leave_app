@@ -95,6 +95,8 @@ function InsertModal() {
     $('#employeeForm').trigger("reset");
 
     $('#password').attr("readonly", false);
+
+    $("#manager").prop('disabled', false);
         
     var insertTitle = "";
     insertTitle += `<h3 class="mx-auto my-1"> Register an Employee </h3>`;
@@ -284,7 +286,7 @@ function ConfirmDelete(data) {
     }).then((result) => {
 
         if (result.isConfirmed) {
-            var myTable = $('#dataTabelEmployee').DataTable();
+            var myTable = $('#dataTableRegister').DataTable();
 
             var obj = new Object();
             obj.nik = data.nik;
@@ -297,9 +299,10 @@ function ConfirmDelete(data) {
                 data: obj
             }).done((result) => {
 
-                console.log(result);
+                // console.log(result);
+                // console.log(result.result.statusCode);
 
-                if (result === 200) {
+                if (result.result.statusCode === 200) {
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
