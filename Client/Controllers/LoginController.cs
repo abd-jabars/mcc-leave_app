@@ -2,6 +2,7 @@
 using API.ViewModel;
 using Client.Base;
 using Client.Repository.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -38,6 +39,14 @@ namespace Client.Controllers
             HttpContext.Session.SetString("JWToken", token);
 
             return RedirectToAction("index", "SbAdmin");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("index", "Login");
         }
 
     }
