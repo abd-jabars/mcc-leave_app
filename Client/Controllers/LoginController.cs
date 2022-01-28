@@ -49,7 +49,8 @@ namespace Client.Controllers
             var handler = new JwtSecurityTokenHandler();
             var decodedValue = handler.ReadJwtToken(token);
 
-            Console.WriteLine(decodedValue);
+            var nik = decodedValue.Claims.First(c => c.Type == "nik").Value;
+            var name = decodedValue.Claims.First(c => c.Type == "name").Value;
 
             if (code == HttpStatusCode.NotFound)
             {
@@ -68,12 +69,11 @@ namespace Client.Controllers
             }
 
             TempData["code"] = null;
+            TempData["nik"] = nik;
+            TempData["name"] = name;
             HttpContext.Session.SetString("JWToken", token);
-            //HttpContext.Session.SetString("Name", GetNik(token));
             //HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
-
             return RedirectToAction("index", "home");
         }
-
     }
 }
