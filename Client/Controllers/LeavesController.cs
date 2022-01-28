@@ -21,6 +21,10 @@ namespace Client.Controllers
         {
             return View();
         }
+        public IActionResult Request()
+        {
+            return View();
+        }
         public IActionResult Approval()
         {
             return View();

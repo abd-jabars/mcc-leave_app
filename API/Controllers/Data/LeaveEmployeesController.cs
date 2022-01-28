@@ -50,7 +50,7 @@ namespace API.Controllers.Data
         }
 
         [HttpGet("Approval")]
-        public ActionResult GetApprovalList(int id)
+        public ActionResult GetApprovalList()
         {
             try
             {
@@ -59,6 +59,36 @@ namespace API.Controllers.Data
                 //var result = ();
                 var count = leaveEmployeeRepository.GetApprovalList().Count();
                 var result = leaveEmployeeRepository.GetApprovalList();
+
+                if (count > 0)
+                {
+                    code = StatusCodes.Status200OK;
+                    //message = "";
+                }
+                else
+                {
+                    //code = Response.StatusCode;
+                    code = StatusCodes.Status400BadRequest;
+                    message = "Table content is empty";
+                }
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Ok($"{e.Message}");
+            }
+        }
+
+        [HttpGet("History")]
+        public ActionResult getHistoryList()
+        {
+            try
+            {
+                var code = 0;
+                var message = "";
+                //var result = ();
+                var count = leaveEmployeeRepository.GetHistoryList().Count();
+                var result = leaveEmployeeRepository.GetHistoryList();
 
                 if (count > 0)
                 {

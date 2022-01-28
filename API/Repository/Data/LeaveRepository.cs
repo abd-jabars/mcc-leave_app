@@ -36,9 +36,13 @@ namespace API.Repository.Data
                 // periksa jatah cuti
                 if ((account.LeaveQuota + account.PrevLeaveQuota) < 1)
                     return 3; // jatah cuti habis
-                else if ((account.LeaveQuota + account.PrevLeaveQuota) - Convert.ToInt32((leaveRequest.EndDate - leaveRequest.StartDate).TotalDays) < 1)
+                else if (((account.LeaveQuota + account.PrevLeaveQuota) - leaveRequest.totalLeave) < 1)
                 {
                     return 3; // jatah cuti kurang
+                }
+                else if (leaveRequest.totalLeave < 0)
+                {
+                    return 6; // jatah cuti minus
                 }
 
                 // jatah cuti masih ada dan simpan data ke database
@@ -58,11 +62,13 @@ namespace API.Repository.Data
                 {
                     return 6; // tanggal pengajuan cuti tidak logis
                 }
-                
-                
             }
             else
             {
+                if (leave.Period <= leaveRequest.totalLeave)
+                {
+                    return 3; // jatah cuti kurang
+                }
                 // cuti spesial langsung simpan data ke database
                 if (SubmitForm(leaveRequest) == 1) // tanggal pengajuan logis
                 {
@@ -250,6 +256,31 @@ namespace API.Repository.Data
             {
                 return 2;
             }
+        }
+
+        public IEnumerable<object> GetNormalLeave()
+        {
+            var lList = myContext.Leaves;
+
+            var query = from leave in lList
+                        where leave.Type == leaveType.normal
+                        select new
+                        {
+                            leave
+                        };
+            return query;
+        }
+        public IEnumerable<object> GetSpecialLeave()
+        {
+            var lList = myContext.Leaves;
+
+            var query = from leave in lList
+                        where leave.Type == leaveType.special
+                        select new
+                        {
+                            leave
+                        };
+            return query;
         }
     }
 }

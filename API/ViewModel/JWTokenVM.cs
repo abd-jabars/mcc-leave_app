@@ -9,7 +9,9 @@ namespace API.ViewModel
     public class JWTokenVM
     {
         public HttpStatusCode status { get; set; }
-        public string idToken { get; set; }
+
+        public string token { get; set; }
+
         public string message { get; set; }
     }
 }
