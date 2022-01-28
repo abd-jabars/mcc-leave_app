@@ -2,6 +2,7 @@
 using API.ViewModel;
 using Client.Base;
 using Client.Repository.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Client.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin, Manager")]
         public IActionResult DataTable()
         {
             return View();
