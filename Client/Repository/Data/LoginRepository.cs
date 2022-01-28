@@ -16,6 +16,7 @@ namespace Client.Repository.Data
         private readonly Address address;
         private readonly string request;
         private readonly HttpClient httpClient;
+
         public LoginRepository(Address address, string request = "Accounts/") : base(address, request)
         {
             this.address = address;
@@ -38,5 +39,6 @@ namespace Client.Repository.Data
 
             return token;
         }
+
     }
 }
