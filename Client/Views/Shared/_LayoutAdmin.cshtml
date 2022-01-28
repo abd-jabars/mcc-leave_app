@@ -17,9 +17,8 @@
         <div class="main-header">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark2">
-
-                <a href="/" class="logo">
-                    <img src="#" alt="MCC LEAVE" />
+                <a href="/" class="navbar-brand">
+                    <img src="https://99designs-start-assets.imgix.net/images/homepage/pro/studio-fc609f1df7.png?auto=format&ch=Width%2CDPR&w=742&h=524&dpr=1" alt="MCC LEAVE" width="100" height="50" />
                 </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon">
@@ -28,9 +27,9 @@
                 </button>
                 <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
                 <div class="nav-toggle">
-                    <button class="btn btn-toggle toggle-sidebar">
-                        <i class="icon-menu"></i>
-                    </button>
+                    @*<button class="btn btn-toggle toggle-sidebar">
+                            <i class="icon-menu"></i>
+                        </button>*@
                 </div>
             </div>
             <!-- End Logo Header -->
@@ -162,7 +161,7 @@
                         <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                             <span>
                                 <span id="user-name">@TempData["name"]</span>
-                                <span class="user-level" id="user-nik">@TempData["nik"]</span>
+                                <span class="user-level" id="user-nik">@TempData["nik"]@*HttpContext.Session.GetString("nik")*@</span>
                                 <span class="caret"></span>
                             </span>
                         </a>

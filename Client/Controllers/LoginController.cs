@@ -52,19 +52,10 @@ namespace Client.Controllers
             var nik = decodedValue.Claims.First(c => c.Type == "nik").Value;
             var name = decodedValue.Claims.First(c => c.Type == "name").Value;
 
-            if (code == HttpStatusCode.NotFound)
-            {
-                TempData["code"] = code;
-                TempData["msg"] = message;
-            }
-            else if (code == HttpStatusCode.Forbidden)
-            {
-                TempData["code"] = code;
-                TempData["msg"] = message;
-            }
-
             if (token == null)
             {
+                TempData["code"] = code;
+                TempData["msg"] = message;
                 return RedirectToAction("index");
             }
 
@@ -72,6 +63,8 @@ namespace Client.Controllers
             TempData["nik"] = nik;
             TempData["name"] = name;
             HttpContext.Session.SetString("JWToken", token);
+            HttpContext.Session.SetString("nik", nik);
+            HttpContext.Session.SetString("name", name);
             //HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
             return RedirectToAction("index", "home");
         }
