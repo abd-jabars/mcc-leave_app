@@ -40,7 +40,7 @@ namespace Client.Controllers
         {
             var jwtToken = await loginRepository.Auth(login);
             var token = jwtToken.token;
-            var code = jwtToken.code;
+            var code = jwtToken.status;
             var message = jwtToken.message;
 
             Console.WriteLine(code);

@@ -59,15 +59,15 @@ namespace API.Controllers.Data
                     );
                 var idToken = new JwtSecurityTokenHandler().WriteToken(token);
                 claims.Add(new Claim("TokenSecurity", idToken.ToString()));
-                return Ok(new JWTokenVM { status = HttpStatusCode.OK, idToken = idToken, message = "Login succes" });
+                return Ok(new JWTokenVM { status = HttpStatusCode.OK, token = idToken, message = "Login succes" });
             }
             else if (result == 2)
             {
-                return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, idToken = null, message = "Wrong password" });
+                return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, token = null, message = "Wrong password" });
             }
             else
             {
-                return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, idToken = null, message = "Email not registered, maybe u type a wrong email" });
+                return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, token = null, message = "Email not registered, maybe u type a wrong email" });
             }
         }
 
