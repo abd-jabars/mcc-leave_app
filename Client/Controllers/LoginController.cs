@@ -31,7 +31,7 @@ namespace Client.Controllers
                 return View();
             }
 
-            return RedirectToAction("DataTable", "Employees");
+            return RedirectToAction("index", "Home");
         }
 
         public IActionResult ChangePassword()
