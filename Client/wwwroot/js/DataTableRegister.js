@@ -113,7 +113,7 @@ function RegisterEmployee() {
     var password = $('#password').val();
     var birthDate = $('#birthDate').val();
     var gender = $('#gender').val();
-    var department = $('#department').val();
+    var department = $('#departmentSelect').val();
     //var manager = $('#manager').val();
     
     var manager = $('#manager').val();
@@ -207,7 +207,7 @@ function SetFormValue(result) {
     $('#password').attr("readonly", true);
     $("#phone").val(phone);
     $("#gender").val(gender);
-    $("#department").val(departmentId);
+    $("#departmentSelect").val(departmentId,managerId);
     $("#manager").val(managerId);
     $("#manager").prop('disabled', true);
     $("#submitButton").html("Update");
@@ -238,7 +238,7 @@ function UpdateData() {
     let phone = $('#phone').val();
     let birthDate = $('#birthDate').val();
     let gender = $('#gender').val();
-    let department = $('#department').val();
+    let department = $('#departmentSelect').val();
     //let manager = $('#manager').val();
 
     let manager = $('#manager').val();

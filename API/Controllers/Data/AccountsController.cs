@@ -62,6 +62,7 @@ namespace API.Controllers.Data
                             signingCredentials: siginIn
                             );
                         var idToken = new JwtSecurityTokenHandler().WriteToken(token);
+
                         claims.Add(new Claim("TokenSecurity", idToken.ToString()));
                         return Ok(new JWTokenVM { status = HttpStatusCode.OK, token = idToken, message = "Login succes" });
                     }

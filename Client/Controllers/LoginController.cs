@@ -5,10 +5,13 @@ using Client.Repository.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.Controllers
@@ -43,7 +46,10 @@ namespace Client.Controllers
             var code = jwtToken.status;
             var message = jwtToken.message;
 
-            Console.WriteLine(code);
+            var handler = new JwtSecurityTokenHandler();
+            var decodedValue = handler.ReadJwtToken(token);
+
+            Console.WriteLine(decodedValue);
 
             if (code == HttpStatusCode.NotFound)
             {
@@ -63,10 +69,11 @@ namespace Client.Controllers
 
             TempData["code"] = null;
             HttpContext.Session.SetString("JWToken", token);
-            //HttpContext.Session.SetString("Name", jwtHandler.GetName(token));
+            //HttpContext.Session.SetString("Name", GetNik(token));
             //HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
 
             return RedirectToAction("index", "home");
         }
+
     }
 }
