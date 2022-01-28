@@ -40,5 +40,33 @@ namespace Client.Repository.Data
             return token;
         }
 
+        public Object ForgotPassword(ForgotPasswordVM forgotPassword)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(forgotPassword), Encoding.UTF8, "application/json");
+
+
+            Object entity = new Object();
+            using (var response = httpClient.PutAsync(request + "ForgotPassword", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entity = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entity;
+        }
+
+        public Object ChangePassword(ForgotPasswordVM forgotPassword)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(forgotPassword), Encoding.UTF8, "application/json");
+
+
+            Object entity = new Object();
+            using (var response = httpClient.PutAsync(request + "ChangePassword", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entity = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entity;
+        }
+
     }
 }

@@ -24,6 +24,18 @@ namespace Client.Controllers
 
         public IActionResult Index()
         {
+            var token = HttpContext.Session.GetString("JWToken");
+
+            if (token == null)
+            {
+                return View();
+            }
+
+            return RedirectToAction("DataTable", "Employees");
+        }
+
+        public IActionResult ChangePassword()
+        {
             return View();
         }
 
@@ -45,19 +57,10 @@ namespace Client.Controllers
 
             Console.WriteLine(code);
 
-            if (code == HttpStatusCode.NotFound)
-            {
-                TempData["code"] = code;
-                TempData["msg"] = message;
-            }
-            else if (code == HttpStatusCode.Forbidden)
-            {
-                TempData["code"] = code;
-                TempData["msg"] = message;
-            }
-
             if (token == null)
             {
+                TempData["code"] = code;
+                TempData["msg"] = message;
                 return RedirectToAction("index");
             }
 
@@ -68,5 +71,20 @@ namespace Client.Controllers
 
             return RedirectToAction("index", "home");
         }
+
+        [HttpPut]
+        public JsonResult ForgotPassword(ForgotPasswordVM forgotPassword)
+        {
+            var result = repository.ForgotPassword(forgotPassword);
+            return Json(result);
+        }
+
+        [HttpPut]
+        public JsonResult ChangePassword(ForgotPasswordVM forgotPassword)
+        {
+            var result = repository.ChangePassword(forgotPassword);
+            return Json(result);
+        }
+
     }
 }
