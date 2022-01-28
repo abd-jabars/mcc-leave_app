@@ -32,8 +32,8 @@ namespace API.Controllers.Data
         [Route("Login")]
         public ActionResult Login(LoginVM login)
         {
-            var code = 0;
-            var message = "";
+            // var code = 0;
+            string message;
             var result = accountRepository.Login(login);
             switch (result)
             {
@@ -41,6 +41,7 @@ namespace API.Controllers.Data
                     {
                         var getRole = accountRepository.GetRoles(login);
                         var getNik = accountRepository.GetNik(login);
+                        var getName = accountRepository.GetName(login);
 
                         var claims = new List<Claim>
                 {
@@ -51,6 +52,7 @@ namespace API.Controllers.Data
                             claims.Add(new Claim("roles", item.ToString()));
                         };
                         claims.Add(new Claim("nik", getNik));
+                        claims.Add(new Claim("name", getName));
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                         var siginIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
