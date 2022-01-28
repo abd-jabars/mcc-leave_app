@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Client.Repository.Interface
@@ -13,6 +14,6 @@ namespace Client.Repository.Interface
             Task<T> Get(X id);
             HttpStatusCode Post(T entity);
             HttpStatusCode Put(T entity);
-            HttpStatusCode Delete(T entity);
+            Task<HttpResponseMessage> Delete(T entity);
         }
 }

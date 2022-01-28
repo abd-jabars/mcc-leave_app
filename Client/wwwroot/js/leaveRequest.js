@@ -97,9 +97,9 @@
     });
     $('#leaveRequestForm').on('click', '#btn-update', function () {
     });
-    setInterval(function () {
-        table.ajax.reload();
-    }, 3000);
+    //setInterval(function () {
+    //    table.ajax.reload();
+    //}, 3000);
     getLeave();
 });
 
@@ -181,12 +181,19 @@ function getLeave() {
 
 function requestLeave() {
     var years = new Date().getFullYear();
+
     var obj = new Object();
     obj.nik = $("#leaveNIK").val();
     obj.leaveId = $("#leaveSelect").val();
     obj.startDate = $("#startDate").val();
     obj.endDate = $("#endDate").val();
     obj.attachment = $("#attachment").val();
+
+    const diffInMs = new Date(obj.endDate) - new Date(obj.startDate)
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+    console.log("total Leave: " + diffInDays);
+    
+    obj.totalLeave = diffInDays;
 
     console.log(JSON.stringify(obj))
 
@@ -204,10 +211,12 @@ function requestLeave() {
         } else {
             swalIcon = 'error';
             swalTitle = 'Oops...';
+            swalFooter = `<a href=${'/leaves'}/>Ketentuan Cuti</a>`;
         }
         Swal.fire({
             title: swalTitle,
             icon: swalIcon,
+            footer: swalFooter,
             text: result.message
         })
         $('#insertModal').modal('hide');
@@ -221,8 +230,6 @@ function requestLeave() {
         })
     })
 }
-
-
 
 function deleteRequest(data) {
     console.log(data.id);
@@ -271,3 +278,37 @@ $('#insertModal').on('hidden.bs.modal', function (e) {
         .find("input[type=text]")
         .val("");
 })
+
+$(function () {
+    var dateFormat = "mm/dd/yy",
+        from = $("#startDate")
+            .datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 1,
+                beforeShowDay: $.datepicker.noWeekends
+            })
+            .on("change", function () {
+                to.datepicker("option", "minDate", getDate(this));
+            }),
+        to = $("#endDate").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 1,
+            beforeShowDay: $.datepicker.noWeekends
+        })
+            .on("change", function () {
+                from.datepicker("option", "maxDate", getDate(this));
+            });
+
+    function getDate(element) {
+        var date;
+        try {
+            date = $.datepicker.parseDate(dateFormat, element.value);
+        } catch (error) {
+            date = null;
+        }
+
+        return date;
+    }
+});

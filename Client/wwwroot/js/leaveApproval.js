@@ -58,6 +58,9 @@
                 'data': 'nik'
             },
             {
+                'data': 'fullName'
+            },
+            {
                 'bSortable': false,
                 'data': 'startDate'
             },
@@ -66,18 +69,10 @@
                 'data': 'endDate'
             },
             {
-                'data': 'status'
-            },
-            {
-                "data": null,
-                'bSortable': false,
-                "defaultContent": `<button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
-                               `
-            },
-            {
                 "data": null,
                 'bSortable': false,
                 "defaultContent": `
+                                <button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
                                <button class="btn btn-sm btn-outline-success"id="btn-approve"><i class="fas fa-check"></i></button>
                                <button class="btn btn-sm btn-outline-danger" id="btn-decline"><i class="fas fa-ban"></i></button>
                                `
@@ -87,19 +82,22 @@
     $('#leaveTable').on('click', '#btn-decline', function () {
         var data = table.row($(this).closest('tr')).data();
         declineLeave(data);
+        tableReload();
     });
     $('#leaveTable').on('click', '#btn-approve', function () {
         var data = table.row($(this).closest('tr')).data();
         approveLeave(data);
         btnDisable(data);
+        tableReload();
     });
     $('#leaveTable').on('click', '#btn-details', function () {
         var data = table.row($(this).closest('tr')).data();
         detailLeave(data);
     });
-    //setInterval(function () {
-    //    table.ajax.reload();
-    //}, 3000);
+    function tableReload() {
+        console.log("page load");
+        table.ajax.reload();
+    };
 });
 
 function btnDisable(data) {
@@ -128,32 +126,24 @@ function detailLeave(data) {
                         <td>${leaveDetails[i].fullName}</td>
                    </tr>
                     <tr>
-                        <td>Phone : </td>
-                        <td>${leaveDetails[i].phone}</td>
-                   </tr>
-                    <tr>
-                        <td>Email : </td>
-                        <td>${leaveDetails[i].email}</td>
+                        <td>Department : </td>
+                        <td>${leaveDetails[i].id}</td>
                    </tr>
                     <tr>
                         <td>Leave Type : </td>
                         <td>${leaveDetails[i].type}</td>
                    </tr>
                     <tr>
+                        <td>Date : </td>
+                        <td>${leaveDetails[i].startDate} - ${leaveDetails[i].endDate}</td>
+                   </tr>
+                    <tr>
                         <td>Total Leave : </td>
                         <td>${leaveDetails[i].totalLeave} Days</td>
                    </tr>
                     <tr>
-                        <td>Date : </td>
-                        <td>${leaveDetails[i].startDate} to ${leaveDetails[i].endDate}</td>
-                   </tr>
-                    <tr>
                         <td>Attachment : </td>
                         <td>${leaveDetails[i].attachment}</td>
-                   </tr>
-                    <tr>
-                        <td>Status : </td>
-                        <td>${leaveDetails[i].status}</td>
                    </tr>`
         }
         $("#infoTable").html(text)

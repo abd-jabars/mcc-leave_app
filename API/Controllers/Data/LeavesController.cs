@@ -29,7 +29,6 @@ namespace API.Controllers.Data
             if (result == 1)
             {
                 return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Data employee tidak ditemukan" });
-
             }
             else if (result == 2)
             {
@@ -37,15 +36,19 @@ namespace API.Controllers.Data
             }
             else if (result == 3)
             {
-                return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Jatah cuti sudah habis" });
+                return Ok(new { status = HttpStatusCode.NotFound, result = result, message = "Jatah cuti kurang" });
             }
             else if (result == 4)
             {
                 return Ok(new { status = HttpStatusCode.OK, result = result, message = "Pengajuan cuti telah dikirim" });
             }
-            else
+            else if (result == 5)
             {
                 return Ok(new { status = HttpStatusCode.UnprocessableEntity, result = result, message = "Gagal mengirim pengajuan" });
+            }
+            else 
+            {
+                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Tanggal cuti yang diinputkan salah" });
             }
         }
 
@@ -90,6 +93,22 @@ namespace API.Controllers.Data
             {
                 return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Error" });
             }
+        }
+
+        [HttpGet]
+        [Route("normal")]
+        public ActionResult getNormalLeave()
+        {
+            var result = leaveRepository.GetNormalLeave();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("special")]
+        public ActionResult getSpecialeave()
+        {
+            var result = leaveRepository.GetSpecialLeave();
+            return Ok(result);
         }
     }
 }

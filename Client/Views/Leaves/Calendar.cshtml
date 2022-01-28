@@ -5,19 +5,23 @@
 
 <div class="card">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
+
         <li class="nav-item">
             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Holiday</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Leave</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile1-tab" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1" aria-selected="false">Calendar</a>
+        </li>
     </ul>
     <div class="card-body">
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="table-responsive">
-                    <h1 class="text-xl-center">Holiday Calendar</h1>
-                    <table id="holidayTable" class="display table table-striped dataTable text-light">
+                    <h1 class="text-xl-center">Holiday Table</h1>
+                    <table id="holidayTable" class="display table table-striped dataTable">
                         <tbody class="text-center">
                         </tbody>
                     </table>
@@ -25,8 +29,17 @@
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="table-responsive">
-                    <h1 class="text-xl-center">Leave Calendar</h1>
-                    <table id="leaveTable" class="display table table-striped dataTable text-light">
+                    <h1 class="text-xl-center">Leave Table</h1>
+                    <table id="leaveTable" class="display table table-striped dataTable">
+                        <tbody class="text-center">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile1" role="tabpanel" aria-labelledby="profile1-tab">
+                <div class="table-responsive">
+                    <h1 class="text-xl-center">Day Table</h1>
+                    <table id="calendarTable" class="display table table-striped dataTable">
                         <tbody class="text-center">
                         </tbody>
                     </table>
@@ -36,6 +49,7 @@
     </div>
 </div>
 
+<button class="btn btn-primary btn-add ml-3 mb-2" onclick="totalDays()"<i class="fas fa-plus"></i><i> </i>Total Days</button>
 
 
 @section Scripts {

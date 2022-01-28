@@ -49,5 +49,12 @@ namespace Client.Controllers
             return Json(result);
         }
 
+        [HttpPut]
+        public JsonResult UpdateRegisteredData(RegisterVM register)
+        {
+            var result = repository.UpdateRegisteredData(register);
+            return Json(result);
+        }
+
     }
 }

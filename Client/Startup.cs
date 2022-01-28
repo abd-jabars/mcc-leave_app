@@ -29,8 +29,13 @@ namespace Client
             services.AddControllersWithViews();
             services.AddScoped<Address>();
             services.AddScoped<EmployeeRepository>();
+            services.AddScoped<LeaveRepository>();
+            services.AddScoped<LoginRepository>();
             services.AddScoped<DepartmentRepository>();
             services.AddMvc().AddNewtonsoftJson();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

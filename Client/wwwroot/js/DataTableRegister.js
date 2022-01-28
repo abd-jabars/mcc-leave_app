@@ -1,7 +1,8 @@
 ﻿$(document).ready(function () {
-    $('#dataTableRegister').DataTable({
+    var table = $('#dataTableRegister').DataTable({
+        'scrollX': true,
         'ajax': {
-            'url': "https://localhost:44367/Employees/RegisteredData",
+            'url': "/Employees/RegisteredData",
             'dataSrc': 'result'
         },
         'columns': [
@@ -51,36 +52,42 @@
                 'width': '150px',
                 'render': function (data, type, row) {
                     return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
-                            <button data-toggle="modal" class="btn btn-danger fa fa-trash" onclick="Delete(${row["nik"]})"></button>`;
+                            <button data-toggle="modal" id="btn-delete" class="btn btn-danger fa fa-trash"></button>`;
                 }
             }
         ]
     });
+    $('#dataTableRegister').on('click', '#btn-delete', function () {
+        var data = table.row($(this).closest('tr')).data();
+        console.log(data);
+        ConfirmDelete(data);
+    });
 });
 
-function GetDepartmentManager() {
-    $.ajax({
-        'url': "https://localhost:44367/Department/GetAll",
-        'dataSrc': ''
-    }).done((result) => {
-        var departmentOptions = "";
+//function GetDepartmentManager() {
+//    $.ajax({
+//        'url': "https://localhost:44367/Department/GetAll",
+//        'dataSrc': ''
+//    }).done((result) => {
+//        console.log(result);
 
-        $.each(result, function (key, val) {
-            departmentOptions += `<option value="${val.id}">${val.name}</option>`
-        });
-        $("#department").html(departmentOptions);
+//        var departmentOptions = "";
+//        var managerOptions = "";
+//        managerOptions += `<option value="null">Tidak Ada</option>`
 
-        var managerOptions = "";
+//        $.each(result, function (key, val) {
+//            departmentOptions += `<option value="${val.id}">${val.name}</option>`
+//            if (val.manager != null && val.id == val.manager.departmentId) {
+//                managerOptions += `<option value="${result[key].manager.nik}">${result[key].manager.firstName} ${result[key].manager.lastName}</option>`
+//            }
+//        });
+//        $("#department").html(departmentOptions);
+//        $("#manager").html(managerOptions);
 
-        $.each(result, function (key, val) {
-            managerOptions += `<option value="${val.managerId}">${val.managerId}</option>`
-        });
-        $("#manager").html(managerOptions);
-
-    }).fail((error) => {
-        console.log(error);
-    });
-}
+//    }).fail((error) => {
+//        console.log(error);
+//    });
+//}
 
 function InsertModal() {
     GetDepartmentManager();
@@ -106,7 +113,12 @@ function RegisterEmployee() {
     var birthDate = $('#birthDate').val();
     var gender = $('#gender').val();
     var department = $('#department').val();
+    //var manager = $('#manager').val();
+    
     var manager = $('#manager').val();
+    if (manager == "null") {
+        manager = null;
+    }
 
     var register = Object();
     register.FirstName = firstName;
@@ -116,8 +128,8 @@ function RegisterEmployee() {
     register.Password = password;
     register.BirthDate = birthDate;
     register.Gender = gender;
-    register.Department = department;
-    register.Manager = manager;
+    register.DepartmentId = department;
+    register.ManagerId = manager;
 
     console.log(register);
 
@@ -149,13 +161,28 @@ function RegisterEmployee() {
             text: "Hmmm....",
         });
     });
+}
 
+function getDepartment() {
+    $.ajax({
+        url: 'https://localhost:44367/Department/GetAll'
+    }).done((data) => {
+        var departmentSelect = `<option value="" >Select Department</option>`;
+        $.each(data, function (key, val) {
+            departmentSelect += `<option value='${val.id}' manager-id='${val.managerId}'>${val.name}</option>`
+        });
+        $("#departmentSelect").html(departmentSelect);
+    }).fail((error) => {
+        console.log(error)
+    })
 }
 
 function SetFormValue(result) {
     var updateTitle = "";
     updateTitle += `<h3 class="mx-auto my-1"> Update data: ${result.nik} - ${result.firstName} ${result.lastName} </h3>`;
     $("#employeeModal .modal-header").html(updateTitle);
+
+    getDepartment();
 
     const splitBirthDate = result.birthDate.split("T");
 
@@ -168,6 +195,8 @@ function SetFormValue(result) {
     let gender = result.gender;
     let departmentId = result.departmentId;
     let managerId = result.managerId;
+
+    console.log(result);
     
     $("#nik").val(nik);
     $("#firstName").val(firstName);
@@ -179,23 +208,136 @@ function SetFormValue(result) {
     $("#gender").val(gender);
     $("#department").val(departmentId);
     $("#manager").val(managerId);
+    $("#manager").prop('disabled', true);
     $("#submitButton").html("Update");
 }
 
+document.querySelector('#departmentSelect').onchange = function () {
+    $("#manager").val(this.selectedOptions[0].getAttribute('manager-id'));
+};
+
 function UpdateModal(nik) {
-    GetDepartmentManager();
     $.ajax({
         'url': "https://localhost:44367/Employees/RegisteredData/" + nik,
         'dataSrc': ''
     }).done((result) => {
-
-        console.log(result);
-
+        // console.log(result);
         SetFormValue(result);
-
     }).fail((error) => {
         console.log(error);
     });
+}
+
+function UpdateData() {
+    let nik = $('#nik').val();
+    let firstName = $('#firstName').val();
+    let lastName = $('#lastName').val();
+    let email = $('#email').val();
+    //let password = $('#password').attr("readonly", true);
+    let phone = $('#phone').val();
+    let birthDate = $('#birthDate').val();
+    let gender = $('#gender').val();
+    let department = $('#department').val();
+    //let manager = $('#manager').val();
+
+    let manager = $('#manager').val();
+
+    if (manager == "null") {
+        manager = null;
+    }
+
+    let registeredData = Object();
+    registeredData.NIK = $("#nik").val();
+    registeredData.FirstName = firstName;
+    registeredData.LastName = lastName;
+    registeredData.Gender = gender;
+    registeredData.BirthDate = birthDate;
+    registeredData.Phone = phone;
+    registeredData.Email = email;
+    registeredData.DepartmentId = department;
+    registeredData.ManagerId = manager;
+    //registeredData.Password = password;
+
+    var myTable = $('#dataTableRegister').DataTable();
+    $.ajax({
+        url: "https://localhost:44367/Employees/UpdateRegisteredData",
+        type: "PUT",
+        data: registeredData
+    }).done((result) => {
+        // console.log(result);
+        myTable.ajax.reload();
+        var swalIcon;
+        if (result.status == 200) {
+            swalIcon = 'success';
+            swalTitle = 'Success';
+        } else {
+            swalIcon = 'error'
+            swalTitle = 'Oops!'
+        }
+        Swal.fire({
+            icon: swalIcon,
+            title: swalTitle,
+            text: result.message,
+        });
+    }).fail((error) => {
+        console.log(error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Something went wrong',
+            text: error.message,
+        });
+    });
+}
+
+function ConfirmDelete(data) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            var myTable = $('#dataTabelEmployee').DataTable();
+
+            var obj = new Object();
+            obj.nik = data.nik;
+
+            console.log(obj);
+
+            $.ajax({
+                url: "/Employees/Delete",
+                type: "DELETE",
+                data: obj
+            }).done((result) => {
+
+                console.log(result);
+
+                if (result === 200) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                } else {
+                    Swal.fire(
+                        'Something went wrong',
+                        'Hmmmm',
+                        'error'
+                    )
+                }
+
+                myTable.ajax.reload();
+
+            }).fail((error) => {
+                console.log(error);
+            });
+
+        }
+    })
 }
 
 $('#employeeForm').submit(function (e) {

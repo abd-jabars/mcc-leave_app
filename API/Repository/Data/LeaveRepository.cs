@@ -36,24 +36,56 @@ namespace API.Repository.Data
                 // periksa jatah cuti
                 if ((account.LeaveQuota + account.PrevLeaveQuota) < 1)
                     return 3; // jatah cuti habis
-                else if ((account.LeaveQuota + account.PrevLeaveQuota) - Convert.ToInt32((leaveRequest.EndDate - leaveRequest.StartDate).TotalDays) < 1)
+                else if (((account.LeaveQuota + account.PrevLeaveQuota) - leaveRequest.totalLeave) < 1)
                 {
                     return 3; // jatah cuti kurang
                 }
+                else if (leaveRequest.totalLeave < 0)
+                {
+                    return 6; // jatah cuti minus
+                }
 
                 // jatah cuti masih ada dan simpan data ke database
-                SubmitForm(leaveRequest);
-                // kirim email
-                SendEmailRequest(employee, leaveRequest);
-                return 4;
+                if (SubmitForm(leaveRequest) == 1) // tanggal pengajuan logis
+                {
+                    // kirim email
+                    if (SendEmailRequest(employee, leaveRequest) == 1)
+                    {
+                        return 4; // pengajuan berhasil dikirim
+                    }
+                    else
+                    {
+                        return 5; // gagal mengirim pengajuan
+                    }
+                }
+                else
+                {
+                    return 6; // tanggal pengajuan cuti tidak logis
+                }
             }
             else
             {
+                if (leave.Period <= leaveRequest.totalLeave)
+                {
+                    return 3; // jatah cuti kurang
+                }
                 // cuti spesial langsung simpan data ke database
-                SubmitForm(leaveRequest);
-                // kirim email
-                SendEmailRequest(employee, leaveRequest);
-                return 5;
+                if (SubmitForm(leaveRequest) == 1) // tanggal pengajuan logis
+                {
+                    // kirim email
+                    if (SendEmailRequest(employee, leaveRequest) == 1)
+                    {
+                        return 4; // pengajuan berhasil dikirim
+                    }
+                    else
+                    {
+                        return 5; // gagal mengirim pengajuan
+                    }
+                }
+                else
+                {
+                    return 6; // tanggal pengajuan cuti tidak logis
+                }
             }
         }
 
@@ -155,20 +187,25 @@ namespace API.Repository.Data
             }
         }
 
-        public void SubmitForm(LeaveVM leaveRequest)
+        public int SubmitForm(LeaveVM leaveRequest)
         {
-            var leaveEmployee = new LeaveEmployee
+            if (leaveRequest.StartDate < leaveRequest.EndDate)
             {
-                Id = myContext.LeaveEmployees.ToList().Count + 1,
-                StartDate = leaveRequest.StartDate,
-                EndDate = leaveRequest.EndDate,
-                Attachment = leaveRequest.Attachment,
-                NIK = leaveRequest.NIK,
-                LeaveId = leaveRequest.LeaveId,
-                Status = 0
-            };
-            myContext.LeaveEmployees.Add(leaveEmployee);
-            myContext.SaveChanges();
+                var leaveEmployee = new LeaveEmployee
+                {
+                    Id = myContext.LeaveEmployees.ToList().Count + 1,
+                    StartDate = leaveRequest.StartDate,
+                    EndDate = leaveRequest.EndDate,
+                    Attachment = leaveRequest.Attachment,
+                    NIK = leaveRequest.NIK,
+                    LeaveId = leaveRequest.LeaveId,
+                    Status = 0
+                };
+                myContext.LeaveEmployees.Add(leaveEmployee);
+                myContext.SaveChanges();
+                return 1;
+            }
+            return 0;
         }
 
         public int SendEmailRequest(Employee employee, LeaveVM leaveRequest)
@@ -219,6 +256,31 @@ namespace API.Repository.Data
             {
                 return 2;
             }
+        }
+
+        public IEnumerable<object> GetNormalLeave()
+        {
+            var lList = myContext.Leaves;
+
+            var query = from leave in lList
+                        where leave.Type == leaveType.normal
+                        select new
+                        {
+                            leave
+                        };
+            return query;
+        }
+        public IEnumerable<object> GetSpecialLeave()
+        {
+            var lList = myContext.Leaves;
+
+            var query = from leave in lList
+                        where leave.Type == leaveType.special
+                        select new
+                        {
+                            leave
+                        };
+            return query;
         }
     }
 }
