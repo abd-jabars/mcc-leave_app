@@ -32,42 +32,54 @@ namespace API.Controllers.Data
         [Route("Login")]
         public ActionResult Login(LoginVM login)
         {
+            var code = 0;
+            var message = "";
             var result = accountRepository.Login(login);
-            if (result == 1)
+            switch (result)
             {
-                var getRole = accountRepository.GetRoles(login);
-                var getNik = accountRepository.GetNik(login);
+                case 1:
+                    {
+                        var getRole = accountRepository.GetRoles(login);
+                        var getNik = accountRepository.GetNik(login);
 
-                var claims = new List<Claim>
+                        var claims = new List<Claim>
                 {
                     new Claim("Email", login.Email)
                 };
-                foreach (var item in getRole)
-                {
-                    claims.Add(new Claim("roles", item.ToString()));
-                };
-                claims.Add(new Claim("nik", getNik));
+                        foreach (var item in getRole)
+                        {
+                            claims.Add(new Claim("roles", item.ToString()));
+                        };
+                        claims.Add(new Claim("nik", getNik));
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                var siginIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var token = new JwtSecurityToken(
-                    _configuration["Jwt:Issuer"],
-                    _configuration["Jwt:Audience"],
-                    claims,
-                    expires: DateTime.UtcNow.AddMinutes(10),
-                    signingCredentials: siginIn
-                    );
-                var idToken = new JwtSecurityTokenHandler().WriteToken(token);
-                claims.Add(new Claim("TokenSecurity", idToken.ToString()));
-                return Ok(new JWTokenVM { status = HttpStatusCode.OK, token = idToken, message = "Login succes" });
-            }
-            else if (result == 2)
-            {
-                return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, token = null, message = "Wrong password" });
-            }
-            else
-            {
-                return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, token = null, message = "Email not registered, maybe u type a wrong email" });
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                        var siginIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                        var token = new JwtSecurityToken(
+                            _configuration["Jwt:Issuer"],
+                            _configuration["Jwt:Audience"],
+                            claims,
+                            expires: DateTime.UtcNow.AddMinutes(10),
+                            signingCredentials: siginIn
+                            );
+                        var idToken = new JwtSecurityTokenHandler().WriteToken(token);
+                        claims.Add(new Claim("TokenSecurity", idToken.ToString()));
+                        return Ok(new JWTokenVM { status = HttpStatusCode.OK, token = idToken, message = "Login succes" });
+                    }
+                case 2:
+                    {
+                        message = $"Wrong Password";
+                        return Ok(new JWTokenVM { status = HttpStatusCode.Forbidden, token = null, message = message });
+                    }
+                case 3:
+                    {
+                        message = $"Email not found";
+                        return Ok(new JWTokenVM { status = HttpStatusCode.NotFound, token = null, message = message });
+                    }
+                default:
+                    {
+                        message = $"Login Failed";
+                        return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, token = null, message = message });
+                    }
             }
         }
 
