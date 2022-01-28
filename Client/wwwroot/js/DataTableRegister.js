@@ -2,7 +2,7 @@
     var table = $('#dataTableRegister').DataTable({
         'scrollX': true,
         'ajax': {
-            'url': "https://localhost:44367/Employees/RegisteredData",
+            'url': "/Employees/RegisteredData",
             'dataSrc': 'result'
         },
         'columns': [
@@ -66,7 +66,7 @@
 
 function GetDepartmentManager() {
     $.ajax({
-        'url': "https://localhost:44367/Department/GetAll",
+        'url': "/Department/GetAll",
         'dataSrc': ''
     }).done((result) => {
         // console.log(result);
@@ -137,7 +137,7 @@ function RegisterEmployee() {
 
     var myTable = $('#dataTableRegister').DataTable();
     $.ajax({
-        url: "https://localhost:44367/Employees/Register",
+        url: "/Employees/Register",
         type: "POST",
         data: register
     }).done((result) => {
@@ -245,7 +245,7 @@ function UpdateData() {
 
     var myTable = $('#dataTableRegister').DataTable();
     $.ajax({
-        url: "https://localhost:44367/Employees/UpdateRegisteredData",
+        url: "/Employees/UpdateRegisteredData",
         type: "PUT",
         data: registeredData
     }).done((result) => {
