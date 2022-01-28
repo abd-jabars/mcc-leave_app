@@ -58,7 +58,7 @@
                 'data': 'nik'
             },
             {
-                'data': 'deptId'
+                'data': 'fullName'
             },
             {
                 'bSortable': false,
@@ -71,13 +71,8 @@
             {
                 "data": null,
                 'bSortable': false,
-                "defaultContent": `<button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
-                               `
-            },
-            {
-                "data": null,
-                'bSortable': false,
                 "defaultContent": `
+                                <button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
                                <button class="btn btn-sm btn-outline-success"id="btn-approve"><i class="fas fa-check"></i></button>
                                <button class="btn btn-sm btn-outline-danger" id="btn-decline"><i class="fas fa-ban"></i></button>
                                `

@@ -34,6 +34,7 @@ namespace Client
             services.AddScoped<Address>();
             services.AddScoped<EmployeeRepository>();
             services.AddScoped<LeaveRepository>();
+            services.AddScoped<LoginRepository>();
             services.AddScoped<DepartmentRepository>();
             services.AddScoped<LoginRepository>();
             services.AddMvc().AddNewtonsoftJson();

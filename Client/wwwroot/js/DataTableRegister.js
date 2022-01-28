@@ -64,6 +64,7 @@
     });
 });
 
+
 function GetDepartmentManager() {
     $.ajax({
         'url': "/Department/GetAll",
@@ -88,6 +89,32 @@ function GetDepartmentManager() {
         console.log(error);
     });
 }
+
+//function GetDepartmentManager() {
+//    $.ajax({
+//        'url': "https://localhost:44367/Department/GetAll",
+//        'dataSrc': ''
+//    }).done((result) => {
+//        console.log(result);
+
+//        var departmentOptions = "";
+//        var managerOptions = "";
+//        managerOptions += `<option value="null">Tidak Ada</option>`
+
+//        $.each(result, function (key, val) {
+//            departmentOptions += `<option value="${val.id}">${val.name}</option>`
+//            if (val.manager != null && val.id == val.manager.departmentId) {
+//                managerOptions += `<option value="${result[key].manager.nik}">${result[key].manager.firstName} ${result[key].manager.lastName}</option>`
+//            }
+//        });
+//        $("#department").html(departmentOptions);
+//        $("#manager").html(managerOptions);
+
+//    }).fail((error) => {
+//        console.log(error);
+//    });
+//}
+
 
 function InsertModal() {
     GetDepartmentManager();
@@ -163,13 +190,28 @@ function RegisterEmployee() {
             text: "Hmmm....",
         });
     });
+}
 
+function getDepartment() {
+    $.ajax({
+        url: 'https://localhost:44367/Department/GetAll'
+    }).done((data) => {
+        var departmentSelect = `<option value="" >Select Department</option>`;
+        $.each(data, function (key, val) {
+            departmentSelect += `<option value='${val.id}' manager-id='${val.managerId}'>${val.name}</option>`
+        });
+        $("#departmentSelect").html(departmentSelect);
+    }).fail((error) => {
+        console.log(error)
+    })
 }
 
 function SetFormValue(result) {
     var updateTitle = "";
     updateTitle += `<h3 class="mx-auto my-1"> Update data: ${result.nik} - ${result.firstName} ${result.lastName} </h3>`;
     $("#employeeModal .modal-header").html(updateTitle);
+
+    getDepartment();
 
     const splitBirthDate = result.birthDate.split("T");
 
@@ -182,6 +224,8 @@ function SetFormValue(result) {
     let gender = result.gender;
     let departmentId = result.departmentId;
     let managerId = result.managerId;
+
+    console.log(result);
     
     $("#nik").val(nik);
     $("#firstName").val(firstName);
@@ -197,17 +241,17 @@ function SetFormValue(result) {
     $("#submitButton").html("Update");
 }
 
+document.querySelector('#departmentSelect').onchange = function () {
+    $("#manager").val(this.selectedOptions[0].getAttribute('manager-id'));
+};
+
 function UpdateModal(nik) {
-    GetDepartmentManager();
     $.ajax({
         'url': "https://localhost:44367/Employees/RegisteredData/" + nik,
         'dataSrc': ''
     }).done((result) => {
-
         // console.log(result);
-
         SetFormValue(result);
-
     }).fail((error) => {
         console.log(error);
     });

@@ -10,6 +10,8 @@ namespace API.ViewModel
     {
         public HttpStatusCode status { get; set; }
         public string idToken { get; set; }
+        public HttpStatusCode code { get; set; }
+        public string token { get; set; }
         public string message { get; set; }
     }
 }
