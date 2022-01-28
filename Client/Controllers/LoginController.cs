@@ -27,6 +27,14 @@ namespace Client.Controllers
             return View();
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("index", "Login");
+        }
+
         [HttpPost("Login/Auth/")]
         public async Task<IActionResult> Auth(LoginVM login)
         {

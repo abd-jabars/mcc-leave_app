@@ -52,7 +52,7 @@
                 'width': '150px',
                 'render': function (data, type, row) {
                     return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
-                            <button data-toggle="modal" id="btn-delete" class="btn btn-danger fa fa-trash"></button>`;
+                            <button id="btn-delete" class="btn btn-danger fa fa-trash"></button>`;
                 }
             }
         ]
@@ -63,7 +63,6 @@
         ConfirmDelete(data);
     });
 });
-
 //function GetDepartmentManager() {
 //    $.ajax({
 //        'url': "https://localhost:44367/Department/GetAll",
@@ -92,9 +91,11 @@
 function InsertModal() {
     GetDepartmentManager();
     
+    $('#employeeForm').trigger("reset");
+
     $('#password').attr("readonly", false);
 
-    $('#employeeForm').trigger("reset");
+    $("#manager").prop('disabled', false);
         
     var insertTitle = "";
     insertTitle += `<h3 class="mx-auto my-1"> Register an Employee </h3>`;
@@ -135,7 +136,7 @@ function RegisterEmployee() {
 
     var myTable = $('#dataTableRegister').DataTable();
     $.ajax({
-        url: "https://localhost:44367/Employees/Register",
+        url: "/Employees/Register",
         type: "POST",
         data: register
     }).done((result) => {
@@ -260,7 +261,7 @@ function UpdateData() {
 
     var myTable = $('#dataTableRegister').DataTable();
     $.ajax({
-        url: "https://localhost:44367/Employees/UpdateRegisteredData",
+        url: "/Employees/UpdateRegisteredData",
         type: "PUT",
         data: registeredData
     }).done((result) => {
@@ -301,7 +302,7 @@ function ConfirmDelete(data) {
     }).then((result) => {
 
         if (result.isConfirmed) {
-            var myTable = $('#dataTabelEmployee').DataTable();
+            var myTable = $('#dataTableRegister').DataTable();
 
             var obj = new Object();
             obj.nik = data.nik;
@@ -314,9 +315,10 @@ function ConfirmDelete(data) {
                 data: obj
             }).done((result) => {
 
-                console.log(result);
+                // console.log(result);
+                // console.log(result.result.statusCode);
 
-                if (result === 200) {
+                if (result.result.statusCode === 200) {
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',

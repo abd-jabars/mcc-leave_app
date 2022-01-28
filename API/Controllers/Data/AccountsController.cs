@@ -36,6 +36,7 @@ namespace API.Controllers.Data
             if (result == 1)
             {
                 var getRole = accountRepository.GetRoles(login);
+                var getNik = accountRepository.GetNik(login);
 
                 var claims = new List<Claim>
                 {
@@ -45,6 +46,7 @@ namespace API.Controllers.Data
                 {
                     claims.Add(new Claim("roles", item.ToString()));
                 };
+                claims.Add(new Claim("nik", getNik));
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var siginIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -57,21 +59,15 @@ namespace API.Controllers.Data
                     );
                 var idToken = new JwtSecurityTokenHandler().WriteToken(token);
                 claims.Add(new Claim("TokenSecurity", idToken.ToString()));
-                //return Ok(new JWToken(HttpStatusCode.OK, idToken, "Login succes"));
-                return Ok(new { status = HttpStatusCode.OK, result = result, idToken = idToken, message = "Login succes" });
-                //return Ok(result);
+                return Ok(new JWTokenVM { status = HttpStatusCode.OK, idToken = idToken, message = "Login succes" });
             }
             else if (result == 2)
             {
-                //return Ok(new JWToken(HttpStatusCode.BadRequest, null, "Wrong password"));
-                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Wrong password" });
-                //return Ok("Wrong password");
+                return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, idToken = null, message = "Wrong password" });
             }
             else
             {
-                //return Ok(new JWToken(HttpStatusCode.BadRequest, null, "Email not registered, maybe u type a wrong email"));
-                return Ok(new { status = HttpStatusCode.BadRequest, result = result, message = "Email not registered, maybe u type a wrong email" });
-                //return Ok("Email not registered, maybe u type a wrong email");
+                return Ok(new JWTokenVM { status = HttpStatusCode.BadRequest, idToken = null, message = "Email not registered, maybe u type a wrong email" });
             }
         }
 
