@@ -5,11 +5,13 @@ using Client.Repository.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.Controllers
@@ -70,7 +72,7 @@ namespace Client.Controllers
             
             HttpContext.Session.SetString("JWToken", token);
             HttpContext.Session.SetString("userNik", nik);
-            
+
             return RedirectToAction("index", "home");
         }
 

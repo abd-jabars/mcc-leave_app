@@ -20,9 +20,8 @@
         <div class="main-header">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark2">
-
-                <a href="/" class="logo">
-                    <img src="#" alt="MCC LEAVE" />
+                <a href="/" class="navbar-brand">
+                    <img src="https://99designs-start-assets.imgix.net/images/homepage/pro/studio-fc609f1df7.png?auto=format&ch=Width%2CDPR&w=742&h=524&dpr=1" alt="MCC LEAVE" width="100" height="50" />
                 </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon">
@@ -31,9 +30,9 @@
                 </button>
                 <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
                 <div class="nav-toggle">
-                    <button class="btn btn-toggle toggle-sidebar">
-                        <i class="icon-menu"></i>
-                    </button>
+                    @*<button class="btn btn-toggle toggle-sidebar">
+                            <i class="icon-menu"></i>
+                        </button>*@
                 </div>
             </div>
             <!-- End Logo Header -->
@@ -141,8 +140,10 @@
                     <div class="info">
                         <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                             <span>
+
                                 <span id="userName"></span>
                                 <span class="user-level" id="userRole">Administrator</span>
+
                                 <span class="caret"></span>
                             </span>
                         </a>
@@ -233,7 +234,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a data-toggle="collapse" href="#leaves/request">
+                        <a data-toggle="collapse" href="#leave">
                             <i class="fas fa-layer-group"></i>
                             <p>Leave</p>
                             <span class="caret"></span>
@@ -241,7 +242,7 @@
                         <div class="collapse" id="leave">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="/leaves/index">
+                                    <a href="/leaves/request">
                                         <span class="sub-item">Leave Request</span>
                                     </a>
                                 </li>

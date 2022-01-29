@@ -41,6 +41,7 @@ namespace API.Controllers.Data
                     {
                         var getRole = accountRepository.GetRoles(login);
                         var getNik = accountRepository.GetNik(login);
+                        var getName = accountRepository.GetName(login);
 
                         var claims = new List<Claim>
                 {
@@ -51,6 +52,7 @@ namespace API.Controllers.Data
                             claims.Add(new Claim("roles", item.ToString()));
                         };
                         claims.Add(new Claim("nik", getNik));
+                        claims.Add(new Claim("name", getName));
 
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                         var siginIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -62,6 +64,7 @@ namespace API.Controllers.Data
                             signingCredentials: siginIn
                             );
                         var idToken = new JwtSecurityTokenHandler().WriteToken(token);
+
                         claims.Add(new Claim("TokenSecurity", idToken.ToString()));
                         return Ok(new JWTokenVM { status = HttpStatusCode.OK, token = idToken, message = "Login succes" });
                     }

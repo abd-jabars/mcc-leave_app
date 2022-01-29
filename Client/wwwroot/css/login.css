@@ -182,8 +182,8 @@ input {
 
 .overlay {
     background: #24A19C;
-    background: -webkit-linear-gradient(to right, #24A19C, #4e73df);
-    background: linear-gradient(to right, #325288, #4e73df);
+    background: -webkit-linear-gradient(to right, #24A19C, #1a2035);
+    background: linear-gradient(to right, #325288, #1a2035);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -246,3 +246,7 @@ input {
         height: 40px;
         width: 40px;
     }
+
+.logo{
+    height: 25%;
+}
