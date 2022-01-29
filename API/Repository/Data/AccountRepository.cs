@@ -33,7 +33,7 @@ namespace API.Repository.Data
             }
             else
             {
-                return 0; // wrong email
+                return 3; // wrong email
             }
         }
 

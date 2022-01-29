@@ -89,13 +89,13 @@
 //}
 
 function InsertModal() {
-    GetDepartmentManager();
+    getDepartment();
     
     $('#employeeForm').trigger("reset");
 
     $('#password').attr("readonly", false);
 
-    $("#manager").prop('disabled', false);
+    $("#manager").attr('readonly', true);
         
     var insertTitle = "";
     insertTitle += `<h3 class="mx-auto my-1"> Register an Employee </h3>`;
@@ -166,7 +166,7 @@ function RegisterEmployee() {
 
 function getDepartment() {
     $.ajax({
-        url: 'https://localhost:44367/Department/GetAll'
+        url: '/Department/GetAll'
     }).done((data) => {
         var departmentSelect = `<option value="" >Select Department</option>`;
         $.each(data, function (key, val) {
@@ -219,7 +219,7 @@ document.querySelector('#departmentSelect').onchange = function () {
 
 function UpdateModal(nik) {
     $.ajax({
-        'url': "https://localhost:44367/Employees/RegisteredData/" + nik,
+        'url': "/Employees/RegisteredData/" + nik,
         'dataSrc': ''
     }).done((result) => {
         // console.log(result);

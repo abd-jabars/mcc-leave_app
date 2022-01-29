@@ -1,16 +1,53 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$.ajax({
+    url: "/Employees/GetUserData",
+}).done((result) => {
+    var userName = `${result.firstName} ${result.lastName}`;
+    $("#userName").html(userName);
+    $("#userName1").html(userName);
 
-// Write your JavaScript code.
+    var userEmail = `${result.email}`;
+    $("#userEmail").html(userEmail);
 
-let name = document.getElementById("user-name").innerText;
-let nik = document.getElementById("user-nik").innerText;
+    if (result.roleName != null) {
+        var countRoles = result.roleName.length;
+        var userRole = result.roleName[countRoles - 1];
+        $("#userRole").html(userRole);
+    }
+}).fail((error) => {
+    console.log(error)
+})
 
-let name1 = '@Session["name"]';
-let nik1 = '@Session["nik"]';
+$.ajax({
+    url: "/LeaveEmployees/GetAll",
+}).done((result) => {
+    console.log(result);
+    let countRequest = 0;
+    $.each(result, function (key, val) {
+        if (result[key].status == 0) {
+            countRequest += 1;
+        }
+    });
+    $("#emailNotificationManager").html(countRequest);
+    $("#notifTitleManager").html("Ada " + countRequest + " pengajuan cuti yang belum diproses");
 
-console.log("name: " + name1);
-console.log("nik: " + nik);
+    var notifBody = "";
+    $.each(result, function (key, val) {
+        if (result[key].status == 0) {
+            notifBody += `<div class="notif-center">
+                        <a href="#">
+                            <div class="notif-icon notif-info"> <i class="fa fa-envelope"></i> </div>
+                            <div class="notif-content">
+                                <span class="block">
+                                    ${result[key].nik} - ${result[key].employee.firstName} ${result[key].employee.lastName} mengirim pengajuan cuti
+                                </span>
+                            </div>
+                        </a>
+                    </div>`;
+        }
+    });
+    $("#notifBodyManager").html(notifBody);
 
-$("#user-name").val(name);
-$("#user-nik").val(nik);
+
+}).fail((error) => {
+    console.log(error)
+})

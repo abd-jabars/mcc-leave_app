@@ -34,6 +34,7 @@ namespace Client
             services.AddScoped<Address>();
             services.AddScoped<EmployeeRepository>();
             services.AddScoped<LeaveRepository>();
+            services.AddScoped<LeaveEmployeeRepository>();
             services.AddScoped<LoginRepository>();
             services.AddScoped<DepartmentRepository>();
             services.AddScoped<LoginRepository>();
@@ -61,6 +62,7 @@ namespace Client
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

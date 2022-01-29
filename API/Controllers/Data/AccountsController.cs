@@ -32,8 +32,8 @@ namespace API.Controllers.Data
         [Route("Login")]
         public ActionResult Login(LoginVM login)
         {
-            var code = 0;
-            var message = "";
+            // var code = 0;
+            string message;
             var result = accountRepository.Login(login);
             switch (result)
             {
