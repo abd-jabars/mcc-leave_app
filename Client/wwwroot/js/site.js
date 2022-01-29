@@ -27,8 +27,8 @@ $.ajax({
             countRequest += 1;
         }
     });
-    $("#emailNotification").html(countRequest);
-    $("#notifTitle").html("Ada " + countRequest + " pengajuan cuti yang belum diproses");
+    $("#emailNotificationManager").html(countRequest);
+    $("#notifTitleManager").html("Ada " + countRequest + " pengajuan cuti yang belum diproses");
 
     var notifBody = "";
     $.each(result, function (key, val) {
@@ -45,7 +45,7 @@ $.ajax({
                     </div>`;
         }
     });
-    $("#notifBody").html(notifBody);
+    $("#notifBodyManager").html(notifBody);
 
 
 }).fail((error) => {
