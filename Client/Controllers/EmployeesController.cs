@@ -3,6 +3,7 @@ using API.ViewModel;
 using Client.Base;
 using Client.Repository.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,14 @@ namespace Client.Controllers
         public JsonResult UpdateRegisteredData(RegisterVM register)
         {
             var result = repository.UpdateRegisteredData(register);
+            return Json(result);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetUserData()
+        {
+            var NIK = HttpContext.Session.GetString("userNik");
+            var result = await repository.RegisteredData(NIK);
             return Json(result);
         }
 

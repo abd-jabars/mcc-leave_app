@@ -129,8 +129,8 @@
                                     <div class="user-box">
                                         <div class="avatar-lg"><img src="https://asset-a.grid.id//crop/0x0:0x0/700x465/photo/bobofoto/original/7694_foto-boredpandacom.jpg" alt="image profile" class="avatar-img rounded"></div>
                                         <div class="u-text">
-                                            <h4>@httpContextAccessor.HttpContext.Session.GetString("name")</h4>
-                                            <p class="text-muted">@httpContextAccessor.HttpContext.Session.GetString("Email")</p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                            <h4 id="userName1"></h4>
+                                            <p class="text-muted" id="userEmail"></p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                         </div>
                                     </div>
                                 </li>
@@ -164,7 +164,7 @@
                     <div class="info">
                         <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                             <span>
-                                @httpContextAccessor.HttpContext.Session.GetString("name")
+                                <span id="userName"></span>
                                 <span class="user-level">Administrator</span>
                                 <span class="caret"></span>
                             </span>

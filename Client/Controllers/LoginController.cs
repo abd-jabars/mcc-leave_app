@@ -56,15 +56,6 @@ namespace Client.Controllers
             var code = jwtToken.status;
             var message = jwtToken.message;
 
-            var handler = new JwtSecurityTokenHandler();
-            var decodedValue = handler.ReadJwtToken(token);
-
-            var nik = decodedValue.Claims.First(c => c.Type == "nik").Value;
-            var name = decodedValue.Claims.First(c => c.Type == "name").Value;
-            var email = decodedValue.Claims.First(c => c.Type == "Email").Value;
-
-            Console.WriteLine(code);
-
             if (token == null)
             {
                 TempData["code"] = code;
@@ -72,14 +63,14 @@ namespace Client.Controllers
                 return RedirectToAction("index");
             }
 
-            TempData["code"] = null;
+            var handler = new JwtSecurityTokenHandler();
+            var decodedValue = handler.ReadJwtToken(token);
+
+            var nik = decodedValue.Claims.First(c => c.Type == "nik").Value;
+            
             HttpContext.Session.SetString("JWToken", token);
-            //HttpContext.Session.SetString("Name", jwtHandler.GetName(token));
-            //HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
-
-            HttpContext.Session.SetString("name", name);
-            HttpContext.Session.SetString("Email", email);
-
+            HttpContext.Session.SetString("userNik", nik);
+            
             return RedirectToAction("index", "home");
         }
 

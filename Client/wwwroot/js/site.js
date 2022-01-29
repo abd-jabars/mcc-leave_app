@@ -1,4 +1,13 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$.ajax({
+    url: "/Employees/GetUserData",
+}).done((result) => {
+    var userName = `${result.firstName} ${result.lastName}`;
+    $("#userName").html(userName);
+    $("#userName1").html(userName);
 
-// Write your JavaScript code.
+    var userEmail = `${result.email}`;
+    $("#userEmail").html(userEmail);
+
+}).fail((error) => {
+    console.log(error)
+})

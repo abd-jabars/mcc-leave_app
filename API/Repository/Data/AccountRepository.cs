@@ -51,13 +51,6 @@ namespace API.Repository.Data
             return getNik;
         }
 
-        public string GetName(LoginVM login)
-        {
-            var employee = myContext.Employees.Where(e => e.Email == login.Email).FirstOrDefault();
-            var name = employee.FirstName + " " + employee.LastName;
-            return name;
-        }
-
         public int ForgotPassword(ForgotPasswordVM forgotPassword)
         {
             var checkEmail = myContext.Employees.Where(emp => emp.Email == forgotPassword.Email).FirstOrDefault();
