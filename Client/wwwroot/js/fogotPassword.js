@@ -19,20 +19,20 @@ function ForgotPassword() {
 
         var swalIcon;
         if (result.status == 200) {
-            swalIcon = 'success';
-            swalTitle = 'Success';
-            setTimeout(function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: result.message,
+            }).then(function () {
                 location.href = "/Login/ChangePassword";
-            }, 3000);
+            });
         } else {
-            swalIcon = 'error'
-            swalTitle = 'Oops!'
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: result.message,
+            })
         }
-        Swal.fire({
-            icon: swalIcon,
-            title: swalTitle,
-            text: result.message,
-        });
     }).fail((error) => {
         console.log(error);
         Swal.fire({
@@ -68,28 +68,28 @@ function ChangePassword() {
 
         var swalIcon;
         if (result.status == 200 || result.caseNumber == 1) {
-            swalIcon = 'success';
-            swalTitle = 'Success';
-            if (result.status === 200) {
-                setTimeout(function () {
-                    location.href = "/Login";
-                }, 2000);
-            }
-        } else if (result.caseNumber == 2) {
-            swalIcon = 'error'
-            swalTitle = 'Oops!'
-        } else {
-            swalIcon = 'error'
-            swalTitle = 'Oops!'
-            setTimeout(function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: result.message,
+            }).then(function () {
                 location.href = "/Login";
-            }, 2000);
+            });
+        } else if (result.caseNumber == 2) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: result.message,
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: result.message,
+            }).then(function () {
+                location.href = "/Login";
+            });
         }
-        Swal.fire({
-            icon: swalIcon,
-            title: swalTitle,
-            text: result.message,
-        });
     }).fail((error) => {
         console.log(error);
         Swal.fire({
