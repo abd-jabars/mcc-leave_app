@@ -60,11 +60,11 @@ namespace Client.Repository.Data
             return entities;
         }
 
-        public async Task<Object> GetHistoryList()
+        public async Task<Object> GetHistoryList(string nik)
         {
             Object entities = new Object();
 
-            using (var response = await httpClient.GetAsync(request + "History"))
+            using (var response = await httpClient.GetAsync(request + "History/" + nik))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entities = JsonConvert.DeserializeObject<Object>(apiResponse);
