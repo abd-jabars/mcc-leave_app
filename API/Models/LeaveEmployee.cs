@@ -21,7 +21,7 @@ namespace API.Models
         public virtual Employee Employee { get; set; }
         public string NIK { get; set; }
         
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Leave Leave { get; set; }
         public int LeaveId { get; set; }
     }

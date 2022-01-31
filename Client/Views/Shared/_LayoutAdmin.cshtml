@@ -62,7 +62,7 @@
                         {
                             <li class="nav-item dropdown hidden-caret">
                                 <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell"></i>
+                                    <i class="fa fa-envelope"></i>
                                     <span class="notification" id="emailNotificationManager">notification number</span>
                                 </a>
                                 <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
@@ -71,6 +71,34 @@
                                     </li>
                                     <li>
                                         <div class="notif-scroll scrollbar-outer" id="notifBodyManager">
+                                            <div class="notif-center">
+                                                <a href="#">
+                                                    <div class="notif-icon notif-info"> <i class="fa fa-envelope"></i> </div>
+                                                    <div class="notif-content">
+                                                        <span class="block">
+                                                            This is Notification
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (User.IsInRole("Employee"))
+                        {
+                            <li class="nav-item dropdown hidden-caret">
+                                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell"></i>
+                                    <span class="notification" id="emailNotificationEmployee">notification number</span>
+                                </a>
+                                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                                    <li>
+                                        <div class="dropdown-title" id="notifTitleEmployee">This is Notification Title</div>
+                                    </li>
+                                    <li>
+                                        <div class="notif-scroll scrollbar-outer" id="notifBodyEmployee">
                                             <div class="notif-center">
                                                 <a href="#">
                                                     <div class="notif-icon notif-info"> <i class="fa fa-envelope"></i> </div>
@@ -109,7 +137,7 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/Login/Logout">Logout</a>
                                 </li>
-                </div>
+</div>
                 </ul>
                 </li>
                 </ul>
