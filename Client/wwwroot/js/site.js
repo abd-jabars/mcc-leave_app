@@ -10,10 +10,24 @@
     var userEmail = `${result.email}`;
     $("#userEmail").html(userEmail);
 
+    var tempNIK = result.nik;
+    localStorage.setItem("nik", tempNIK);
+    $("#userNIK").html(tempNIK);
+
     if (result.roleName != null) {
-        var countRoles = result.roleName.length;
-        var userRole = result.roleName[countRoles - 1];
-        $("#userRole").html(userRole);
+        var sorting = result.roleName.sort();
+        var reverse = result.roleName.reverse();
+        var role;
+        if (reverse.at(-1) == "Admin") {
+            role = reverse.at(-1)
+        }
+        else if (reverse[0] == "Manager") {
+            role = reverse[0]
+        }
+        else {
+            role = reverse[0]
+        }
+        $("#userRole").html(role);
     }
 
     $.ajax({

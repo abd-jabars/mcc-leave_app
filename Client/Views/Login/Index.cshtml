@@ -10,22 +10,17 @@
             <h5>Forgot Password?</h5>
             <span>Enter your email</span>
             <input id="inputEmail" type="email" placeholder="Email" />
+            <br />
             <button type="submit" class="button">Send OTP</button>
         </form>
     </div>
     <div class="form-container sign-in-container">
         <form action="/Login/Auth/" method="post" id="loginForm">
-            <h1>Sign in</h1>
-            <div class="social-container">
-                <a href="/" class="social"><i class="fab fa-facebook-f"></i></a>
-                <a href="/" class="social"><i class="fab fa-google-plus-g"></i></a>
-                <a href="/" class="social"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-            <span>or use your account</span>
+            <h1>Sign in</h1><br />
             <input type="email" name="email" placeholder="Email" />
             <input type="password" name="password" placeholder="Password" />
             <span class="text-danger font-weight-bold">@TempData["msg"]</span>
-            <a href="#">Forgot your password?</a>
+            <br />
             <button type="submit" class="button">Sign In</button>
         </form>
     </div>
@@ -42,6 +37,7 @@
                     We get it, stuff happens. Just click the button below, then enter your email address
                     and we'll send you an otp to reset your password!
                 </p>
+                <br />
                 <button class="ghost" id="signUp">Forgot Password</button>
             </div>
         </div>
