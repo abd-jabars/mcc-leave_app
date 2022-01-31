@@ -44,10 +44,10 @@ namespace Client.Controllers
             return Json(result);
         }
 
-        [HttpGet("LeaveEmployees/History")]
-        public async Task<JsonResult> GetHistoryList()
+        [HttpGet("LeaveEmployees/History/{nik}")]
+        public async Task<JsonResult> GetHistoryList(string nik)
         {
-            var result = await repository.GetHistoryList();
+            var result = await repository.GetHistoryList(nik);
             return Json(result);
         }
     }
