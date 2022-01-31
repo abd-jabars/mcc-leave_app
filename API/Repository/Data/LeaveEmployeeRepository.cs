@@ -112,21 +112,5 @@ namespace API.Repository.Data
                         };
             return query;
         }
-
-        public IEnumerable<object> GetByManager(String nik)
-        {
-            var empList = myContext.Employees;
-            var leList = myContext.LeaveEmployees;
-
-            var query = from emp in empList
-                        join le in leList
-                        on emp.NIK equals le.NIK
-                        where emp.ManagerId == nik
-                        select new
-                        {
-                            leList
-                        };
-            return query;
-        }
     }
 }

@@ -37,5 +37,9 @@ namespace Client.Controllers
         {
             return View();
         }
+        public IActionResult Quota()
+        {
+            return View();
+        }
     }
 }

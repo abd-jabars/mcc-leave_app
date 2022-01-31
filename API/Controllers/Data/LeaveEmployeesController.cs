@@ -108,35 +108,5 @@ namespace API.Controllers.Data
                 return Ok($"{e.Message}");
             }
         }
-
-        [HttpGet("GetByManager/{nik}")]
-        public ActionResult GetByManager(string nik)
-        {
-            try
-            {
-                var code = 0;
-                var message = "";
-                //var result = ();
-                var count = leaveEmployeeRepository.GetByManager(nik).Count();
-                var result = leaveEmployeeRepository.GetByManager(nik);
-
-                if (count > 0)
-                {
-                    code = StatusCodes.Status200OK;
-                    //message = "";
-                }
-                else
-                {
-                    //code = Response.StatusCode;
-                    code = StatusCodes.Status400BadRequest;
-                    message = "Table content is empty";
-                }
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return Ok($"{e.Message}");
-            }
-        }
     }
 }

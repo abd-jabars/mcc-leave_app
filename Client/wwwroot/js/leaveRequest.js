@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees',
+            'url': 'https://localhost:44367/leaveemployees/getall',
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -90,7 +90,7 @@ $(document).ready(function () {
         document.getElementById('btn-insert').style.display = 'none';
         document.getElementById('btn-update').style.display = 'inline';
         document.getElementById('leaveRequestForm').classList.remove('was-validated');
-        editLeave(data);
+        SetFormValue(data);
     });
     $('#leaveTable').on('click', '#btn-details', function () {
         var data = table.row($(this).closest('tr')).data();
@@ -105,6 +105,18 @@ $(document).ready(function () {
     //}, 3000);
     getLeave();
 });
+
+function SetFormValue(data) {
+    let leaveId = data.leaveId;
+    let startDate = data.startDate;
+    let endDate = data.endDate;
+    let attachment = data.attachment;
+
+    $("#leaveSelect").val(leaveId);
+    $("#startDate").val(startDate);
+    $("#endDate").val(endDate);
+    $("#attachment").val(attachment);
+}
 
 $('.btn-add').on('click', function () {
     $("#leaveNIK").val(nik);
