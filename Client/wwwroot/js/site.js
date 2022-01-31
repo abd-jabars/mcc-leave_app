@@ -30,17 +30,24 @@
         $("#userRole").html(role);
     }
 
+    RequestNotif(userNik);
+
+}).fail((error) => {
+    console.log(error)
+})
+
+function RequestNotif(managerId) {
     $.ajax({
         url: "/LeaveEmployees/GetAll",
     }).done((result) => {
-        console.log(result);
-        console.log(userNik);
+        //console.log(result);
+        //console.log(managerId);
 
         let countRequest = 0;
         var notifBody = "";
         $.each(result, function (key, val) {
             //console.log(result[key].employee.managerId);
-            if (result[key].status == 0 && result[key].employee.managerId == userNik) {
+            if (result[key].status == 0 && result[key].employee.managerId == managerId) {
                 countRequest += 1;
                 notifBody += `<div class="notif-center">
                         <a href="#">
@@ -62,7 +69,4 @@
     }).fail((error) => {
         console.log(error)
     })
-
-}).fail((error) => {
-    console.log(error)
-})
+}
