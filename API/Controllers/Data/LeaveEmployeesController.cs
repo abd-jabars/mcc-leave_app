@@ -49,16 +49,16 @@ namespace API.Controllers.Data
             }
         }
 
-        [HttpGet("Approval")]
-        public ActionResult GetApprovalList()
+        [HttpGet("Approval/{nik}")]
+        public ActionResult GetApprovalList(string nik)
         {
             try
             {
                 var code = 0;
                 var message = "";
                 //var result = ();
-                var count = leaveEmployeeRepository.GetApprovalList().Count();
-                var result = leaveEmployeeRepository.GetApprovalList();
+                var count = leaveEmployeeRepository.GetApprovalList(nik).Count();
+                var result = leaveEmployeeRepository.GetApprovalList(nik);
 
                 if (count > 0)
                 {

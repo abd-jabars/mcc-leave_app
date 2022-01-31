@@ -48,7 +48,7 @@ namespace API.Repository.Data
                         };
             return query;
         }
-        public IEnumerable<object> GetApprovalList()
+        public IEnumerable<object> GetApprovalList(string nik)
         {
             var empList = myContext.Employees;
             var accList = myContext.Accounts;
@@ -65,7 +65,7 @@ namespace API.Repository.Data
                         on le.LeaveId equals l.Id
                         join dept in deptList
                         on emp.DepartmentId equals dept.Id
-                        where le.Status == 0
+                        where le.Status == 0 && emp.ManagerId == nik
                         select new
                         {
                             nik = emp.NIK,

@@ -48,11 +48,11 @@ namespace Client.Repository.Data
             return register;
         }
 
-        public async Task<Object> GetApprovalList()
+        public async Task<Object> GetApprovalList(string nik)
         {
             Object entities = new Object();
 
-            using (var response = await httpClient.GetAsync(request + "Approval"))
+            using (var response = await httpClient.GetAsync(request + "Approval/" + nik))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entities = JsonConvert.DeserializeObject<Object>(apiResponse);
