@@ -1,5 +1,5 @@
 ﻿$.ajax({
-    url: 'https://localhost:44316/api/Leaves/normal'
+    url: '/Leaves/Normal'
 }).done((data) => {
     var text = ""
     $.each(data, function (key, i) {
@@ -17,7 +17,7 @@
 })
 
 $.ajax({
-    url: 'https://localhost:44316/api/Leaves/special'
+    url: '/Leaves/Special'
 }).done((data) => {
     var text = ""
     $.each(data, function (key, i) {

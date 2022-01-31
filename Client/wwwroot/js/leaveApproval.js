@@ -163,11 +163,12 @@ function approveLeave(data) {
     console.log(JSON.stringify(obj));
 
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/Approval',
+        url: '/Leaves/Approval',
         type: "PUT",
-        contentType: "application/json;charset=utf-8",
+        // contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        //data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
         Swal.fire({
@@ -207,11 +208,12 @@ function declineLeave(data) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'https://localhost:44316/api/Leaves/Approval',
+                url: '/Leaves/Approval',
                 type: "PUT",
-                contentType: "application/json;charset=utf-8",
+                // contentType: "application/json;charset=utf-8",
                 traditional: true,
-                data: JSON.stringify(obj)
+                // data: JSON.stringify(obj)
+                data: obj
             }).done((result) => {
                 console.log(result);
                 Swal.fire({

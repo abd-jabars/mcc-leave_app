@@ -201,17 +201,22 @@ function requestLeave() {
 
     console.log(JSON.stringify(obj))
 
+    var myTable = $('#leaveTable').DataTable();
+
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/Request',
+        url: '/Leaves/LeaveRequest',
         type: "POST",
-        contentType: "application/json;charset=utf-8",
+        // contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        // data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
+        myTable.ajax.reload();
         if (result.status == 200) {
             swalIcon = 'success';
             swalTitle = 'Input Success';
+            swalFooter = '';
         } else {
             swalIcon = 'error';
             swalTitle = 'Oops...';
@@ -249,6 +254,7 @@ function deleteRequest(data) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
+            var myTable = $('#leaveTable').DataTable();
             $.ajax({
                 url: 'https://localhost:44316/api/leaveemployees/',
                 type: "DELETE",
@@ -263,6 +269,7 @@ function deleteRequest(data) {
                     icon: 'success'
                 })
                 $('#insertModal').modal('hide');
+                myTable.ajax.reload();
             }).fail((error) => {
                 console.log(error);
                 Swal.fire({
