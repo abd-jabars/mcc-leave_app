@@ -6,18 +6,18 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <h1 class="text-xl-center">Quota Cuti</h1>
+            <h1 class="text-xl-center">Leave Qouta</h1>
             <form class="needs-validation" id="leaveRequestForm" onsubmit="return false">
                 <div class="form-group">
                     <div class="form-row">
                         <div class="col">
-                            <label for="startDate">Quota Cuti tahun ini</label>
-                            <input type="text" class="form-control" id="leavequota" placeholder="Quota Cuti tahun ini" required>
+                            <label for="startDate">Leave Quota <span class="year"></span></label>
+                            <input type="text" class="form-control" id="leavequota" placeholder="Leave Quota" required>
                             <div class="invalid-feedback">Please fill out this field.</div>
                         </div>
                         <div class="col">
-                            <label for="endDate">Cuti Bersama tahun ini</label>
-                            <input type="text" class="form-control" id="massleave" placeholder="Cuti Bersama tahun ini" required disabled>
+                            <label for="endDate">Mass leave <span class="year"></span></label>
+                            <input type="text" class="form-control" id="massleave" placeholder="Mass leave" required disabled>
                             <div class="invalid-feedback">Please fill out this field.</div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
         <div>
         </div>
         <div class="table-responsive">
-            <h1 class="text-xl-center">Cuti Bersama Tahun ini</h1>
+            <h1 class="text-xl-center">Mass leave <span class="year"></span></h1>
             <table id="leaveTable" class="text-center display table table-striped dataTable">
                 <tbody class="text-center">
                 </tbody>

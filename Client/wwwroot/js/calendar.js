@@ -43,6 +43,7 @@ $.ajax({
     })
     if (window.location.href.indexOf("quota") > -1) {
         $("#massleave").val(len);
+        $(".year").val(year);
     }
     $("#leaveTable").html(text)
 }).fail((error) => {

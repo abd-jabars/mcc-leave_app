@@ -66,3 +66,7 @@
 }).fail((error) => {
     console.log(error)
 })
+
+$('.dropdown-item').on('click', '#logout-btn', function () {
+    window.localStorage.clear();
+});

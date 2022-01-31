@@ -43,6 +43,7 @@
                             <div class="col">
                                 <label for="leaveNIK">NIK</label>
                                 <input type="text" class="form-control" id="leaveNIK" placeholder="NIK" required disabled>
+                                <input type="text" class="form-control" id="formId" placeholder="id" required hidden>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
                         </div>
@@ -78,8 +79,8 @@
                         </div>
                         <br />
                         <div style="text-align:right">
-                            <button type="submit" class="btn btn-primary" id="btn-insert" onclick="requestLeave()">Submit</button>
-                            <button class="btn btn-primary" id="btn-update" onclick="updateUni()">Update</button>
+                            <button type="submit" class="btn btn-primary" id="btn-insert">Submit</button>
+                            <button class="btn btn-primary" id="btn-update">Update</button>
                         </div>
                     </div>
                 </form>
