@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var nik = localStorage.getItem("nik");
+
+$(document).ready(function () {
     var table = $('#leaveTable').DataTable({
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         buttons: [
@@ -82,12 +84,13 @@
     });
     $('#leaveTable').on('click', '#btn-edit', function () {
         var data = table.row($(this).closest('tr')).data();
+        $("#leaveNIK").val(nik);
         document.getElementById('btn-update').style.visibility = 'visible';
         document.getElementById('btn-insert').style.visibility = 'hidden';
         document.getElementById('btn-insert').style.display = 'none';
         document.getElementById('btn-update').style.display = 'inline';
         document.getElementById('leaveRequestForm').classList.remove('was-validated');
-        editEmployee(data);
+        editLeave(data);
     });
     $('#leaveTable').on('click', '#btn-details', function () {
         var data = table.row($(this).closest('tr')).data();
@@ -104,6 +107,7 @@
 });
 
 $('.btn-add').on('click', function () {
+    $("#leaveNIK").val(nik);
     document.getElementById('btn-insert').style.visibility = 'visible';
     document.getElementById('btn-update').style.visibility = 'hidden';
     document.getElementById('btn-update').style.display = 'none';
@@ -149,7 +153,7 @@ function detailLeave(data) {
                         <td>${leaveDetails[i].startDate} to ${leaveDetails[i].endDate}</td>
                    </tr>
                     <tr>
-                        <td>Attachment : </td>
+                        <td>Notes : </td>
                         <td>${leaveDetails[i].attachment}</td>
                    </tr>
                     <tr>
@@ -192,7 +196,7 @@ function requestLeave() {
     const diffInMs = new Date(obj.endDate) - new Date(obj.startDate)
     const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
     console.log("total Leave: " + diffInDays);
-    
+
     obj.totalLeave = diffInDays;
 
     console.log(JSON.stringify(obj))
@@ -308,7 +312,6 @@ $(function () {
         } catch (error) {
             date = null;
         }
-
         return date;
     }
 });

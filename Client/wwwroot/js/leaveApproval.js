@@ -1,84 +1,85 @@
-﻿$(document).ready(function () {
-    var table = $('#leaveTable').DataTable({
-        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-        buttons: [
-            {
-                extend: 'copy',
-                text: '<i class="fa fa-files-o"></i>',
-                exportOptions: {
-                    columns: [0, 1]
-                }
-            },
-            {
-                extend: 'csv',
-                text: '<i class="fa fa-file-text-o"></i>',
-                exportOptions: {
-                    columns: [0, 1]
-                }
-            },
-            {
-                extend: 'excel',
-                text: '<i class="fa fa-file-excel-o"></i>',
-                exportOptions: {
-                    columns: [0, 1]
-                }
-            },
-            {
-                extend: 'pdf',
-                text: '<i class="fa fa-file-pdf-o"></i>',
-                orientation: 'portrait',
-                title: 'Registered Data',
-                pageSize: 'LEGAL',
-                exportOptions: {
-                    columns: [0, 1]
-                }
-            },
-            {
-                extend: 'print',
-                text: '<i class="fas fa-print"></i>',
-                title: 'Registered Data',
-                exportOptions: {
-                    columns: [0, 1]
-                }
+﻿var table = $('#leaveTable').DataTable({
+    dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+    buttons: [
+        {
+            extend: 'copy',
+            text: '<i class="fa fa-files-o"></i>',
+            exportOptions: {
+                columns: [0, 1]
             }
-        ],
-        'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees/approval',
-            'dataType': 'json',
-            'dataSrc': ''
         },
-        'columns': [
-            {
-                'data': null,
-                'render': function (data, type, row, meta) {
-                    return (meta.row + meta.settings._iDisplayStart + 1)
-                }
-            },
-            {
-                'data': 'nik'
-            },
-            {
-                'data': 'fullName'
-            },
-            {
-                'bSortable': false,
-                'data': 'startDate'
-            },
-            {
-                'bSortable': false,
-                'data': 'endDate'
-            },
-            {
-                "data": null,
-                'bSortable': false,
-                "defaultContent": `
+        {
+            extend: 'csv',
+            text: '<i class="fa fa-file-text-o"></i>',
+            exportOptions: {
+                columns: [0, 1]
+            }
+        },
+        {
+            extend: 'excel',
+            text: '<i class="fa fa-file-excel-o"></i>',
+            exportOptions: {
+                columns: [0, 1]
+            }
+        },
+        {
+            extend: 'pdf',
+            text: '<i class="fa fa-file-pdf-o"></i>',
+            orientation: 'portrait',
+            title: 'Registered Data',
+            pageSize: 'LEGAL',
+            exportOptions: {
+                columns: [0, 1]
+            }
+        },
+        {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            title: 'Registered Data',
+            exportOptions: {
+                columns: [0, 1]
+            }
+        }
+    ],
+    'ajax': {
+        'url': 'https://localhost:44316/api/leaveemployees/approval',
+        'dataType': 'json',
+        'dataSrc': ''
+    },
+    'columns': [
+        {
+            'data': null,
+            'render': function (data, type, row, meta) {
+                return (meta.row + meta.settings._iDisplayStart + 1)
+            }
+        },
+        {
+            'data': 'nik'
+        },
+        {
+            'data': 'fullName'
+        },
+        {
+            'bSortable': false,
+            'data': 'startDate'
+        },
+        {
+            'bSortable': false,
+            'data': 'endDate'
+        },
+        {
+            "data": null,
+            'bSortable': false,
+            "defaultContent": `
                                 <button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
                                <button class="btn btn-sm btn-outline-success"id="btn-approve"><i class="fas fa-check"></i></button>
                                <button class="btn btn-sm btn-outline-danger" id="btn-decline"><i class="fas fa-ban"></i></button>
                                `
-            }
-        ]
-    });
+        }
+    ]
+});
+$(document).ready(function () {
+    table;
     $('#leaveTable').on('click', '#btn-decline', function () {
         var data = table.row($(this).closest('tr')).data();
         declineLeave(data);
@@ -88,17 +89,17 @@
         var data = table.row($(this).closest('tr')).data();
         approveLeave(data);
         btnDisable(data);
-        tableReload();
     });
     $('#leaveTable').on('click', '#btn-details', function () {
         var data = table.row($(this).closest('tr')).data();
         detailLeave(data);
     });
-    function tableReload() {
-        console.log("page load");
-        table.ajax.reload();
-    };
 });
+
+function tableReload() {
+    console.log("page load");
+    table.ajax.reload();
+};
 
 function btnDisable(data) {
     if (data.status == 1) {
@@ -142,7 +143,7 @@ function detailLeave(data) {
                         <td>${leaveDetails[i].totalLeave} Days</td>
                    </tr>
                     <tr>
-                        <td>Attachment : </td>
+                        <td>Notes : </td>
                         <td>${leaveDetails[i].attachment}</td>
                    </tr>`
         }
@@ -184,6 +185,7 @@ function approveLeave(data) {
             footer: `<a href=${'https://httpstatuses.com/' + error.status} target="_blank"/>Why do I have this issue?</a>`
         })
     })
+    tableReload();
 }
 
 function declineLeave(data) {
@@ -229,4 +231,5 @@ function declineLeave(data) {
             })
         }
     })
+    tableReload();
 }

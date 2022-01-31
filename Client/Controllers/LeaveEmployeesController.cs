@@ -12,6 +12,7 @@ namespace Client.Controllers
     public class LeaveEmployeesController : BaseController<LeaveEmployee, LeaveEmployeeRepository, int>
     {
         private readonly LeaveEmployeeRepository leaveEmployeeRepository;
+
         public LeaveEmployeesController(LeaveEmployeeRepository repository) : base(repository)
         {
             this.leaveEmployeeRepository = repository;
@@ -20,6 +21,13 @@ namespace Client.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetByManager(string nik)
+        {
+            var result = await repository.GetByManager(nik);
+            return Json(result);
         }
     }
 }

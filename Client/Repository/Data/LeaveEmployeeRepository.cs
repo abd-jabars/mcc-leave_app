@@ -1,5 +1,6 @@
 ﻿using API.Models;
 using Client.Base;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,19 @@ namespace Client.Repository.Data
             {
                 BaseAddress = new Uri(address.link)
             };
+        }
+
+        public async Task<Object> GetByManager(string nik)
+        {
+            //List<RegisterVM> entities = new List<RegisterVM>();
+            Object entities = new Object();
+
+            using (var response = await httpClient.GetAsync(request + "GetByManager"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entities;
         }
     }
 }
