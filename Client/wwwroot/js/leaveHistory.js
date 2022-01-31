@@ -117,12 +117,8 @@ function detailLeave(data) {
                         <td>${leaveDetails[i].startDate} to ${leaveDetails[i].endDate}</td>
                    </tr>
                     <tr>
-                        <td>Attachment : </td>
+                        <td>Notes : </td>
                         <td>${leaveDetails[i].attachment}</td>
-                   </tr>
-                    <tr>
-                        <td>Status : </td>
-                        <td>${leaveDetails[i].status}</td>
                    </tr>`
         }
         $("#infoTable").html(text)

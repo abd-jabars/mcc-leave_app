@@ -27,6 +27,18 @@ namespace Client.Controllers
 
         public IActionResult Index()
         {
+            var token = HttpContext.Session.GetString("JWToken");
+
+            if (token == null)
+            {
+                return View();
+            }
+
+            return RedirectToAction("index", "Home");
+        }
+
+        public IActionResult ChangePassword()
+        {
             return View();
         }
 
@@ -46,12 +58,6 @@ namespace Client.Controllers
             var code = jwtToken.status;
             var message = jwtToken.message;
 
-            var handler = new JwtSecurityTokenHandler();
-            var decodedValue = handler.ReadJwtToken(token);
-
-            var nik = decodedValue.Claims.First(c => c.Type == "nik").Value;
-            var name = decodedValue.Claims.First(c => c.Type == "name").Value;
-
             if (token == null)
             {
                 TempData["code"] = code;
@@ -59,14 +65,30 @@ namespace Client.Controllers
                 return RedirectToAction("index");
             }
 
-            TempData["code"] = null;
-            TempData["nik"] = nik;
-            TempData["name"] = name;
+            var handler = new JwtSecurityTokenHandler();
+            var decodedValue = handler.ReadJwtToken(token);
+
+            var nik = decodedValue.Claims.First(c => c.Type == "nik").Value;
+            
             HttpContext.Session.SetString("JWToken", token);
-            HttpContext.Session.SetString("nik", nik);
-            HttpContext.Session.SetString("name", name);
-            //HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
+            HttpContext.Session.SetString("userNik", nik);
+
             return RedirectToAction("index", "home");
         }
+
+        [HttpPut]
+        public JsonResult ForgotPassword(ForgotPasswordVM forgotPassword)
+        {
+            var result = repository.ForgotPassword(forgotPassword);
+            return Json(result);
+        }
+
+        [HttpPut]
+        public JsonResult ChangePassword(ForgotPasswordVM forgotPassword)
+        {
+            var result = repository.ChangePassword(forgotPassword);
+            return Json(result);
+        }
+
     }
 }

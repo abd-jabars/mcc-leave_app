@@ -16,7 +16,8 @@ namespace API.Models
         public string Attachment { get; set; }
         public Approval Status { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
+        [ForeignKey("NIK")]
         public virtual Employee Employee { get; set; }
         public string NIK { get; set; }
         
