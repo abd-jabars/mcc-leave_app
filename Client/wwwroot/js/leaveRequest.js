@@ -57,16 +57,24 @@ $(document).ready(function () {
                 }
             },
             {
-                'data': 'nik'
-            },
-            {
                 'data': 'startDate'
             },
             {
                 'data': 'endDate'
             },
             {
-                'data': 'status'
+                'data': null,
+                'render': function (data, type, row) {
+                    if (row['status'] == 1) {
+                        return row['status'] = "Disetujui"
+                    }
+                    else if (row['status'] == 2) {
+                        return row['status'] = "Ditolak"
+                    }
+                    else {
+                        return row['status'] = "Diproses"
+                    }
+                }
             },
             {
                 "data": null,
