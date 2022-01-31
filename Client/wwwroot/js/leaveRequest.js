@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees',
+            'url': '/LeaveEmployees/GetAll',
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -118,7 +118,7 @@ $('.btn-add').on('click', function () {
 
 function detailLeave(data) {
     $.ajax({
-        url: 'https://localhost:44316/api/leaveemployees/show/' + data.id,
+        url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);
@@ -170,7 +170,7 @@ function detailLeave(data) {
 
 function getLeave() {
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/'
+        url: '/Leaves/GetAll'
     }).done((data) => {
         var leaveSelect = `<option value="" >Select Leave type</option>`;
         $.each(data, function (key, val) {
@@ -256,11 +256,10 @@ function deleteRequest(data) {
         if (result.isConfirmed) {
             var myTable = $('#leaveTable').DataTable();
             $.ajax({
-                url: 'https://localhost:44316/api/leaveemployees/',
+                url: '/leaveemployees/delete',
                 type: "DELETE",
-                contentType: "application/json;charset=utf-8",
                 traditional: true,
-                data: JSON.stringify(obj)
+                data: obj
             }).done((result) => {
                 console.log(result);
                 Swal.fire({

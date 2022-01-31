@@ -43,7 +43,7 @@
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees/history',
+            'url': '/leaveemployees/history',
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -82,7 +82,7 @@
 
 function detailLeave(data) {
     $.ajax({
-        url: 'https://localhost:44316/api/leaveemployees/show/' + data.id,
+        url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);
