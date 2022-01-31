@@ -138,5 +138,35 @@ namespace API.Controllers.Data
                 return Ok($"{e.Message}");
             }
         }
+
+        [HttpGet("GetLeave/{nik}")]
+        public ActionResult GetLeave(string nik)
+        {
+            try
+            {
+                var code = 0;
+                var message = "";
+                //var result = ();
+                var count = leaveEmployeeRepository.GetLeave(nik).Count();
+                var result = leaveEmployeeRepository.GetLeave(nik);
+
+                if (count > 0)
+                {
+                    code = StatusCodes.Status200OK;
+                    //message = "";
+                }
+                else
+                {
+                    //code = Response.StatusCode;
+                    code = StatusCodes.Status400BadRequest;
+                    message = "Table content is empty";
+                }
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Ok($"{e.Message}");
+            }
+        }
     }
 }

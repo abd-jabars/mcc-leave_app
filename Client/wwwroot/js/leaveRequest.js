@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': '/LeaveEmployees/GetAll',
+            'url': '/LeaveEmployees/GetByNik/' + nik,
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -113,11 +113,11 @@ function isFutureDate() {
         idate = document.getElementById("startDate"),
         date = new Date(idate.value);
     if (date > today) {
-        $("invalid-date").val("Please fill out this field.");
+        $("#endDate").val("");
         $("#endDate").prop('disabled', false);
         console.log("Entered date is a future date");
     } else {
-        $("invalid-date").val("You entered a invalid date")
+        $("#endDate").val("You entered an invalid date")
         $("#endDate").prop('disabled', true);
         console.log("Entered date is a past date");
     }
@@ -360,8 +360,11 @@ $(function () {
         from = $("#startDate")
             .datepicker({
                 defaultDate: "+1w",
+                changeYear: true,
                 changeMonth: true,
+                minDate: 0,
                 numberOfMonths: 1,
+                yearRange: "-100:+20",
                 beforeShowDay: $.datepicker.noWeekends
             })
             .on("change", function () {
@@ -369,7 +372,9 @@ $(function () {
             }),
         to = $("#endDate").datepicker({
             defaultDate: "+1w",
+            changeYear: true,
             changeMonth: true,
+            yearRange: "-100:+20",
             numberOfMonths: 1,
             beforeShowDay: $.datepicker.noWeekends
         })

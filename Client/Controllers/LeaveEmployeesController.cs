@@ -43,5 +43,12 @@ namespace Client.Controllers
             var result = await repository.GetHistoryList(nik);
             return Json(result);
         }
+
+        [HttpGet("LeaveEmployees/getbynik/{nik}")]
+        public async Task<JsonResult> GetByNik(string nik)
+        {
+            var result = await repository.GetByNik(nik);
+            return Json(result);
+        }
     }
 }
