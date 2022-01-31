@@ -22,5 +22,33 @@ namespace Client.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetByManager(string nik)
+        {
+            var result = await repository.GetByManager(nik);
+            return Json(result);
+        }
+
+        [HttpGet("LeaveEmployees/Show/{id}")]
+        public async Task<JsonResult> GetLeaveEmployee(int id)
+        {
+            var result = await repository.GetLeaveEmployee(id);
+            return Json(result);
+        }
+
+        [HttpGet("LeaveEmployees/Approval")]
+        public async Task<JsonResult> GetApprovalList()
+        {
+            var result = await repository.GetApprovalList();
+            return Json(result);
+        }
+
+        [HttpGet("LeaveEmployees/History")]
+        public async Task<JsonResult> GetHistoryList()
+        {
+            var result = await repository.GetHistoryList();
+            return Json(result);
+        }
     }
 }

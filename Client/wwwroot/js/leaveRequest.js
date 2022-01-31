@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44367/leaveemployees/getall',
+            'url': '/LeaveEmployees/GetAll',
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -149,7 +149,7 @@ $('.btn-add').on('click', function () {
 
 function detailLeave(data) {
     $.ajax({
-        url: 'https://localhost:44316/api/leaveemployees/show/' + data.id,
+        url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);
@@ -201,7 +201,7 @@ function detailLeave(data) {
 
 function getLeave() {
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/'
+        url: '/Leaves/GetAll'
     }).done((data) => {
         var leaveSelect = `<option value="" >Select Leave type</option>`;
         $.each(data, function (key, val) {
@@ -230,17 +230,22 @@ function requestLeave() {
 
     console.log(JSON.stringify(obj))
 
+    var myTable = $('#leaveTable').DataTable();
+
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/Request',
+        url: '/Leaves/LeaveRequest',
         type: "POST",
-        contentType: "application/json;charset=utf-8",
+        // contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        // data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
+        myTable.ajax.reload();
         if (result.status == 200) {
             swalIcon = 'success';
             swalTitle = 'Input Success';
+            swalFooter = '';
         } else {
             swalIcon = 'error';
             swalTitle = 'Oops...';
@@ -315,12 +320,12 @@ function deleteRequest(data) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
+            var myTable = $('#leaveTable').DataTable();
             $.ajax({
-                url: 'https://localhost:44316/api/leaveemployees/',
+                url: '/leaveemployees/delete',
                 type: "DELETE",
-                contentType: "application/json;charset=utf-8",
                 traditional: true,
-                data: JSON.stringify(obj)
+                data: obj
             }).done((result) => {
                 console.log(result);
                 Swal.fire({
@@ -329,6 +334,7 @@ function deleteRequest(data) {
                     icon: 'success'
                 })
                 $('#insertModal').modal('hide');
+                myTable.ajax.reload();
             }).fail((error) => {
                 console.log(error);
                 Swal.fire({
