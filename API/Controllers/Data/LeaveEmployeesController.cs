@@ -79,16 +79,16 @@ namespace API.Controllers.Data
             }
         }
 
-        [HttpGet("History")]
-        public ActionResult getHistoryList()
+        [HttpGet("History/{nik}")]
+        public ActionResult getHistoryList(string nik)
         {
             try
             {
                 var code = 0;
                 var message = "";
                 //var result = ();
-                var count = leaveEmployeeRepository.GetHistoryList().Count();
-                var result = leaveEmployeeRepository.GetHistoryList();
+                var count = leaveEmployeeRepository.GetHistoryList(nik).Count();
+                var result = leaveEmployeeRepository.GetHistoryList(nik);
 
                 if (count > 0)
                 {
@@ -110,7 +110,7 @@ namespace API.Controllers.Data
         }
 
         [HttpGet("OnLeave/{nik}")]
-        public ActionResult getHistoryList(string nik)
+        public ActionResult GetonLeaveList(string nik)
         {
             try
             {

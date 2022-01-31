@@ -108,6 +108,21 @@ $(document).ready(function () {
     getLeave();
 });
 
+function isFutureDate() {
+    var today = new Date(),
+        idate = document.getElementById("startDate"),
+        date = new Date(idate.value);
+    if (date > today) {
+        $("invalid-date").val("Please fill out this field.");
+        $("#endDate").prop('disabled', false);
+        console.log("Entered date is a future date");
+    } else {
+        $("invalid-date").val("You entered a invalid date")
+        $("#endDate").prop('disabled', true);
+        console.log("Entered date is a past date");
+    }
+}
+
 function SetFormValue(data) {
     let Id = data.id;
     let leaveId = data.leaveId;

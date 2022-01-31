@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var nik = localStorage.getItem("nik");
+
+$(document).ready(function () {
     var table = $('#leaveTable').DataTable({
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         buttons: [
@@ -43,7 +45,7 @@
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees/history',
+            'url': 'https://localhost:44316/api/leaveemployees/history/' + nik,
             'dataType': 'json',
             'dataSrc': ''
         },

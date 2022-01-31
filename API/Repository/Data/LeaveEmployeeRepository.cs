@@ -81,7 +81,7 @@ namespace API.Repository.Data
                         };
             return query;
         }
-        public IEnumerable<object> GetHistoryList()
+        public IEnumerable<object> GetHistoryList(string nik)
         {
             var empList = myContext.Employees;
             var accList = myContext.Accounts;
@@ -96,7 +96,7 @@ namespace API.Repository.Data
                         on le.LeaveId equals l.Id
                         join dept in deptList
                         on emp.DepartmentId equals dept.Id
-                        where le.Status == 0
+                        where le.Status == Approval.Disetujui && le.NIK == nik
                         select new
                         {
                             nik = emp.NIK,
