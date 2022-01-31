@@ -107,7 +107,7 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">My Profile</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="/Login/Logout">Logout</a>
+                                    <a class="dropdown-item" href="/Login/Logout" id="logout-btn">Logout</a>
                                 </li>
                 </div>
                 </ul>
@@ -133,12 +133,10 @@
                                 <span id="userName"></span>
                                 <span class="user-level" id="userNIK">null</span>
                                 <span class="user-level" id="userRole">null</span>
-                                <span class="caret"></span>
                             </span>
                         </a>
                         <div class="clearfix"></div>
-
-                        <div class="collapse in" id="collapseExample">
+                        @*<div class="collapse in" id="collapseExample">
                             <ul class="nav">
                                 <li>
                                     <a href="#profile">
@@ -156,7 +154,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                 <ul class="nav nav-primary">
@@ -174,15 +172,23 @@
                                 <p>Employee</p>
                                 <span class="caret"></span>
                             </a>
+
                             <div class="collapse" id="base">
                                 <ul class="nav nav-collapse">
-
-                                    <li>
-                                        <a href="/employees/datatable">
-                                            <span class="sub-item">Data</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li>
+                                            <a href="/employees/datatable">
+                                                <span class="sub-item">Data</span>
+                                            </a>
+                                        </li>
+                                    }
+                                        <li>
+                                            <a href="/employees/">
+                                                <span class="sub-item">On Leave</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                             </div>
                         </li>
                     }
@@ -229,7 +235,7 @@
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <li>
-                                        <a href="#">
+                                        <a href="/leaves/quota">
                                             <span class="sub-item">Leave Quota</span>
                                         </a>
                                     </li>

@@ -43,6 +43,7 @@
                             <div class="col">
                                 <label for="leaveNIK">NIK</label>
                                 <input type="text" class="form-control" id="leaveNIK" placeholder="NIK" required disabled>
+                                <input type="text" class="form-control" id="formId" placeholder="id" required hidden>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
                         </div>
@@ -59,27 +60,27 @@
                         <div class="form-row">
                             <div class="col">
                                 <label for="startDate">Start Date</label>
-                                <input type="text" class="form-control" id="startDate" placeholder="Start Date" required>
+                                <input type="text" class="form-control" id="startDate" placeholder="Start Date" onchange="isFutureDate()" required>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
                             <div class="col">
                                 <label for="endDate">End Date</label>
                                 <input type="text" class="form-control" id="endDate" placeholder="End Date" required>
-                                <div class="invalid-feedback">Please fill out this field.</div>
+                                <div class="invalid-feedback" id="invalid-date">Please fill out this field.</div>
                             </div>
                         </div>
                         <br />
                         <div class="form-row">
                             <div class="col">
-                                <label for="Attachment">Attachment</label>
-                                <textarea class="form-control" id="attachment" placeholder="Attachment" required></textarea>
+                                <label for="Attachment">Notes</label>
+                                <textarea class="form-control" id="attachment" placeholder="Notes" required></textarea>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
                         </div>
                         <br />
                         <div style="text-align:right">
-                            <button type="submit" class="btn btn-primary" id="btn-insert" onclick="requestLeave()">Submit</button>
-                            <button class="btn btn-primary" id="btn-update" onclick="updateUni()">Update</button>
+                            <button type="submit" class="btn btn-primary" id="btn-insert">Submit</button>
+                            <button class="btn btn-primary" id="btn-update">Update</button>
                         </div>
                     </div>
                 </form>

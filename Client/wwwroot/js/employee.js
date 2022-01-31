@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees/history/' + nik,
+            'url': 'https://localhost:44316/api/leaveemployees/OnLeave/' + nik,
             'dataType': 'json',
             'dataSrc': ''
         },

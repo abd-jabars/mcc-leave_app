@@ -22,12 +22,5 @@ namespace Client.Controllers
         {
             return View();
         }
-
-        [HttpGet]
-        public async Task<JsonResult> GetByManager(string nik)
-        {
-            var result = await repository.GetByManager(nik);
-            return Json(result);
-        }
     }
 }
