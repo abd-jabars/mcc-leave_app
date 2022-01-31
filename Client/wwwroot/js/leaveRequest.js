@@ -90,21 +90,52 @@ $(document).ready(function () {
         document.getElementById('btn-insert').style.display = 'none';
         document.getElementById('btn-update').style.display = 'inline';
         document.getElementById('leaveRequestForm').classList.remove('was-validated');
-        editLeave(data);
+        SetFormValue(data);
     });
     $('#leaveTable').on('click', '#btn-details', function () {
         var data = table.row($(this).closest('tr')).data();
         detailLeave(data);
     });
     $('#leaveRequestForm').on('click', '#btn-insert', function () {
+        requestLeave();
     });
     $('#leaveRequestForm').on('click', '#btn-update', function () {
+        updateLeave();
     });
     //setInterval(function () {
     //    table.ajax.reload();
     //}, 3000);
     getLeave();
 });
+
+function isFutureDate() {
+    var today = new Date(),
+        idate = document.getElementById("startDate"),
+        date = new Date(idate.value);
+    if (date > today) {
+        $("invalid-date").val("Please fill out this field.");
+        $("#endDate").prop('disabled', false);
+        console.log("Entered date is a future date");
+    } else {
+        $("invalid-date").val("You entered a invalid date")
+        $("#endDate").prop('disabled', true);
+        console.log("Entered date is a past date");
+    }
+}
+
+function SetFormValue(data) {
+    let Id = data.id;
+    let leaveId = data.leaveId;
+    let startDate = data.startDate;
+    let endDate = data.endDate;
+    let attachment = data.attachment;
+
+    $("#formId").val(Id);
+    $("#leaveSelect").val(leaveId);
+    $("#startDate").val(startDate);
+    $("#endDate").val(endDate);
+    $("#attachment").val(attachment);
+}
 
 $('.btn-add').on('click', function () {
     $("#leaveNIK").val(nik);
@@ -184,8 +215,6 @@ function getLeave() {
 }
 
 function requestLeave() {
-    var years = new Date().getFullYear();
-
     var obj = new Object();
     obj.nik = $("#leaveNIK").val();
     obj.leaveId = $("#leaveSelect").val();
@@ -238,6 +267,43 @@ function requestLeave() {
             footer: `<a href=${'https://httpstatuses.com/' + error.status} target="_blank"/>Why do I have this issue?</a>`
         })
     })
+}
+
+function updateLeave() {
+    var obj = new Object();
+    obj.id = $("#formId").val();
+    obj.nik = $("#leaveNIK").val();
+    obj.leaveId = $("#leaveSelect").val();
+    obj.startDate = $("#startDate").val();
+    obj.endDate = $("#endDate").val();
+    obj.attachment = $("#attachment").val();
+
+    console.log(JSON.stringify(obj));
+
+    $.ajax({
+        url: 'https://localhost:44316/api/Leaveemployees/',
+        type: "PUT",
+        contentType: "application/json;charset=utf-8",
+        traditional: true,
+        data: JSON.stringify(obj)
+    }).done((result) => {
+        console.log(result)
+        Swal.fire({
+            title: 'Leave Request Updated',
+            /*    text: 'Input Success!',*/
+            icon: 'success'
+        })
+        $('#insertModal').modal('hide');
+    }).fail((error) => {
+        console.log(error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: `<a href=${'https://httpstatuses.com/' + error.status} target="_blank"/>Why do I have this issue?</a>`
+        })
+    })
+    tableReload();
 }
 
 function deleteRequest(data) {

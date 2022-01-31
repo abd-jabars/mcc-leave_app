@@ -23,7 +23,6 @@ namespace Client.Repository.Data
                 BaseAddress = new Uri(address.link)
             };
         }
-
         public async Task<Object> GetByManager(string nik)
         {
             //List<RegisterVM> entities = new List<RegisterVM>();
@@ -72,6 +71,5 @@ namespace Client.Repository.Data
             }
             return entities;
         }
-
     }
 }

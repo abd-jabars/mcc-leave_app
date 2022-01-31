@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': '/leaveemployees/history/' + nik,
+            'url': 'https://localhost:44316/api/leaveemployees/OnLeave/' + nik,
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -84,7 +84,7 @@ $(document).ready(function () {
 
 function detailLeave(data) {
     $.ajax({
-        url: '/leaveemployees/show/' + data.id,
+        url: 'https://localhost:44316/api/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);

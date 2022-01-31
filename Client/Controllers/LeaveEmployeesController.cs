@@ -50,6 +50,5 @@ namespace Client.Controllers
             var result = await repository.GetHistoryList();
             return Json(result);
         }
-
     }
 }

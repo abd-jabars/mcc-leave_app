@@ -107,7 +107,6 @@ function ApprovalNotif(employeeId) {
         $("#emailNotificationEmployee").html(countRequest);
         $("#notifTitleEmployee").html("Ada " + countRequest + " pengajuan cuti yang telah diproses");
 
-
     }).fail((error) => {
         console.log(error)
     })
@@ -124,3 +123,7 @@ function FormatDate(date) {
 
     return [day, month, year].join('/');
 }
+
+$('.dropdown-item').on('click', '#logout-btn', function () {
+    window.localStorage.clear();
+});

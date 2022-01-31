@@ -79,16 +79,16 @@ namespace API.Controllers.Data
             }
         }
 
-        [HttpGet("History")]
-        public ActionResult getHistoryList()
+        [HttpGet("History/{nik}")]
+        public ActionResult getHistoryList(string nik)
         {
             try
             {
                 var code = 0;
                 var message = "";
                 //var result = ();
-                var count = leaveEmployeeRepository.GetHistoryList().Count();
-                var result = leaveEmployeeRepository.GetHistoryList();
+                var count = leaveEmployeeRepository.GetHistoryList(nik).Count();
+                var result = leaveEmployeeRepository.GetHistoryList(nik);
 
                 if (count > 0)
                 {
@@ -109,16 +109,16 @@ namespace API.Controllers.Data
             }
         }
 
-        [HttpGet("GetByManager/{nik}")]
-        public ActionResult GetByManager(string nik)
+        [HttpGet("OnLeave/{nik}")]
+        public ActionResult GetonLeaveList(string nik)
         {
             try
             {
                 var code = 0;
                 var message = "";
                 //var result = ();
-                var count = leaveEmployeeRepository.GetByManager(nik).Count();
-                var result = leaveEmployeeRepository.GetByManager(nik);
+                var count = leaveEmployeeRepository.GetonLeaveList(nik).Count();
+                var result = leaveEmployeeRepository.GetonLeaveList(nik);
 
                 if (count > 0)
                 {

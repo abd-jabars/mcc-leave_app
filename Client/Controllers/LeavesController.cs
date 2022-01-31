@@ -66,6 +66,11 @@ namespace Client.Controllers
             var result = repository.LeaveApproval(leaveApproval);
             return Json(result);
         }
+        
+        public IActionResult Quota()
+        {
+            return View();
+        }
 
     }
 }
