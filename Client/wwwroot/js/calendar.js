@@ -94,7 +94,7 @@ function addQuota() {
     console.log(JSON.stringify(obj));
 
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/Quota',
+        url: '/Leaves/Quota',
         type: "PUT",
         contentType: "application/json;charset=utf-8",
         traditional: true,
