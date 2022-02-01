@@ -70,5 +70,17 @@ namespace Client.Repository.Data
             }
             return entities;
         }
+
+        public async Task<Object> GetonLeaveList(string nik)
+        {
+            Object entities = new Object();
+
+            using (var response = await httpClient.GetAsync(request + "OnLeave/" + nik))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entities;
+        }
     }
 }

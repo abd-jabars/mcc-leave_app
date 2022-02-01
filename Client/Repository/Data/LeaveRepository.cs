@@ -76,5 +76,18 @@ namespace Client.Repository.Data
             return entity;
         }
 
+        public Object LeaveQuota(LeaveVM leaveQuota)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(leaveQuota), Encoding.UTF8, "application/json");
+
+            Object entity = new Object();
+            using (var response = httpClient.PutAsync(request + "Quota", content).Result)
+            {
+                string apiResponse = response.Content.ReadAsStringAsync().Result;
+                entity = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entity;
+        }
+
     }
 }

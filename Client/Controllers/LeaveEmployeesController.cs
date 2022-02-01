@@ -50,5 +50,12 @@ namespace Client.Controllers
             var result = await repository.GetByNik(nik);
             return Json(result);
         }
+        
+        [HttpGet("LeaveEmployees/OnLeave/{nik}")]
+        public async Task<JsonResult> GetonLeaveList(string nik)
+        {
+            var result = await repository.GetonLeaveList(nik);
+            return Json(result);
+        }
     }
 }

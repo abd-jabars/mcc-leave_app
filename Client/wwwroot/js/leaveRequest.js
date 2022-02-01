@@ -289,11 +289,12 @@ function updateLeave() {
     console.log(JSON.stringify(obj));
 
     $.ajax({
-        url: 'https://localhost:44316/api/Leaveemployees/',
+        url: '/Leaveemployees/Put',
         type: "PUT",
-        contentType: "application/json;charset=utf-8",
+        //contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        //data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
         Swal.fire({

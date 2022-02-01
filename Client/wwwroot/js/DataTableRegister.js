@@ -65,7 +65,7 @@
 });
 //function GetDepartmentManager() {
 //    $.ajax({
-//        'url': "https://localhost:44367/Department/GetAll",
+//        'url': "/Department/GetAll",
 //        'dataSrc': ''
 //    }).done((result) => {
 //        console.log(result);

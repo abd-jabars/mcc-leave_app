@@ -72,5 +72,13 @@ namespace Client.Controllers
             return View();
         }
 
+        [HttpPut]
+        [Route("Leaves/Quota")]
+        public JsonResult LeaveQuota(LeaveVM leave_quota)
+        {
+            var result = repository.LeaveQuota(leave_quota);
+            return Json(result);
+        }
+
     }
 }
