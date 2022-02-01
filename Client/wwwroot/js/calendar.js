@@ -45,7 +45,7 @@ $.ajax({
         $("#massleave").val(len);
         $(".year").val(year);
     }
-    $("#leaveTable").html(text)
+    $("#leaveCalendarTable").html(text)
 }).fail((error) => {
     console.log(error)
 })
@@ -118,16 +118,17 @@ function addQuota() {
 }
 
 function totalDays() {
-    var count = -1;
-    var startDate = new Date("2022-02-01");
-    var currentDate = startDate;
-    var endDate = new Date("2022-02-10");
+    var sdate = document.getElementById("startDate"),
+        edate = document.getElementById("endDate"),
+        startDate = new Date(sdate.value),
+        endDate = new Date(edate.value);
+    let count = -1;
+    let inc = 0;
+    var leaveDate = startDate;
     const diffInMs = new Date(endDate) - new Date(startDate)
     const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
     console.log("start: " + startDate + ", End: " + endDate);
     console.log("total Leave before cut: " + diffInDays);
-
-    console.log(dates);
 
     const addDays = function (days) {
         const date = new Date(this.valueOf())
@@ -136,8 +137,8 @@ function totalDays() {
     }
 
     for (var i = 0; i <= diffInDays; i++) {
-        dates.push(currentDate);
-        currentDate = addDays.call(currentDate, 1);
+        dates.push(leaveDate);
+        leaveDate = addDays.call(leaveDate, 1);
     }
 
     $.each(dates, function (key, index) {
@@ -154,9 +155,8 @@ function totalDays() {
             }
         })
     })
+    dates = [];
     console.log("holiday + weekend count: " + count);
     console.log("total Leave after cut: " + (diffInDays - count));
 }
-
-
 

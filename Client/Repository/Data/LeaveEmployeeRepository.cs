@@ -23,12 +23,11 @@ namespace Client.Repository.Data
                 BaseAddress = new Uri(address.link)
             };
         }
-        public async Task<Object> GetByManager(string nik)
+        public async Task<Object> GetByNik(string nik)
         {
-            //List<RegisterVM> entities = new List<RegisterVM>();
             Object entities = new Object();
 
-            using (var response = await httpClient.GetAsync(request + "GetByManager"))
+            using (var response = await httpClient.GetAsync(request + "GetLeave/" + nik))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entities = JsonConvert.DeserializeObject<Object>(apiResponse);
@@ -48,11 +47,11 @@ namespace Client.Repository.Data
             return register;
         }
 
-        public async Task<Object> GetApprovalList()
+        public async Task<Object> GetApprovalList(string nik)
         {
             Object entities = new Object();
 
-            using (var response = await httpClient.GetAsync(request + "Approval"))
+            using (var response = await httpClient.GetAsync(request + "Approval/" + nik))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entities = JsonConvert.DeserializeObject<Object>(apiResponse);

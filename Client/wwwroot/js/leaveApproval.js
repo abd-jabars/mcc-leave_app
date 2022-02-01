@@ -1,4 +1,6 @@
-﻿var table = $('#leaveTable').DataTable({
+﻿var nik = localStorage.getItem("nik");
+
+var table = $('#leaveTable').DataTable({
     dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     buttons: [
         {
@@ -42,7 +44,7 @@
         }
     ],
     'ajax': {
-        'url': '/leaveemployees/approval',
+        'url': '/leaveemployees/approval/' + nik,
         'dataType': 'json',
         'dataSrc': ''
     },

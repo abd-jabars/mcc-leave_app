@@ -23,13 +23,6 @@ namespace Client.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<JsonResult> GetByManager(string nik)
-        {
-            var result = await repository.GetByManager(nik);
-            return Json(result);
-        }
-
         [HttpGet("LeaveEmployees/Show/{id}")]
         public async Task<JsonResult> GetLeaveEmployee(int id)
         {
@@ -37,10 +30,10 @@ namespace Client.Controllers
             return Json(result);
         }
 
-        [HttpGet("LeaveEmployees/Approval")]
-        public async Task<JsonResult> GetApprovalList()
+        [HttpGet("LeaveEmployees/Approval/{nik}")]
+        public async Task<JsonResult> GetApprovalList(string nik)
         {
-            var result = await repository.GetApprovalList();
+            var result = await repository.GetApprovalList(nik);
             return Json(result);
         }
 
@@ -51,6 +44,13 @@ namespace Client.Controllers
             return Json(result);
         }
 
+        [HttpGet("LeaveEmployees/getbynik/{nik}")]
+        public async Task<JsonResult> GetByNik(string nik)
+        {
+            var result = await repository.GetByNik(nik);
+            return Json(result);
+        }
+        
         [HttpGet("LeaveEmployees/OnLeave/{nik}")]
         public async Task<JsonResult> GetonLeaveList(string nik)
         {
