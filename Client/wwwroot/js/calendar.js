@@ -122,7 +122,8 @@ function totalDays() {
         edate = document.getElementById("endDate"),
         startDate = new Date(sdate.value),
         endDate = new Date(edate.value);
-    var count = -1;
+    let count = -1;
+    let inc = 0;
     var leaveDate = startDate;
     const diffInMs = new Date(endDate) - new Date(startDate)
     const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
@@ -154,9 +155,8 @@ function totalDays() {
             }
         })
     })
+    dates = [];
     console.log("holiday + weekend count: " + count);
     console.log("total Leave after cut: " + (diffInDays - count));
 }
-
-
 
