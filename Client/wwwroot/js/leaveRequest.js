@@ -230,13 +230,9 @@ function requestLeave() {
     obj.endDate = $("#endDate").val();
     obj.attachment = $("#attachment").val();
 
-    const diffInMs = new Date(obj.endDate) - new Date(obj.startDate)
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    console.log("total Leave: " + diffInDays);
+    obj.totalLeave = totalDays();
 
-    obj.totalLeave = diffInDays;
-
-    console.log(JSON.stringify(obj))
+    console.log(obj)
 
     var myTable = $('#leaveTable').DataTable();
 
@@ -285,6 +281,8 @@ function updateLeave() {
     obj.startDate = $("#startDate").val();
     obj.endDate = $("#endDate").val();
     obj.attachment = $("#attachment").val();
+
+    obj.totalLeave = leaveTotal;
 
     console.log(JSON.stringify(obj));
 

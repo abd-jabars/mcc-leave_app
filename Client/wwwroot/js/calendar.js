@@ -91,14 +91,12 @@ function addQuota() {
     var obj = new Object();
     obj.Quota = q2;
 
-    console.log(JSON.stringify(obj));
+    console.log(obj);
 
     $.ajax({
         url: '/Leaves/Quota',
         type: "PUT",
-        contentType: "application/json;charset=utf-8",
-        traditional: true,
-        data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
         Swal.fire({
@@ -156,7 +154,9 @@ function totalDays() {
         })
     })
     dates = [];
+    var leaveTotal = diffInDays - count;
     console.log("holiday + weekend count: " + count);
-    console.log("total Leave after cut: " + (diffInDays - count));
+    console.log("total Leave after cut: " + leaveTotal);
+    return leaveTotal;
 }
 

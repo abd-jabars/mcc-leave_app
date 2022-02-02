@@ -74,11 +74,10 @@ namespace Client.Controllers
 
         [HttpPut]
         [Route("Leaves/Quota")]
-        public JsonResult LeaveQuota(LeaveVM leave_quota)
+        public JsonResult LeaveQuota(LeaveVM leaveQuota)
         {
-            var result = repository.LeaveQuota(leave_quota);
+            var result = repository.LeaveQuota(leaveQuota);
             return Json(result);
         }
-
     }
 }
