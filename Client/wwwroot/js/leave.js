@@ -58,27 +58,24 @@ function addLeave() {
     console.log(obj)
 
     $.ajax({
-        url: '/Leaves/POST/',
+        url: '/leaves/post',
         type: "POST",
-        contentType: "application/json;charset=utf-8",
+        //contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
-        //data: obj
+        //data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
         if (result.status == 200) {
             swalIcon = 'success';
             swalTitle = 'Input Success';
-            swalFooter = '';
         } else {
             swalIcon = 'error';
             swalTitle = 'Oops...';
-            swalFooter = `<a href=${'/leaves'}/>Ketentuan Cuti</a>`;
         }
         Swal.fire({
             title: swalTitle,
             icon: swalIcon,
-            footer: swalFooter,
             text: result.message
         })
         $('#insertModal').modal('hide');
