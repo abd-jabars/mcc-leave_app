@@ -96,9 +96,8 @@ function addQuota() {
     $.ajax({
         url: '/Leaves/Quota',
         type: "PUT",
-        contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
         Swal.fire({
