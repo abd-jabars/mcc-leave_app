@@ -80,8 +80,6 @@ $(document).ready(function () {
                 "data": null,
                 'bSortable': false,
                 "defaultContent": `<button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
-                               <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#insertModal" id="btn-edit"><i class="fas fa-edit"></i></button>
-                               <button class="btn btn-sm btn-outline-danger" id="btn-delete"><i class="fas fa-trash"></i></button>
                                `
             }
         ]
@@ -123,11 +121,9 @@ function isFutureDate() {
     if (date > today) {
         $("#endDate").val("");
         $("#endDate").prop('disabled', false);
-        console.log("Entered date is a future date");
     } else {
         $("#endDate").val("You entered an invalid date")
         $("#endDate").prop('disabled', true);
-        console.log("Entered date is a past date");
     }
 }
 
@@ -224,10 +220,12 @@ function getLeave() {
 
 function requestLeave() {
     var obj = new Object();
+    var sDate = new Date($("#startDate").val());
+    var eDate = new Date($("#endDate").val());
     obj.nik = $("#leaveNIK").val();
     obj.leaveId = $("#leaveSelect").val();
-    obj.startDate = $("#startDate").val();
-    obj.endDate = $("#endDate").val();
+    obj.startDate = FormatDate(sDate);
+    obj.endDate = FormatDate(eDate);
     obj.attachment = $("#attachment").val();
 
     obj.totalLeave = totalDays();
@@ -275,11 +273,13 @@ function requestLeave() {
 
 function updateLeave() {
     var obj = new Object();
+    var sDate = new Date($("#startDate").val());
+    var eDate = new Date($("#endDate").val());
     obj.id = $("#formId").val();
     obj.nik = $("#leaveNIK").val();
     obj.leaveId = $("#leaveSelect").val();
-    obj.startDate = $("#startDate").val();
-    obj.endDate = $("#endDate").val();
+    obj.startDate = FormatDate(sDate);
+    obj.endDate = FormatDate(eDate);
     obj.attachment = $("#attachment").val();
 
     obj.totalLeave = leaveTotal;
@@ -362,11 +362,23 @@ $('#insertModal').on('hidden.bs.modal', function (e) {
         .val("");
 })
 
+function FormatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [day, month, year].join('/');
+}
+
 $(function () {
-    var dateFormat = "mm/dd/yy",
+    var dateFormat = "dd/mm/yyyy",
         from = $("#startDate")
             .datepicker({
-                defaultDate: "+1w",
+                defaultDate: "+1d",
                 changeYear: true,
                 changeMonth: true,
                 minDate: 0,
@@ -378,7 +390,7 @@ $(function () {
                 to.datepicker("option", "minDate", getDate(this));
             }),
         to = $("#endDate").datepicker({
-            defaultDate: "+1w",
+            defaultDate: null,
             changeYear: true,
             changeMonth: true,
             yearRange: "-100:+20",
