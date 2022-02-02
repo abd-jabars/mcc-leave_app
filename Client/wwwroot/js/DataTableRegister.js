@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     var table = $('#dataTableRegister').DataTable({
-        'scrollX': true,
+        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         'ajax': {
             'url': "/Employees/RegisteredData",
             'dataSrc': 'result'
@@ -18,14 +18,12 @@
             },
             {
                 'data': null,
-                'width': '100px',
                 'render': function (data, type, row) {
                     return row['fullName']
                 }
             },
             {
                 'data': 'birthDate',
-                'width': '100px'
             },
             {
                 'data': null,
@@ -51,8 +49,8 @@
                 'data': null,
                 'width': '150px',
                 'render': function (data, type, row) {
-                    return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning fa fa-pencil" onclick="UpdateModal(${row["nik"]})"></button>
-                            <button id="btn-delete" class="btn btn-danger fa fa-trash"></button>`;
+                    return `<button data-toggle="modal" data-target="#employeeModal" class="btn btn-warning" onclick="UpdateModal(${row["nik"]})"><i class="fa fa-pencil"></i></button>
+                            <button id="btn-delete" class="btn btn-danger"><i class="fa fa-trash"></i></button>`;
                 }
             }
         ]
