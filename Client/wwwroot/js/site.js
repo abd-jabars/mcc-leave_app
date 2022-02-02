@@ -30,6 +30,10 @@
         $("#userRole").html(role);
     }
 
+    if (result.managerId == null || result.managerId == userNik) {
+        document.getElementById("reqLeave").style.display = "none";
+    }
+
     RequestNotif(userNik);
     ApprovalNotif(userNik);
 
