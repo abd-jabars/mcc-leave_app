@@ -189,11 +189,23 @@ namespace API.Repository.Data
 
         public int SubmitForm(LeaveVM leaveRequest)
         {
+            int countAccountRole = myContext.LeaveEmployees.ToList().Count;
+            int formatedId;
+            if (countAccountRole == 0)
+            {
+                formatedId = countAccountRole;
+            }
+            else
+            {
+                int countAccountRole2 = myContext.LeaveEmployees.ToList().Max(ar => ar.Id);
+                int formula = countAccountRole2 + 1;
+                formatedId = formula;
+            }
             if (leaveRequest.StartDate < leaveRequest.EndDate)
             {
                 var leaveEmployee = new LeaveEmployee
                 {
-                    Id = myContext.LeaveEmployees.ToList().Count + 1,
+                    Id = formatedId,
                     StartDate = leaveRequest.StartDate,
                     EndDate = leaveRequest.EndDate,
                     Attachment = leaveRequest.Attachment,
