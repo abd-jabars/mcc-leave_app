@@ -11,7 +11,6 @@
         })
     })
     $("#normalTable").html(text)
-    console.log(data);
 }).fail((error) => {
     console.log(error)
 })
@@ -29,7 +28,6 @@ $.ajax({
         })
     })
     $("#specialTable").html(text)
-    console.log(data);
 }).fail((error) => {
     console.log(error)
 })
@@ -51,4 +49,47 @@ $.ajax({
     console.log(error)
 })
 
+function addLeave() {
+    var obj = new Object();
+    obj.name = $("#leaveName").val();
+    obj.period = $("#leavePeriod").val();
+    obj.type = 1;
+
+    console.log(obj)
+
+    $.ajax({
+        url: '/Leaves/POST/',
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        traditional: true,
+        data: JSON.stringify(obj)
+        //data: obj
+    }).done((result) => {
+        console.log(result)
+        if (result.status == 200) {
+            swalIcon = 'success';
+            swalTitle = 'Input Success';
+            swalFooter = '';
+        } else {
+            swalIcon = 'error';
+            swalTitle = 'Oops...';
+            swalFooter = `<a href=${'/leaves'}/>Ketentuan Cuti</a>`;
+        }
+        Swal.fire({
+            title: swalTitle,
+            icon: swalIcon,
+            footer: swalFooter,
+            text: result.message
+        })
+        $('#insertModal').modal('hide');
+    }).fail((error) => {
+        console.log(error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: `<a href=${'https://httpstatuses.com/' + error.status} target="_blank"/>Why do I have this issue?</a>`
+        })
+    })
+}
 

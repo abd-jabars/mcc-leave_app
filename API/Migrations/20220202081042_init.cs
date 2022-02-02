@@ -11,7 +11,8 @@ namespace API.Migrations
                 name: "tb_m_leaves",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Period = table.Column<int>(type: "int", nullable: false)
@@ -25,7 +26,8 @@ namespace API.Migrations
                 name: "tb_m_roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -37,7 +39,8 @@ namespace API.Migrations
                 name: "tb_tr_accountroles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -124,21 +127,21 @@ namespace API.Migrations
                 name: "tb_tr_leaveemployees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    EmployeeNIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    NIK = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     LeaveId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tb_tr_leaveemployees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_tb_tr_leaveemployees_tb_m_employees_EmployeeNIK",
-                        column: x => x.EmployeeNIK,
+                        name: "FK_tb_tr_leaveemployees_tb_m_employees_NIK",
+                        column: x => x.NIK,
                         principalTable: "tb_m_employees",
                         principalColumn: "NIK",
                         onDelete: ReferentialAction.Restrict);
@@ -176,14 +179,14 @@ namespace API.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tb_tr_leaveemployees_EmployeeNIK",
-                table: "tb_tr_leaveemployees",
-                column: "EmployeeNIK");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_tb_tr_leaveemployees_LeaveId",
                 table: "tb_tr_leaveemployees",
                 column: "LeaveId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_tr_leaveemployees_NIK",
+                table: "tb_tr_leaveemployees",
+                column: "NIK");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_tb_tr_accountroles_tb_m_accounts_AccountId",

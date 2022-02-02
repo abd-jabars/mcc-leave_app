@@ -205,7 +205,7 @@ namespace API.Repository.Data
             {
                 var leaveEmployee = new LeaveEmployee
                 {
-                    Id = formatedId,
+                    //Id = formatedId,
                     StartDate = leaveRequest.StartDate,
                     EndDate = leaveRequest.EndDate,
                     Attachment = leaveRequest.Attachment,

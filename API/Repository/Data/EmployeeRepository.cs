@@ -91,7 +91,7 @@ namespace API.Repository.Data
                 // var countAccountRole = myContext.AccountRoles.ToList().Count;
                 var accountRole = new AccountRole
                 {
-                    Id = formatedId,
+                    //Id = formatedId,
                     AccountId = account.NIK,
                     RoleId = 3
                 };
