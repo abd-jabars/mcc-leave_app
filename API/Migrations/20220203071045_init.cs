@@ -132,6 +132,7 @@ namespace API.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Attachment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    managerNote = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     NIK = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     LeaveId = table.Column<int>(type: "int", nullable: false)
