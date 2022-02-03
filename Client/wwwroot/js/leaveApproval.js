@@ -2,47 +2,6 @@
 
 var table = $('#leaveTable').DataTable({
     dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-    buttons: [
-        {
-            extend: 'copy',
-            text: '<i class="fa fa-files-o"></i>',
-            exportOptions: {
-                columns: [0, 1]
-            }
-        },
-        {
-            extend: 'csv',
-            text: '<i class="fa fa-file-text-o"></i>',
-            exportOptions: {
-                columns: [0, 1]
-            }
-        },
-        {
-            extend: 'excel',
-            text: '<i class="fa fa-file-excel-o"></i>',
-            exportOptions: {
-                columns: [0, 1]
-            }
-        },
-        {
-            extend: 'pdf',
-            text: '<i class="fa fa-file-pdf-o"></i>',
-            orientation: 'portrait',
-            title: 'Registered Data',
-            pageSize: 'LEGAL',
-            exportOptions: {
-                columns: [0, 1]
-            }
-        },
-        {
-            extend: 'print',
-            text: '<i class="fas fa-print"></i>',
-            title: 'Registered Data',
-            exportOptions: {
-                columns: [0, 1]
-            }
-        }
-    ],
     'ajax': {
         'url': '/leaveemployees/approval/' + nik,
         'dataType': 'json',
@@ -74,17 +33,15 @@ var table = $('#leaveTable').DataTable({
             'bSortable': false,
             "defaultContent": `
                                 <button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
-                               <button class="btn btn-sm btn-outline-success"id="btn-approve"><i class="fas fa-check"></i></button>
-                               <button class="btn btn-sm btn-outline-danger" id="btn-decline"><i class="fas fa-ban"></i></button>
                                `
         }
     ]
 });
 $(document).ready(function () {
     table;
-    $('#leaveTable').on('click', '#btn-decline', function () {
-        var data = table.row($(this).closest('tr')).data();
-        declineLeave(data);
+    $('#declineModal').on('click', '#btn-decline', function () {
+        $('#leaveDetailModal').modal('hide');
+        declineLeave();
         tableReload();
     });
     $('#leaveTable').on('click', '#btn-approve', function () {
@@ -99,8 +56,8 @@ $(document).ready(function () {
 });
 
 function tableReload() {
-    console.log("page load");
-    table.ajax.reload();
+    var myTable = $('#leaveTable').DataTable();
+    myTable.ajax.reload();
 };
 
 function btnDisable(data) {
@@ -113,12 +70,22 @@ function btnDisable(data) {
 }
 
 function detailLeave(data) {
+    sessionStorage.setItem("leaveID", data.id);
     $.ajax({
         url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);
+        
         for (var i = 0; i < leaveDetails.length; i++) {
+            sessionStorage.setItem("detailNIK", leaveDetails[i].nik);
+            var types = leaveDetails[i].type;
+            if (types == 0) {
+                types = "Cuti Normal";
+            }
+            else {
+                types = "Cuti Spesial";
+            }
             var text = `
                     <tr>
                         <td>NIK: </td>
@@ -134,7 +101,7 @@ function detailLeave(data) {
                    </tr>
                     <tr>
                         <td>Leave Type : </td>
-                        <td>${leaveDetails[i].type}</td>
+                        <td>${types}</td>
                    </tr>
                     <tr>
                         <td>Date : </td>
@@ -191,11 +158,14 @@ function approveLeave(data) {
     tableReload();
 }
 
-function declineLeave(data) {
+function declineLeave() {
     var obj = new Object();
-    obj.nik = data.nik
-    obj.leaveId = data.id
+    obj.nik = sessionStorage.getItem("detailNIK");
+    obj.leaveId = sessionStorage.getItem("leaveID");
+    obj.managerNote = $("#declineNotes").val();
     obj.leaveStatus = 2
+
+    $('#declineModal').modal('hide');
 
     console.log(JSON.stringify(obj));
 

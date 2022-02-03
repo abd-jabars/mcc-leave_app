@@ -158,6 +158,13 @@ function detailLeave(data) {
     }).done((leaveDetails) => {
         console.log(leaveDetails);
         for (var i = 0; i < leaveDetails.length; i++) {
+            var types = leaveDetails[i].type;
+            if (types == 0) {
+                types = "Cuti Normal";
+            }
+            else {
+                types = "Cuti Spesial";
+            }
             var text = `
                     <tr>
                         <td>NIK: </td>
@@ -177,7 +184,7 @@ function detailLeave(data) {
                    </tr>
                     <tr>
                         <td>Leave Type : </td>
-                        <td>${leaveDetails[i].type}</td>
+                        <td>${types}</td>
                    </tr>
                     <tr>
                         <td>Total Leave : </td>
@@ -191,10 +198,7 @@ function detailLeave(data) {
                         <td>Notes : </td>
                         <td>${leaveDetails[i].attachment}</td>
                    </tr>
-                    <tr>
-                        <td>Status : </td>
-                        <td>${leaveDetails[i].status}</td>
-                   </tr>`
+                    `
         }
         $("#infoTable").html(text)
         $('#leaveDetailModal').modal('show');
@@ -388,6 +392,9 @@ $(function () {
             })
             .on("change", function () {
                 to.datepicker("option", "minDate", getDate(this));
+            })
+            .on("click", function () {
+                from.datepicker._clearDate(this);
             }),
         to = $("#endDate").datepicker({
             defaultDate: null,
