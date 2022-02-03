@@ -44,10 +44,9 @@ $(document).ready(function () {
         declineLeave();
         tableReload();
     });
-    $('#leaveTable').on('click', '#btn-approve', function () {
+    $('#leaveDetailModal').on('click', '#btn-approve', function () {
         var data = table.row($(this).closest('tr')).data();
         approveLeave(data);
-        btnDisable(data);
     });
     $('#leaveTable').on('click', '#btn-details', function () {
         var data = table.row($(this).closest('tr')).data();
@@ -59,15 +58,6 @@ function tableReload() {
     var myTable = $('#leaveTable').DataTable();
     myTable.ajax.reload();
 };
-
-function btnDisable(data) {
-    if (data.status == 1) {
-        document.getElementById("btn-decline").disabled = true;
-    }
-    else if (data.status == 2) {
-        document.getElementById("btn-approve").disabled = true;
-    }
-}
 
 function detailLeave(data) {
     sessionStorage.setItem("leaveID", data.id);
@@ -125,8 +115,8 @@ function detailLeave(data) {
 
 function approveLeave(data) {
     var obj = new Object();
-    obj.nik = data.nik
-    obj.leaveId = data.id
+    obj.nik = sessionStorage.getItem("detailNIK");
+    obj.leaveId = sessionStorage.getItem("leaveID");
     obj.leaveStatus = 1
 
     console.log(JSON.stringify(obj));
