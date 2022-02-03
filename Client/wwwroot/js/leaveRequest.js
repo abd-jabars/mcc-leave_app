@@ -207,6 +207,19 @@ function detailLeave(data) {
     })
 }
 
+function getLeaveQuota() {
+    $.ajax({
+        url: '/accounts/get/' + nik,
+        dataSrc: ''
+    }).done((data) => {
+        console.log(data);
+        console.log(data.leaveQuota + data.prevLeaveQuota);
+        $("#leaveQuota").html("<p>Jatah Cuti Normal yang tersedia:  " + (data.leaveQuota + data.prevLeaveQuota) + " Hari</p>");
+    }).fail((error) => {
+        console.log(error)
+    })
+}
+
 function getLeave() {
     $.ajax({
         url: '/Leaves/GetAll'
@@ -394,7 +407,7 @@ $(function () {
                 to.datepicker("option", "minDate", getDate(this));
             })
             .on("click", function () {
-                from.datepicker._clearDate(this);
+                //from.datepicker("option", "maxDate", null);
             }),
         to = $("#endDate").datepicker({
             defaultDate: null,
@@ -406,6 +419,7 @@ $(function () {
         })
             .on("change", function () {
                 from.datepicker("option", "maxDate", getDate(this));
+                $("#totalLeave").html("<p>Jumlah Cuti yang diambil:  " + totalDays() + " Hari</p>");
             });
 
     function getDate(element) {

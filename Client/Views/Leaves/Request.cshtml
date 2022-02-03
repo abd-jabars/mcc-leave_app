@@ -7,7 +7,7 @@
     <div class="card-body">
         <div class="table-responsive">
             <h1 class="text-xl-center">Leave Data</h1>
-            <button class="btn btn-primary btn-add ml-3 mb-2" data-toggle="modal" data-target="#insertModal"><i class="fas fa-plus"></i><i> </i>Add Data</button>
+            <button class="btn btn-primary btn-add ml-3 mb-2" data-toggle="modal" data-target="#insertModal" onclick="getLeaveQuota()"><i class="fas fa-plus"></i><i> </i>Add Data</button>
             <table id="leaveTable" class="display table table-striped dataTable table-hover">
                 <thead class="text-center">
                     <tr>
@@ -52,7 +52,7 @@
                                 <select class="form-control" id="leaveSelect" required>
                                     <option value="">Select Leave type</option>
                                 </select>
-                                <p for="jatahCuti">Jatah Cuti Normal yang tersedia : <span id="jatahCuti">0</span> Hari</p>
+                                <div id="leaveQuota"></div>
                             </div>
                         </div>
                         <br />
@@ -68,6 +68,7 @@
                                 <div class="invalid-feedback" id="invalid-date">Please fill out this field.</div>
                             </div>
                         </div>
+                        <div id="totalLeave"></div>
                         <br />
                         <div class="form-row">
                             <div class="col">
