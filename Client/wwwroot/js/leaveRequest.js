@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44367/leaveemployees/getall',
+            'url': '/LeaveEmployees/GetByNik/' + nik,
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -57,23 +57,29 @@ $(document).ready(function () {
                 }
             },
             {
-                'data': 'nik'
-            },
-            {
                 'data': 'startDate'
             },
             {
                 'data': 'endDate'
             },
             {
-                'data': 'status'
+                'data': null,
+                'render': function (data, type, row) {
+                    if (row['status'] == 1) {
+                        return row['status'] = "Disetujui"
+                    }
+                    else if (row['status'] == 2) {
+                        return row['status'] = "Ditolak"
+                    }
+                    else {
+                        return row['status'] = "Diproses"
+                    }
+                }
             },
             {
                 "data": null,
                 'bSortable': false,
                 "defaultContent": `<button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
-                               <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#insertModal" id="btn-edit"><i class="fas fa-edit"></i></button>
-                               <button class="btn btn-sm btn-outline-danger" id="btn-delete"><i class="fas fa-trash"></i></button>
                                `
             }
         ]
@@ -113,13 +119,11 @@ function isFutureDate() {
         idate = document.getElementById("startDate"),
         date = new Date(idate.value);
     if (date > today) {
-        $("invalid-date").val("Please fill out this field.");
+        $("#endDate").val("");
         $("#endDate").prop('disabled', false);
-        console.log("Entered date is a future date");
     } else {
-        $("invalid-date").val("You entered a invalid date")
+        $("#endDate").val("You entered an invalid date")
         $("#endDate").prop('disabled', true);
-        console.log("Entered date is a past date");
     }
 }
 
@@ -149,7 +153,7 @@ $('.btn-add').on('click', function () {
 
 function detailLeave(data) {
     $.ajax({
-        url: 'https://localhost:44316/api/leaveemployees/show/' + data.id,
+        url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);
@@ -201,7 +205,7 @@ function detailLeave(data) {
 
 function getLeave() {
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/'
+        url: '/Leaves/GetAll'
     }).done((data) => {
         var leaveSelect = `<option value="" >Select Leave type</option>`;
         $.each(data, function (key, val) {
@@ -216,31 +220,34 @@ function getLeave() {
 
 function requestLeave() {
     var obj = new Object();
+    var sDate = new Date($("#startDate").val());
+    var eDate = new Date($("#endDate").val());
     obj.nik = $("#leaveNIK").val();
     obj.leaveId = $("#leaveSelect").val();
-    obj.startDate = $("#startDate").val();
-    obj.endDate = $("#endDate").val();
+    obj.startDate = FormatDate(sDate);
+    obj.endDate = FormatDate(eDate);
     obj.attachment = $("#attachment").val();
 
-    const diffInMs = new Date(obj.endDate) - new Date(obj.startDate)
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    console.log("total Leave: " + diffInDays);
+    obj.totalLeave = totalDays();
 
-    obj.totalLeave = diffInDays;
+    console.log(obj)
 
-    console.log(JSON.stringify(obj))
+    var myTable = $('#leaveTable').DataTable();
 
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/Request',
+        url: '/Leaves/LeaveRequest',
         type: "POST",
-        contentType: "application/json;charset=utf-8",
+        // contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        // data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
+        myTable.ajax.reload();
         if (result.status == 200) {
             swalIcon = 'success';
             swalTitle = 'Input Success';
+            swalFooter = '';
         } else {
             swalIcon = 'error';
             swalTitle = 'Oops...';
@@ -266,21 +273,26 @@ function requestLeave() {
 
 function updateLeave() {
     var obj = new Object();
+    var sDate = new Date($("#startDate").val());
+    var eDate = new Date($("#endDate").val());
     obj.id = $("#formId").val();
     obj.nik = $("#leaveNIK").val();
     obj.leaveId = $("#leaveSelect").val();
-    obj.startDate = $("#startDate").val();
-    obj.endDate = $("#endDate").val();
+    obj.startDate = FormatDate(sDate);
+    obj.endDate = FormatDate(eDate);
     obj.attachment = $("#attachment").val();
+
+    obj.totalLeave = leaveTotal;
 
     console.log(JSON.stringify(obj));
 
     $.ajax({
-        url: 'https://localhost:44316/api/Leaveemployees/',
+        url: '/Leaveemployees/Put',
         type: "PUT",
-        contentType: "application/json;charset=utf-8",
+        //contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        //data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
         Swal.fire({
@@ -315,12 +327,12 @@ function deleteRequest(data) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
+            var myTable = $('#leaveTable').DataTable();
             $.ajax({
-                url: 'https://localhost:44316/api/leaveemployees/',
+                url: '/leaveemployees/delete',
                 type: "DELETE",
-                contentType: "application/json;charset=utf-8",
                 traditional: true,
-                data: JSON.stringify(obj)
+                data: obj
             }).done((result) => {
                 console.log(result);
                 Swal.fire({
@@ -329,6 +341,7 @@ function deleteRequest(data) {
                     icon: 'success'
                 })
                 $('#insertModal').modal('hide');
+                myTable.ajax.reload();
             }).fail((error) => {
                 console.log(error);
                 Swal.fire({
@@ -349,21 +362,38 @@ $('#insertModal').on('hidden.bs.modal', function (e) {
         .val("");
 })
 
+function FormatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [day, month, year].join('/');
+}
+
 $(function () {
-    var dateFormat = "mm/dd/yy",
+    var dateFormat = "dd/mm/yyyy",
         from = $("#startDate")
             .datepicker({
-                defaultDate: "+1w",
+                defaultDate: "+1d",
+                changeYear: true,
                 changeMonth: true,
+                minDate: 0,
                 numberOfMonths: 1,
+                yearRange: "-100:+20",
                 beforeShowDay: $.datepicker.noWeekends
             })
             .on("change", function () {
                 to.datepicker("option", "minDate", getDate(this));
             }),
         to = $("#endDate").datepicker({
-            defaultDate: "+1w",
+            defaultDate: null,
+            changeYear: true,
             changeMonth: true,
+            yearRange: "-100:+20",
             numberOfMonths: 1,
             beforeShowDay: $.datepicker.noWeekends
         })

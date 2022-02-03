@@ -56,21 +56,21 @@ namespace API.Context
                 .HasMany(ar => ar.AccountRoles)
                 .WithOne(r => r.Role);
 
-            modelBuilder.Entity<Leave>()
-                .Property(l => l.Id)
-                .ValueGeneratedNever();
+            //modelBuilder.Entity<Leave>()
+            //    .Property(l => l.Id)
+            //    .ValueGeneratedNever();
 
-            modelBuilder.Entity<LeaveEmployee>()
-                .Property(le => le.Id)
-                .ValueGeneratedNever();
+            //modelBuilder.Entity<LeaveEmployee>()
+            //    .Property(le => le.Id)
+            //    .ValueGeneratedNever();
 
-            modelBuilder.Entity<AccountRole>()
-                .Property(ar => ar.Id)
-                .ValueGeneratedNever();
+            //modelBuilder.Entity<AccountRole>()
+            //    .Property(ar => ar.Id)
+            //    .ValueGeneratedNever();
             
-            modelBuilder.Entity<Role>()
-                .Property(r => r.Id)
-                .ValueGeneratedNever();
+            //modelBuilder.Entity<Role>()
+            //    .Property(r => r.Id)
+            //    .ValueGeneratedNever();
 
         }
     }

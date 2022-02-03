@@ -1,4 +1,6 @@
-﻿var table = $('#leaveTable').DataTable({
+﻿var nik = localStorage.getItem("nik");
+
+var table = $('#leaveTable').DataTable({
     dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     buttons: [
         {
@@ -42,7 +44,7 @@
         }
     ],
     'ajax': {
-        'url': 'https://localhost:44316/api/leaveemployees/approval',
+        'url': '/leaveemployees/approval/' + nik,
         'dataType': 'json',
         'dataSrc': ''
     },
@@ -112,7 +114,7 @@ function btnDisable(data) {
 
 function detailLeave(data) {
     $.ajax({
-        url: 'https://localhost:44316/api/leaveemployees/show/' + data.id,
+        url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);
@@ -163,11 +165,12 @@ function approveLeave(data) {
     console.log(JSON.stringify(obj));
 
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/Approval',
+        url: '/Leaves/Approval',
         type: "PUT",
-        contentType: "application/json;charset=utf-8",
+        // contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        //data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
         Swal.fire({
@@ -207,11 +210,12 @@ function declineLeave(data) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'https://localhost:44316/api/Leaves/Approval',
+                url: '/Leaves/Approval',
                 type: "PUT",
-                contentType: "application/json;charset=utf-8",
+                // contentType: "application/json;charset=utf-8",
                 traditional: true,
-                data: JSON.stringify(obj)
+                // data: JSON.stringify(obj)
+                data: obj
             }).done((result) => {
                 console.log(result);
                 Swal.fire({

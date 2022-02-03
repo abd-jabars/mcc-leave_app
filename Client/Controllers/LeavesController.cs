@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.ViewModel;
 using Client.Base;
 using Client.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -37,9 +38,46 @@ namespace Client.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public async Task<JsonResult> Normal()
+        {
+            var result = await repository.GetNormalLeave();
+            return Json(result);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> Special()
+        {
+            var result = await repository.GetSpecialLeave();
+            return Json(result);
+        }
+
+        [HttpPost]
+        public JsonResult LeaveRequest(LeaveVM leaveRequest)
+        {
+            var result = repository.LeaveRequest(leaveRequest);
+            return Json(result);
+        }
+
+        [HttpPut]
+        public JsonResult Approval(LeaveVM leaveApproval)
+        {
+            var result = repository.LeaveApproval(leaveApproval);
+            return Json(result);
+        }
+        
         public IActionResult Quota()
         {
             return View();
+        }
+
+        [HttpPut]
+        [Route("Leaves/Quota")]
+        public JsonResult LeaveQuota(LeaveVM leaveQuota)
+        {
+            var result = repository.LeaveQuota(leaveQuota);
+            return Json(result);
         }
     }
 }

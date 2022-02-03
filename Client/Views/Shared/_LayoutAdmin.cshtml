@@ -62,15 +62,43 @@
                         {
                             <li class="nav-item dropdown hidden-caret">
                                 <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-bell"></i>
-                                    <span class="notification" id="emailNotificationManager">notification number</span>
+                                    <i class="fa fa-envelope"></i>
+                                    <span class="notification" id="emailNotificationManager">0</span>
                                 </a>
                                 <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                                     <li>
-                                        <div class="dropdown-title" id="notifTitleManager">This is Notification Title</div>
+                                        <div class="dropdown-title" id="notifTitleManager">Notification</div>
                                     </li>
                                     <li>
                                         <div class="notif-scroll scrollbar-outer" id="notifBodyManager">
+                                            <div class="notif-center">
+                                                <a href="#">
+                                                    <div class="notif-icon notif-info"> <i class="fa fa-envelope"></i> </div>
+                                                    <div class="notif-content">
+                                                        <span class="block">
+                                                            No Notification
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (User.IsInRole("Employee"))
+                        {
+                            <li class="nav-item dropdown hidden-caret" id="bellIcon">
+                                <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell"></i>
+                                    <span class="notification" id="emailNotificationEmployee">notification number</span>
+                                </a>
+                                <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                                    <li>
+                                        <div class="dropdown-title" id="notifTitleEmployee">This is Notification Title</div>
+                                    </li>
+                                    <li>
+                                        <div class="notif-scroll scrollbar-outer" id="notifBodyEmployee">
                                             <div class="notif-center">
                                                 <a href="#">
                                                     <div class="notif-icon notif-info"> <i class="fa fa-envelope"></i> </div>
@@ -96,20 +124,21 @@
                                 <div class="dropdown-user-scroll scrollbar-outer">
                                 <li>
                                     <div class="user-box">
-                                        <div class="avatar-lg"><img src="https://asset-a.grid.id//crop/0x0:0x0/700x465/photo/bobofoto/original/7694_foto-boredpandacom.jpg" alt="image profile" class="avatar-img rounded"></div>
+                                        @*<div class="avatar-lg"><img src="https://asset-a.grid.id//crop/0x0:0x0/700x465/photo/bobofoto/original/7694_foto-boredpandacom.jpg" alt="image profile" class="avatar-img rounded"></div>*@
                                         <div class="u-text">
                                             <h4 id="userName1"></h4>
-                                            <p class="text-muted" id="userEmail"></p><a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                            <p class="text-muted" id="userEmail"></p>
+                                            @*<a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>*@
                                         </div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">My Profile</a>
+                                    @*<div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">My Profile</a>*@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/Login/Logout" id="logout-btn">Logout</a>
                                 </li>
-                </div>
+</div>
                 </ul>
                 </li>
                 </ul>
@@ -123,11 +152,11 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
             <div class="sidebar-content">
                 <div class="user">
-                    <div class="avatar-sm float-left mr-2">
+                    @*<div class="avatar-sm float-left mr-2">
                         <img src="https://asset-a.grid.id//crop/0x0:0x0/700x465/photo/bobofoto/original/7694_foto-boredpandacom.jpg" alt="..." class="avatar-img rounded-circle">
-                    </div>
+                    </div>*@
                     <div class="info">
-                        <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                        <a data-toggle="collapse" href="#" aria-expanded="true">
                             <span>
 
                                 <span id="userName"></span>
@@ -219,7 +248,12 @@
                         </a>
                         <div class="collapse" id="leave">
                             <ul class="nav nav-collapse">
-                                <li>
+                                <li id="indexLeave">
+                                    <a href="/leaves/">
+                                        <span class="sub-item">Index</span>
+                                    </a>
+                                </li>
+                                <li id="reqLeave">
                                     <a href="/leaves/request">
                                         <span class="sub-item">Leave Request</span>
                                     </a>

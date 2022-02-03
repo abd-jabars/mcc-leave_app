@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees/history/' + nik,
+            'url': '/leaveemployees/history/' + nik,
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -66,7 +66,18 @@ $(document).ready(function () {
                 'data': 'endDate'
             },
             {
-                'data': 'type'
+                'data': null,
+                'render': function (data, type, row) {
+                    if (row['status'] == 1) {
+                        return row['status'] = "Disetujui"
+                    }
+                    else if (row['status'] == 2) {
+                        return row['status'] = "Ditolak"
+                    }
+                    else {
+                        return row['status'] = "Diproses"
+                    }
+                }
             },
             {
                 "data": null,
@@ -84,7 +95,7 @@ $(document).ready(function () {
 
 function detailLeave(data) {
     $.ajax({
-        url: 'https://localhost:44316/api/leaveemployees/show/' + data.id,
+        url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);
