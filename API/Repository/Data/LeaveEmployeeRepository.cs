@@ -44,7 +44,8 @@ namespace API.Repository.Data
                             startDate = le.StartDate.ToString("dd/MM/yyyy"),
                             l.Type,
                             le.Attachment,
-                            le.Status
+                            le.Status,
+                            le.managerNote
                         };
             return query;
         }

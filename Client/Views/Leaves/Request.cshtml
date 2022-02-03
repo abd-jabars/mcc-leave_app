@@ -52,18 +52,19 @@
                                 <select class="form-control" id="leaveSelect" required>
                                     <option value="">Select Leave type</option>
                                 </select>
+                                <p for="jatahCuti">Jatah Cuti Normal yang tersedia : <span id="jatahCuti">0</span> Hari</p>
                             </div>
                         </div>
                         <br />
                         <div class="form-row">
                             <div class="col">
                                 <label for="startDate">Start Date</label>
-                                <input type="text" class="form-control" id="startDate" placeholder="Start Date" onclick="isFutureDate()" onchange="isFutureDate()" required>
+                                <input type="text" class="form-control" id="startDate" placeholder="MM/DD/YYYY" onclick="isFutureDate()" onchange="isFutureDate()" required>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
                             <div class="col">
                                 <label for="endDate">End Date</label>
-                                <input type="text" class="form-control" id="endDate" placeholder="End Date" required>
+                                <input type="text" class="form-control" id="endDate" placeholder="MM/DD/YYYY" required>
                                 <div class="invalid-feedback" id="invalid-date">Please fill out this field.</div>
                             </div>
                         </div>

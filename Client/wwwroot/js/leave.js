@@ -65,8 +65,8 @@ function addLeave() {
         //data: JSON.stringify(obj)
         data: obj
     }).done((result) => {
-        console.log(result)
-        if (result.status == 200) {
+        console.log("status?" + result)
+        if (result == 200) {
             swalIcon = 'success';
             swalTitle = 'Input Success';
         } else {
