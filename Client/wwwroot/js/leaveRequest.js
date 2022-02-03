@@ -375,7 +375,7 @@ function FormatDate(date) {
 }
 
 $(function () {
-    var dateFormat = "dd/mm/yyyy",
+    var dateFormat = "mm/dd/yy",
         from = $("#startDate")
             .datepicker({
                 defaultDate: "+1d",
