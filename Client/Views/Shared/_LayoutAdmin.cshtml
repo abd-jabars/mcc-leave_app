@@ -272,11 +272,14 @@
                                         </a>
                                     </li>
                                 }
-                                <li>
-                                    <a href="/leaves/history">
-                                        <span class="sub-item">Leave History</span>
-                                    </a>
-                                </li>
+                                @if (User.IsInRole("Manager") || User.IsInRole("Employee"))
+                                {
+                                    <li id="historyCuti">
+                                        <a href="/leaves/history">
+                                            <span class="sub-item">Leave History</span>
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </li>
