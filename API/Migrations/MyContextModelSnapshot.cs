@@ -4,16 +4,14 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220127005142_init")]
-    partial class init
+    partial class MyContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +53,9 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.AccountRole", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccountId")
                         .HasColumnType("nvarchar(450)");
@@ -131,7 +131,9 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Leave", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -150,13 +152,12 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.LeaveEmployee", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Attachment")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmployeeNIK")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -165,7 +166,7 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NIK")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -173,11 +174,14 @@ namespace API.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("managerNote")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeNIK");
-
                     b.HasIndex("LeaveId");
+
+                    b.HasIndex("NIK");
 
                     b.ToTable("tb_tr_leaveemployees");
                 });
@@ -185,7 +189,9 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Role", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -249,15 +255,15 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.LeaveEmployee", b =>
                 {
-                    b.HasOne("API.Models.Employee", "Employee")
-                        .WithMany("LeaveEmployees")
-                        .HasForeignKey("EmployeeNIK");
-
                     b.HasOne("API.Models.Leave", "Leave")
                         .WithMany("LeaveEmployees")
                         .HasForeignKey("LeaveId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("API.Models.Employee", "Employee")
+                        .WithMany("LeaveEmployees")
+                        .HasForeignKey("NIK");
 
                     b.Navigation("Employee");
 

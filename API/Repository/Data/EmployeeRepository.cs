@@ -31,6 +31,20 @@ namespace API.Repository.Data
                 int formula = Int32.Parse(increment2) + 1;
                 formatedNik = formula.ToString();
             }
+
+            int countAccountRole = myContext.AccountRoles.ToList().Count;
+            int formatedId;
+            if (countAccountRole == 0)
+            {
+                formatedId = countAccountRole;
+            }
+            else
+            {
+                int countAccountRole2 = myContext.AccountRoles.ToList().Max(ar => ar.Id);
+                int formula = countAccountRole2 + 1;
+                formatedId = formula;
+            }
+
             if (CheckEmail(register) == 1 && CheckPhone(register) == 1)
             {
                 // email & phone already used
@@ -74,10 +88,10 @@ namespace API.Repository.Data
                 myContext.Accounts.Add(account);
                 myContext.SaveChanges();
 
-                var countAccountRole = myContext.AccountRoles.ToList().Count;
+                // var countAccountRole = myContext.AccountRoles.ToList().Count;
                 var accountRole = new AccountRole
                 {
-                    Id = countAccountRole + 1,
+                    //Id = formatedId,
                     AccountId = account.NIK,
                     RoleId = 3
                 };

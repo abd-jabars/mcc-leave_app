@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Client.Repository.Data
 {
-    public class DepartmentRepository : GeneralRepository<Department, string>
+    public class AccountRepository : GeneralRepository<Account, string>
     {
         private readonly Address address;
         private readonly string request;
         private readonly HttpClient httpClient;
-        public DepartmentRepository(Address address, string request = "Departments/") : base(address, request)
+        public AccountRepository(Address address, string request = "Accounts/") : base(address, request)
         {
             this.address = address;
             this.request = request;

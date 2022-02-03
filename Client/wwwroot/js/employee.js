@@ -45,7 +45,7 @@ $(document).ready(function () {
             }
         ],
         'ajax': {
-            'url': '/leaveemployees/history/' + nik,
+            'url': '/leaveemployees/OnLeave/' + nik,
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -66,18 +66,7 @@ $(document).ready(function () {
                 'data': 'endDate'
             },
             {
-                'data': null,
-                'render': function (data, type, row) {
-                    if (row['status'] == 1) {
-                        return row['status'] = "Disetujui"
-                    }
-                    else if (row['status'] == 2) {
-                        return row['status'] = "Ditolak"
-                    }
-                    else {
-                        return row['status'] = "Diproses"
-                    }
-                }
+                'data': 'type'
             },
             {
                 "data": null,
@@ -98,14 +87,8 @@ function detailLeave(data) {
         url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
+        console.log(leaveDetails);
         for (var i = 0; i < leaveDetails.length; i++) {
-            var types = leaveDetails[i].type;
-            if (types == 0) {
-                types = "Cuti Normal";
-            }
-            else {
-                types = "Cuti Spesial";
-            }
             var text = `
                     <tr>
                         <td>NIK: </td>
@@ -125,11 +108,11 @@ function detailLeave(data) {
                    </tr>
                     <tr>
                         <td>Leave Type : </td>
-                        <td>${types}</td>
+                        <td>${leaveDetails[i].type}</td>
                    </tr>
                     <tr>
                         <td>Total Leave : </td>
-                        <td>${totalDays(leaveDetails[i].startDate, leaveDetails[i].endDate)} Days</td>
+                        <td>${leaveDetails[i].totalLeave} Days</td>
                    </tr>
                     <tr>
                         <td>Date : </td>
@@ -138,10 +121,6 @@ function detailLeave(data) {
                     <tr>
                         <td>Notes : </td>
                         <td>${leaveDetails[i].attachment}</td>
-                   </tr>
-                    <tr>
-                        <td>Manager Notes : </td>
-                        <td>${leaveDetails[i].managerNote}</td>
                    </tr>`
         }
         $("#infoTable").html(text)

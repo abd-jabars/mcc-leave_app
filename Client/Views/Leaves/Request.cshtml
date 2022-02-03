@@ -3,17 +3,15 @@
     Layout = "_LayoutAdmin";
 }
 
-
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
             <h1 class="text-xl-center">Leave Data</h1>
-            <button class="btn btn-primary btn-add ml-3 mb-2" data-toggle="modal" data-target="#insertModal"><i class="fas fa-plus"></i><i> </i>Add Data</button>
+            <button class="btn btn-primary btn-add ml-3 mb-2" data-toggle="modal" data-target="#insertModal" onclick="getLeaveQuota()"><i class="fas fa-plus"></i><i> </i>Add Data</button>
             <table id="leaveTable" class="display table table-striped dataTable table-hover">
                 <thead class="text-center">
                     <tr>
                         <th scope="col">No.</th>
-                        <th scope="col">NIK</th>
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
                         <th scope="col">Status</th>
@@ -30,7 +28,7 @@
 <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content modal">
-            <div class="modal-header border-dark">
+            <div class="modal-header border-dark bg-dark2 text-light">
                 <h5 class="modal-title" id="exampleModalLabel">Add Data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -42,7 +40,8 @@
                         <div class="form-row">
                             <div class="col">
                                 <label for="leaveNIK">NIK</label>
-                                <input type="text" class="form-control" id="leaveNIK" placeholder="NIK" required>
+                                <input type="text" class="form-control" id="leaveNIK" placeholder="NIK" required disabled>
+                                <input type="text" class="form-control" id="formId" placeholder="id" hidden>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
                         </div>
@@ -53,33 +52,35 @@
                                 <select class="form-control" id="leaveSelect" required>
                                     <option value="">Select Leave type</option>
                                 </select>
+                                <div id="leaveQuota"></div>
                             </div>
                         </div>
                         <br />
                         <div class="form-row">
                             <div class="col">
                                 <label for="startDate">Start Date</label>
-                                <input type="text" class="form-control" id="startDate" placeholder="Start Date" required>
+                                <input type="text" class="form-control" id="startDate" placeholder="MM/DD/YYYY" onclick="isFutureDate()" onchange="isFutureDate()" required>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
                             <div class="col">
                                 <label for="endDate">End Date</label>
-                                <input type="text" class="form-control" id="endDate" placeholder="End Date" required>
-                                <div class="invalid-feedback">Please fill out this field.</div>
+                                <input type="text" class="form-control" id="endDate" placeholder="MM/DD/YYYY" required>
+                                <div class="invalid-feedback" id="invalid-date">Please fill out this field.</div>
                             </div>
                         </div>
+                        <div id="totalLeave"></div>
                         <br />
                         <div class="form-row">
                             <div class="col">
-                                <label for="Attachment">Attachment</label>
-                                <textarea class="form-control" id="attachment" placeholder="Attachment" required></textarea>
+                                <label for="Attachment">Notes</label>
+                                <textarea class="form-control" id="attachment" placeholder="Notes" required></textarea>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
                         </div>
                         <br />
                         <div style="text-align:right">
-                            <button type="submit" class="btn btn-primary" id="btn-insert" onclick="requestLeave()">Submit</button>
-                            <button class="btn btn-primary" id="btn-update" onclick="updateUni()">Update</button>
+                            <button type="submit" class="btn btn-primary" id="btn-insert">Submit</button>
+                            <button class="btn btn-primary" id="btn-update">Update</button>
                         </div>
                     </div>
                 </form>
@@ -118,6 +119,7 @@
 
 @section Scripts {
     <script type="text/javascript" src="~/js/leaveRequest.js"></script>
+    <script type="text/javascript" src="~/js/calendar.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>

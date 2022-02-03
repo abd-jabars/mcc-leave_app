@@ -14,13 +14,15 @@ namespace API.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Attachment { get; set; }
+        public string managerNote { get; set; }
         public Approval Status { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
+        [ForeignKey("NIK")]
         public virtual Employee Employee { get; set; }
         public string NIK { get; set; }
         
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Leave Leave { get; set; }
         public int LeaveId { get; set; }
     }

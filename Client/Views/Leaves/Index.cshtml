@@ -36,6 +36,9 @@
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="table-responsive">
                     <h1 class="text-xl-center">Cuti Khusus</h1>
+                    @if (User.IsInRole("Admin")) {
+                        <button class="btn btn-primary btn-add ml-3 mb-2" data-toggle="modal" data-target="#leaveModal"><i class="fas fa-plus"></i><i> </i>Add Data</button>
+                        }
                     <table class="display table table-striped dataTable">
                         <thead class="text-center">
                             <tr>
@@ -62,6 +65,41 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="leaveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content modal">
+            <div class="modal-header bg-dark border-dark">
+                <h4 class="modal-title text-light" id="exampleModalLabel">Add New Leave</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center" id="leaveModalBody">
+                <form class="needs-validation" id="leaveForm" onsubmit="return false">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col">
+                                <label for="leaveName">Name</label>
+                                <input type="text" class="form-control" id="leaveName" placeholder="Leave Name" required>
+                                <div class="invalid-feedback">Please fill out this field.</div>
+                            </div>
+                            <div class="col">
+                                <label for="leavePeriod">Period</label>
+                                <input type="text" class="form-control" id="leavePeriod" placeholder="Leave Period" required>
+                                <div class="invalid-feedback">Please fill out this field.</div>
+                            </div>
+                        </div>
+                        <br />
+                        <div style="text-align:right">
+                            <button type="submit" class="btn btn-primary" id="btn-insert" onclick="addLeave()">Submit</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

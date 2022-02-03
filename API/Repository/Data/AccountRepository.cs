@@ -33,7 +33,7 @@ namespace API.Repository.Data
             }
             else
             {
-                return 0; // wrong email
+                return 3; // wrong email
             }
         }
 
@@ -42,6 +42,20 @@ namespace API.Repository.Data
             var getMail = myContext.Employees.Where(employee => employee.Email == login.Email).FirstOrDefault();
             var getRoleName = myContext.AccountRoles.Where(acr => acr.AccountId == getMail.NIK).Select(acr => acr.Role.Name).ToList();
             return getRoleName;
+        }
+
+        public string GetNik(LoginVM login)
+        {
+            var employee = myContext.Employees.Where(e => e.Email == login.Email).FirstOrDefault();
+            var getNik = employee.NIK;
+            return getNik;
+        }
+
+        public string GetName(LoginVM login)
+        {
+            var employee = myContext.Employees.Where(e => e.Email == login.Email).FirstOrDefault();
+            var name = employee.FirstName + " " + employee.LastName;
+            return name;
         }
 
         public int ForgotPassword(ForgotPasswordVM forgotPassword)

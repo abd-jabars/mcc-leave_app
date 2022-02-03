@@ -1,17 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Login Page";
     <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.4/dist/sweetalert2.min.css">
 }
 
 <div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form id="forgotPasswordForm">
+            <h5>Forgot Password?</h5>
+            <span>Enter your email</span>
+            <input id="inputEmail" type="email" placeholder="Email" />
+            <br />
+            <button type="submit" class="button">Send OTP</button>
+        </form>
+    </div>
     <div class="form-container sign-in-container">
         <form action="/Login/Auth/" method="post" id="loginForm">
-            <h1>Sign in</h1>
-            <span>or use your account</span>
+            <h1>Sign in</h1><br />
             <input type="email" name="email" placeholder="Email" />
             <input type="password" name="password" placeholder="Password" />
             <span class="text-danger font-weight-bold">@TempData["msg"]</span>
-            <a href="#">Forgot your password?</a>
+            <br />
             <button type="submit" class="button">Sign In</button>
         </form>
     </div>
@@ -23,10 +32,13 @@
                 <button class="ghost" id="signIn">Sign In</button>
             </div>
             <div class="overlay-panel overlay-right">
-                <h1>Welcome!</h1>
-                <p>To keep connected with us please login with your personal info</p>
-                @*<p>Enter your personal details and start journey with us</p>
-                    <button class="ghost" id="signUp">Sign Up</button>*@
+                <h1>Forgot Your Password?</h1>
+                <p>
+                    We get it, stuff happens. Just click the button below, then enter your email address
+                    and we'll send you an otp to reset your password!
+                </p>
+                <br />
+                <button class="ghost" id="signUp">Forgot Password</button>
             </div>
         </div>
     </div>
@@ -34,4 +46,7 @@
 
 @section Scripts {
     <script type="text/javascript" src="~/js/login.js"></script>
+    <script type="text/javascript" src="~/js/fogotPassword.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.4/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.4/dist/sweetalert2.min.js"></script>
 }

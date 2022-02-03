@@ -1,5 +1,5 @@
 ﻿$.ajax({
-    url: 'https://localhost:44316/api/Leaves/normal'
+    url: '/Leaves/Normal'
 }).done((data) => {
     var text = ""
     $.each(data, function (key, i) {
@@ -11,13 +11,12 @@
         })
     })
     $("#normalTable").html(text)
-    console.log(data);
 }).fail((error) => {
     console.log(error)
 })
 
 $.ajax({
-    url: 'https://localhost:44316/api/Leaves/special'
+    url: '/Leaves/Special'
 }).done((data) => {
     var text = ""
     $.each(data, function (key, i) {
@@ -29,7 +28,6 @@ $.ajax({
         })
     })
     $("#specialTable").html(text)
-    console.log(data);
 }).fail((error) => {
     console.log(error)
 })
@@ -51,4 +49,44 @@ $.ajax({
     console.log(error)
 })
 
+function addLeave() {
+    var obj = new Object();
+    obj.name = $("#leaveName").val();
+    obj.period = $("#leavePeriod").val();
+    obj.type = 1;
+
+    console.log(obj)
+
+    $.ajax({
+        url: '/leaves/post',
+        type: "POST",
+        //contentType: "application/json;charset=utf-8",
+        traditional: true,
+        //data: JSON.stringify(obj)
+        data: obj
+    }).done((result) => {
+        console.log("status?" + result)
+        if (result == 200) {
+            swalIcon = 'success';
+            swalTitle = 'Input Success';
+        } else {
+            swalIcon = 'error';
+            swalTitle = 'Oops...';
+        }
+        Swal.fire({
+            title: swalTitle,
+            icon: swalIcon,
+            text: result.message
+        })
+        $('#insertModal').modal('hide');
+    }).fail((error) => {
+        console.log(error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: `<a href=${'https://httpstatuses.com/' + error.status} target="_blank"/>Why do I have this issue?</a>`
+        })
+    })
+}
 

@@ -5,10 +5,13 @@ using Client.Repository.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client.Controllers
@@ -24,7 +27,27 @@ namespace Client.Controllers
 
         public IActionResult Index()
         {
+            var token = HttpContext.Session.GetString("JWToken");
+
+            if (token == null)
+            {
+                return View();
+            }
+
+            return RedirectToAction("index", "Home");
+        }
+
+        public IActionResult ChangePassword()
+        {
             return View();
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("index", "Login");
         }
 
         [HttpPost("Login/Auth/")]
@@ -32,33 +55,40 @@ namespace Client.Controllers
         {
             var jwtToken = await loginRepository.Auth(login);
             var token = jwtToken.token;
-            var code = jwtToken.code;
+            var code = jwtToken.status;
             var message = jwtToken.message;
-
-            Console.WriteLine(code);
-
-            if (code == HttpStatusCode.NotFound)
-            {
-                TempData["code"] = code;
-                TempData["msg"] = message;
-            }
-            else if (code == HttpStatusCode.Forbidden)
-            {
-                TempData["code"] = code;
-                TempData["msg"] = message;
-            }
 
             if (token == null)
             {
+                TempData["code"] = code;
+                TempData["msg"] = message;
                 return RedirectToAction("index");
             }
 
-            TempData["code"] = null;
+            var handler = new JwtSecurityTokenHandler();
+            var decodedValue = handler.ReadJwtToken(token);
+
+            var nik = decodedValue.Claims.First(c => c.Type == "nik").Value;
+            
             HttpContext.Session.SetString("JWToken", token);
-            //HttpContext.Session.SetString("Name", jwtHandler.GetName(token));
-            //HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
+            HttpContext.Session.SetString("userNik", nik);
 
             return RedirectToAction("index", "home");
         }
+
+        [HttpPut]
+        public JsonResult ForgotPassword(ForgotPasswordVM forgotPassword)
+        {
+            var result = repository.ForgotPassword(forgotPassword);
+            return Json(result);
+        }
+
+        [HttpPut]
+        public JsonResult ChangePassword(ForgotPasswordVM forgotPassword)
+        {
+            var result = repository.ChangePassword(forgotPassword);
+            return Json(result);
+        }
+
     }
 }

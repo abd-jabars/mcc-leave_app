@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var nik = localStorage.getItem("nik");
+
+$(document).ready(function () {
     var table = $('#leaveTable').DataTable({
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>><"row"<"col-sm-12"t>><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         buttons: [
@@ -43,7 +45,7 @@
             }
         ],
         'ajax': {
-            'url': 'https://localhost:44316/api/leaveemployees',
+            'url': '/LeaveEmployees/GetByNik/' + nik,
             'dataType': 'json',
             'dataSrc': ''
         },
@@ -55,23 +57,29 @@
                 }
             },
             {
-                'data': 'nik'
-            },
-            {
                 'data': 'startDate'
             },
             {
                 'data': 'endDate'
             },
             {
-                'data': 'status'
+                'data': null,
+                'render': function (data, type, row) {
+                    if (row['status'] == 1) {
+                        return row['status'] = "Disetujui"
+                    }
+                    else if (row['status'] == 2) {
+                        return row['status'] = "Ditolak"
+                    }
+                    else {
+                        return row['status'] = "Diproses"
+                    }
+                }
             },
             {
                 "data": null,
                 'bSortable': false,
                 "defaultContent": `<button class="btn btn-sm btn-outline-primary" id="btn-details"><i class="fas fa-info-circle"></i></button>
-                               <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#insertModal" id="btn-edit"><i class="fas fa-edit"></i></button>
-                               <button class="btn btn-sm btn-outline-danger" id="btn-delete"><i class="fas fa-trash"></i></button>
                                `
             }
         ]
@@ -82,20 +90,23 @@
     });
     $('#leaveTable').on('click', '#btn-edit', function () {
         var data = table.row($(this).closest('tr')).data();
+        $("#leaveNIK").val(nik);
         document.getElementById('btn-update').style.visibility = 'visible';
         document.getElementById('btn-insert').style.visibility = 'hidden';
         document.getElementById('btn-insert').style.display = 'none';
         document.getElementById('btn-update').style.display = 'inline';
         document.getElementById('leaveRequestForm').classList.remove('was-validated');
-        editEmployee(data);
+        SetFormValue(data);
     });
     $('#leaveTable').on('click', '#btn-details', function () {
         var data = table.row($(this).closest('tr')).data();
         detailLeave(data);
     });
     $('#leaveRequestForm').on('click', '#btn-insert', function () {
+        requestLeave();
     });
     $('#leaveRequestForm').on('click', '#btn-update', function () {
+        updateLeave();
     });
     //setInterval(function () {
     //    table.ajax.reload();
@@ -103,7 +114,35 @@
     getLeave();
 });
 
+function isFutureDate() {
+    var today = new Date(),
+        idate = document.getElementById("startDate"),
+        date = new Date(idate.value);
+    if (date > today) {
+        $("#endDate").val("");
+        $("#endDate").prop('disabled', false);
+    } else {
+        $("#endDate").val("You entered an invalid date")
+        $("#endDate").prop('disabled', true);
+    }
+}
+
+function SetFormValue(data) {
+    let Id = data.id;
+    let leaveId = data.leaveId;
+    let startDate = data.startDate;
+    let endDate = data.endDate;
+    let attachment = data.attachment;
+
+    $("#formId").val(Id);
+    $("#leaveSelect").val(leaveId);
+    $("#startDate").val(startDate);
+    $("#endDate").val(endDate);
+    $("#attachment").val(attachment);
+}
+
 $('.btn-add').on('click', function () {
+    $("#leaveNIK").val(nik);
     document.getElementById('btn-insert').style.visibility = 'visible';
     document.getElementById('btn-update').style.visibility = 'hidden';
     document.getElementById('btn-update').style.display = 'none';
@@ -114,11 +153,18 @@ $('.btn-add').on('click', function () {
 
 function detailLeave(data) {
     $.ajax({
-        url: 'https://localhost:44316/api/leaveemployees/show/' + data.id,
+        url: '/leaveemployees/show/' + data.id,
         dataSrc: ''
     }).done((leaveDetails) => {
         console.log(leaveDetails);
         for (var i = 0; i < leaveDetails.length; i++) {
+            var types = leaveDetails[i].type;
+            if (types == 0) {
+                types = "Cuti Normal";
+            }
+            else {
+                types = "Cuti Spesial";
+            }
             var text = `
                     <tr>
                         <td>NIK: </td>
@@ -138,24 +184,21 @@ function detailLeave(data) {
                    </tr>
                     <tr>
                         <td>Leave Type : </td>
-                        <td>${leaveDetails[i].type}</td>
+                        <td>${types}</td>
                    </tr>
                     <tr>
                         <td>Total Leave : </td>
-                        <td>${leaveDetails[i].totalLeave} Days</td>
+                        <td>${totalDays(leaveDetails[i].startDate, leaveDetails[i].endDate)} Days</td>
                    </tr>
                     <tr>
                         <td>Date : </td>
                         <td>${leaveDetails[i].startDate} to ${leaveDetails[i].endDate}</td>
                    </tr>
                     <tr>
-                        <td>Attachment : </td>
+                        <td>Notes : </td>
                         <td>${leaveDetails[i].attachment}</td>
                    </tr>
-                    <tr>
-                        <td>Status : </td>
-                        <td>${leaveDetails[i].status}</td>
-                   </tr>`
+                    `
         }
         $("#infoTable").html(text)
         $('#leaveDetailModal').modal('show');
@@ -164,9 +207,22 @@ function detailLeave(data) {
     })
 }
 
+function getLeaveQuota() {
+    $.ajax({
+        url: '/accounts/get/' + nik,
+        dataSrc: ''
+    }).done((data) => {
+        console.log(data);
+        console.log(data.leaveQuota + data.prevLeaveQuota);
+        $("#leaveQuota").html("<p>Jatah Cuti Normal yang tersedia:  " + (data.leaveQuota + data.prevLeaveQuota) + " Hari</p>");
+    }).fail((error) => {
+        console.log(error)
+    })
+}
+
 function getLeave() {
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/'
+        url: '/Leaves/GetAll'
     }).done((data) => {
         var leaveSelect = `<option value="" >Select Leave type</option>`;
         $.each(data, function (key, val) {
@@ -180,34 +236,35 @@ function getLeave() {
 }
 
 function requestLeave() {
-    var years = new Date().getFullYear();
-
     var obj = new Object();
+    var sDate = new Date($("#startDate").val());
+    var eDate = new Date($("#endDate").val());
     obj.nik = $("#leaveNIK").val();
     obj.leaveId = $("#leaveSelect").val();
-    obj.startDate = $("#startDate").val();
-    obj.endDate = $("#endDate").val();
+    obj.startDate = FormatDate(sDate);
+    obj.endDate = FormatDate(eDate);
     obj.attachment = $("#attachment").val();
 
-    const diffInMs = new Date(obj.endDate) - new Date(obj.startDate)
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    console.log("total Leave: " + diffInDays);
-    
-    obj.totalLeave = diffInDays;
+    obj.totalLeave = totalDays();
 
-    console.log(JSON.stringify(obj))
+    console.log(obj)
+
+    var myTable = $('#leaveTable').DataTable();
 
     $.ajax({
-        url: 'https://localhost:44316/api/Leaves/Request',
+        url: '/Leaves/LeaveRequest',
         type: "POST",
-        contentType: "application/json;charset=utf-8",
+        // contentType: "application/json;charset=utf-8",
         traditional: true,
-        data: JSON.stringify(obj)
+        // data: JSON.stringify(obj)
+        data: obj
     }).done((result) => {
         console.log(result)
+        myTable.ajax.reload();
         if (result.status == 200) {
             swalIcon = 'success';
             swalTitle = 'Input Success';
+            swalFooter = '';
         } else {
             swalIcon = 'error';
             swalTitle = 'Oops...';
@@ -231,6 +288,48 @@ function requestLeave() {
     })
 }
 
+function updateLeave() {
+    var obj = new Object();
+    var sDate = new Date($("#startDate").val());
+    var eDate = new Date($("#endDate").val());
+    obj.id = $("#formId").val();
+    obj.nik = $("#leaveNIK").val();
+    obj.leaveId = $("#leaveSelect").val();
+    obj.startDate = FormatDate(sDate);
+    obj.endDate = FormatDate(eDate);
+    obj.attachment = $("#attachment").val();
+
+    obj.totalLeave = leaveTotal;
+
+    console.log(JSON.stringify(obj));
+
+    $.ajax({
+        url: '/Leaveemployees/Put',
+        type: "PUT",
+        //contentType: "application/json;charset=utf-8",
+        traditional: true,
+        //data: JSON.stringify(obj)
+        data: obj
+    }).done((result) => {
+        console.log(result)
+        Swal.fire({
+            title: 'Leave Request Updated',
+            /*    text: 'Input Success!',*/
+            icon: 'success'
+        })
+        $('#insertModal').modal('hide');
+    }).fail((error) => {
+        console.log(error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: `<a href=${'https://httpstatuses.com/' + error.status} target="_blank"/>Why do I have this issue?</a>`
+        })
+    })
+    tableReload();
+}
+
 function deleteRequest(data) {
     console.log(data.id);
     var obj = new Object();
@@ -245,12 +344,12 @@ function deleteRequest(data) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
+            var myTable = $('#leaveTable').DataTable();
             $.ajax({
-                url: 'https://localhost:44316/api/leaveemployees/',
+                url: '/leaveemployees/delete',
                 type: "DELETE",
-                contentType: "application/json;charset=utf-8",
                 traditional: true,
-                data: JSON.stringify(obj)
+                data: obj
             }).done((result) => {
                 console.log(result);
                 Swal.fire({
@@ -259,6 +358,7 @@ function deleteRequest(data) {
                     icon: 'success'
                 })
                 $('#insertModal').modal('hide');
+                myTable.ajax.reload();
             }).fail((error) => {
                 console.log(error);
                 Swal.fire({
@@ -279,26 +379,47 @@ $('#insertModal').on('hidden.bs.modal', function (e) {
         .val("");
 })
 
+function FormatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [day, month, year].join('/');
+}
+
 $(function () {
     var dateFormat = "mm/dd/yy",
         from = $("#startDate")
             .datepicker({
-                defaultDate: "+1w",
+                defaultDate: "+1d",
+                changeYear: true,
                 changeMonth: true,
+                minDate: 0,
                 numberOfMonths: 1,
+                yearRange: "-100:+20",
                 beforeShowDay: $.datepicker.noWeekends
             })
             .on("change", function () {
                 to.datepicker("option", "minDate", getDate(this));
+            })
+            .on("click", function () {
+                //from.datepicker("option", "maxDate", null);
             }),
         to = $("#endDate").datepicker({
-            defaultDate: "+1w",
+            defaultDate: null,
+            changeYear: true,
             changeMonth: true,
+            yearRange: "-100:+20",
             numberOfMonths: 1,
             beforeShowDay: $.datepicker.noWeekends
         })
             .on("change", function () {
                 from.datepicker("option", "maxDate", getDate(this));
+                $("#totalLeave").html("<p>Jumlah Cuti yang diambil:  " + totalDays() + " Hari</p>");
             });
 
     function getDate(element) {
@@ -308,7 +429,6 @@ $(function () {
         } catch (error) {
             date = null;
         }
-
         return date;
     }
 });

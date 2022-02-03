@@ -65,7 +65,7 @@ namespace API.Repository.Data
             }
             else
             {
-                if (leave.Period <= leaveRequest.totalLeave)
+                if (leave.Period < leaveRequest.totalLeave)
                 {
                     return 3; // jatah cuti kurang
                 }
@@ -118,6 +118,7 @@ namespace API.Repository.Data
                 else
                 {
                     temp.Status = Approval.Ditolak;
+                    temp.managerNote = leaveApproval.managerNote;
                     myContext.Entry(temp).State = EntityState.Modified;
                     var result = myContext.SaveChanges();
                     return 3; //approval declined saved
@@ -189,15 +190,28 @@ namespace API.Repository.Data
 
         public int SubmitForm(LeaveVM leaveRequest)
         {
-            if (leaveRequest.StartDate < leaveRequest.EndDate)
+            int countAccountRole = myContext.LeaveEmployees.ToList().Count;
+            int formatedId;
+            if (countAccountRole == 0)
+            {
+                formatedId = countAccountRole;
+            }
+            else
+            {
+                int countAccountRole2 = myContext.LeaveEmployees.ToList().Max(ar => ar.Id);
+                int formula = countAccountRole2 + 1;
+                formatedId = formula;
+            }
+            if (leaveRequest.StartDate <= leaveRequest.EndDate)
             {
                 var leaveEmployee = new LeaveEmployee
                 {
-                    Id = myContext.LeaveEmployees.ToList().Count + 1,
+                    //Id = formatedId,
                     StartDate = leaveRequest.StartDate,
                     EndDate = leaveRequest.EndDate,
                     Attachment = leaveRequest.Attachment,
                     NIK = leaveRequest.NIK,
+
                     LeaveId = leaveRequest.LeaveId,
                     Status = 0
                 };
