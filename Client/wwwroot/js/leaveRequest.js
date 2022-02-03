@@ -238,7 +238,7 @@ function requestLeave() {
         url: '/Leaves/LeaveRequest',
         type: "POST",
         // contentType: "application/json;charset=utf-8",
-        traditional: true,
+        //traditional: true,
         // data: JSON.stringify(obj)
         data: obj
     }).done((result) => {

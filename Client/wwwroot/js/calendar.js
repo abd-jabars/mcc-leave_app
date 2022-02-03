@@ -120,7 +120,7 @@ function totalDays() {
         edate = document.getElementById("endDate"),
         startDate = new Date(sdate.value),
         endDate = new Date(edate.value);
-    let count = -1;
+    let count = 0;
     let inc = 0;
     var leaveDate = startDate;
     const diffInMs = new Date(endDate) - new Date(startDate)
