@@ -171,3 +171,70 @@ function totalDays() {
     return leaveTotal;
 }
 
+function FormatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [day, month, year].join('/');
+}
+
+function totalDays(startDate, endDate) {
+    var sDate = new Date(FormatDate(startDate));
+    var eDate = new Date(FormatDate(endDate));
+    console.log(sDate + ", " + eDate);
+    let countholiday = 0;
+    let countweekend = 0;
+    var leaveDate = sDate;
+    const diffInMs = eDate - sDate;
+    console.log(diffInMs);
+    const diffInDays = (diffInMs + 86400000) / (1000 * 60 * 60 * 24);
+    console.log("total Leave before cut: " + diffInDays);
+
+    const addDays = function (days) {
+        const date = new Date(this.valueOf())
+        date.setDate(date.getDate() + days)
+        return date
+    }
+
+    for (var i = 0; i < diffInDays; i++) {
+        dates.push(leaveDate);
+        leaveDate = addDays.call(leaveDate, 1);
+    }
+
+    $.each(dates, function (key, index) {
+        $.each(holidays, function (key, day) {
+            var date = new Date(day);
+            if (index.toDateString() === date.toDateString()) {
+                countholiday++
+            }
+        })
+        $.each(weekends, function (key, day) {
+            var date = new Date(day);
+            if (index.toDateString() === date.toDateString()) {
+                countweekend++
+            }
+        })
+    })
+    dates = [];
+    if (diffInMs == 0) {
+        var leaveTotal = 1;
+    }
+    else if (countweekend == 0) {
+        var leaveTotal = diffInDays;
+    }
+    else if (countweekend % 2 != 0) {
+        var leaveTotal = diffInDays - (countholiday + countweekend - 1);
+    }
+    else {
+        var leaveTotal = diffInDays - (countholiday + countweekend);
+    }
+    console.log("holiday + weekend count: " + (countholiday + countweekend));
+    console.log("total Leave after cut: " + leaveTotal);
+    return leaveTotal;
+}
+

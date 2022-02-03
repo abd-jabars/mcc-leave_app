@@ -211,6 +211,7 @@ namespace API.Repository.Data
                     EndDate = leaveRequest.EndDate,
                     Attachment = leaveRequest.Attachment,
                     NIK = leaveRequest.NIK,
+
                     LeaveId = leaveRequest.LeaveId,
                     Status = 0
                 };

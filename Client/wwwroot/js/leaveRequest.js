@@ -188,7 +188,7 @@ function detailLeave(data) {
                    </tr>
                     <tr>
                         <td>Total Leave : </td>
-                        <td>${leaveDetails[i].totalLeave} Days</td>
+                        <td>${totalDays(leaveDetails[i].startDate, leaveDetails[i].endDate)} Days</td>
                    </tr>
                     <tr>
                         <td>Date : </td>
