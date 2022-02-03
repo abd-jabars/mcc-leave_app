@@ -6,6 +6,7 @@
     var userName = `${result.firstName} ${result.lastName}`;
     $("#userName").html(userName);
     $("#userName1").html(userName);
+    localStorage.setItem("name", userName);
 
     var userEmail = `${result.email}`;
     $("#userEmail").html(userEmail);
@@ -31,12 +32,14 @@
     }
 
     if (result.managerId == null || result.managerId == userNik) {
-        document.getElementById("reqLeave").style.display = "none";
-        document.getElementById("bellIcon").style.display = "none";
+        document.getElementById("reqLeave").style.display = "hidden";
+        //document.getElementById("bellIcon").style.display = "hidden";
     }
 
-    RequestNotif(userNik);
-    ApprovalNotif(userNik);
+    setInterval(function () {
+        RequestNotif(userNik);
+        ApprovalNotif(userNik);
+    }, 3000);
 
 }).fail((error) => {
     console.log(error)
@@ -70,8 +73,6 @@ function RequestNotif(managerId) {
         $("#notifBodyManager").html(notifBody);
         $("#emailNotificationManager").html(countRequest);
         $("#notifTitleManager").html("Ada " + countRequest + " pengajuan cuti yang belum diproses");
-
-
     }).fail((error) => {
         console.log(error)
     })
