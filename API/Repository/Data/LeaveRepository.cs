@@ -266,7 +266,7 @@ namespace API.Repository.Data
                 client.Send(mailMessage);
                 return 1;
             }
-            catch (SmtpException)
+            catch (SmtpException ex)
             {
                 return 2;
             }
