@@ -60,7 +60,6 @@ namespace API.Controllers.Data
             if (result == 1)
             {
                 return Ok(new { status = HttpStatusCode.OK, result = result, message = "Cuti Disetujui" });
-
             }
             else if (result == 2)
             {

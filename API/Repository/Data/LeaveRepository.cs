@@ -113,7 +113,6 @@ namespace API.Repository.Data
                     myContext.Entry(acc).State = EntityState.Modified;
                     myContext.Entry(temp).State = EntityState.Modified;
                     var result = myContext.SaveChanges();
-                    return 1; //approval approved saved
                 }
                 else
                 {
@@ -121,6 +120,14 @@ namespace API.Repository.Data
                     temp.managerNote = leaveApproval.managerNote;
                     myContext.Entry(temp).State = EntityState.Modified;
                     var result = myContext.SaveChanges();
+                }
+                // kirim email
+                if (SendEmailApproval(leaveApproval) == 1)
+                {
+                    return 1; // approval approved saved
+                }
+                else
+                {
                     return 3; //approval declined saved
                 }
             }
@@ -128,43 +135,6 @@ namespace API.Repository.Data
             {
                 //Leave Approval not found
                 return 2;
-            }
-        }
-
-        public void LeaveQuotaTransfer()
-        {
-            Console.WriteLine("LeaveQuotaTransfer is Running...");
-            var date = DateTime.Now;
-            var year = date.Year;
-            DateTime expDate = new DateTime(year, 07, 01);
-            DateTime nyDate = new DateTime(year, 01, 01);
-            var acc = myContext.Accounts;
-            try
-            {
-                if (date >= expDate)
-                {
-                    Console.WriteLine("Previous Leave Quota is Expired...");
-                    foreach (var i in acc)
-                    {
-                        i.PrevLeaveQuota = 0;
-                        myContext.Entry(i).State = EntityState.Modified;
-                    }
-                }
-
-                if (date == nyDate)
-                {
-                    Console.WriteLine("Leave Quota is moved to previous leave quota...");
-                    foreach (var i in acc)
-                    {
-                        i.PrevLeaveQuota = i.LeaveQuota;
-                        myContext.Entry(i).State = EntityState.Modified;
-                    }
-                }
-                myContext.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                throw e;
             }
         }
 
@@ -267,6 +237,65 @@ namespace API.Repository.Data
                 return 1;
             }
             catch (SmtpException ex)
+            {
+                return 2;
+            }
+        }
+
+        public int SendEmailApproval(LeaveVM leaveRequest)
+        {
+            var emp = myContext.Employees.Where(e => e.NIK == leaveRequest.NIK).FirstOrDefault();
+            var man = myContext.Employees.Where(e => e.NIK == emp.ManagerId).FirstOrDefault();
+            var le = myContext.LeaveEmployees.Where(e => e.NIK == leaveRequest.NIK).FirstOrDefault();
+            var leave = myContext.Leaves.Where(l => l.Id == le.LeaveId).FirstOrDefault();
+
+            var status = "";
+
+            string from = "mccreg61net@gmail.com";
+            string pwdFrom = "61mccregnet";
+            string to = emp.Email;
+
+            if (leaveRequest.LeaveStatus == 1)
+            {
+                status = "Disetujui";
+            }
+            else
+            {
+                status = "Ditolak";
+            }
+
+            // set body
+            var department = myContext.Departments.Where(d => d.Id == emp.DepartmentId).FirstOrDefault();
+            var emailBody = $"Yth. {emp.FirstName} {emp.LastName},\n" +
+                            $"dengan ini saya sampaikan bahwa pengajuan untuk cuti {leave.Name}, " +
+                            $"terhitung mulai tanggal {le.StartDate.ToString("dd MMMM yyyy")} sampai dengan {le.EndDate.ToString("dd MMMM yyyy")}.\n\n" +
+                            $"Diputuskan untuk {status}\n\n" +
+                            $"Dengan alasan {leaveRequest.managerNote}\n\n" +
+                            $"Hormat saya,\n\n" +
+                            $"{man.FirstName} {man.LastName}\n" +
+                            $"Manager Departemen {department.Name}\n\n" +
+                            $"NIK {man.NIK}";
+
+            // email message
+            MailMessage mailMessage = new MailMessage(from, to);
+            mailMessage.Subject = $"Hasil Keputusan Pengajuan Cuti - {emp.FirstName} {emp.LastName}";
+            //mailMessage.Body = $"Tipe Cuti: {leave.Type}. Body: {leaveRequest.Attachment}";
+            mailMessage.Body = emailBody;
+
+            // set smtp  
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential(from, pwdFrom),
+                EnableSsl = true
+            };
+
+            // send email
+            try
+            {
+                client.Send(mailMessage);
+                return 1;
+            }
+            catch (SmtpException)
             {
                 return 2;
             }

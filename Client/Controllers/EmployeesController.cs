@@ -25,7 +25,7 @@ namespace Client.Controllers
             return View();
         }
 
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public IActionResult DataTable()
         {
             return View();
