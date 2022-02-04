@@ -180,13 +180,12 @@ function FormatDate(date) {
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
 
-    return [day, month, year].join('/');
+    return [year, month, day].join('/');
 }
 
 function totalDay(startDate, endDate) {
     var sDate = new Date(FormatDate(startDate));
     var eDate = new Date(FormatDate(endDate));
-    console.log(sDate + ", " + eDate);
     let countholiday = 0;
     let countweekend = 0;
     var leaveDate = sDate;

@@ -133,7 +133,7 @@ function detailLeave(data) {
                    </tr>
                     <tr>
                         <td>Date : </td>
-                        <td>${leaveDetails[i].startDate} to ${leaveDetails[i].endDate}</td>
+                        <td>${formatDate(leaveDetails[i].startDate)} to ${formatDate(leaveDetails[i].endDate)}</td>
                    </tr>
                     <tr>
                         <td>Notes : </td>
