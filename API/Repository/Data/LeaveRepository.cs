@@ -138,43 +138,6 @@ namespace API.Repository.Data
             }
         }
 
-        public void LeaveQuotaTransfer()
-        {
-            Console.WriteLine("LeaveQuotaTransfer is Running...");
-            var date = DateTime.Now;
-            var year = date.Year;
-            DateTime expDate = new DateTime(year, 07, 01);
-            DateTime nyDate = new DateTime(year, 01, 01);
-            var acc = myContext.Accounts;
-            try
-            {
-                if (date >= expDate)
-                {
-                    Console.WriteLine("Previous Leave Quota is Expired...");
-                    foreach (var i in acc)
-                    {
-                        i.PrevLeaveQuota = 0;
-                        myContext.Entry(i).State = EntityState.Modified;
-                    }
-                }
-
-                if (date == nyDate)
-                {
-                    Console.WriteLine("Leave Quota is moved to previous leave quota...");
-                    foreach (var i in acc)
-                    {
-                        i.PrevLeaveQuota = i.LeaveQuota;
-                        myContext.Entry(i).State = EntityState.Modified;
-                    }
-                }
-                myContext.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
         public int LeaveQuota(LeaveVM leaveQuota)
         {
             var acc = myContext.Accounts;

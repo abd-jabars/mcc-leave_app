@@ -212,9 +212,9 @@ function getLeaveQuota() {
         url: '/accounts/get/' + nik,
         dataSrc: ''
     }).done((data) => {
-        console.log(data);
-        console.log(data.leaveQuota + data.prevLeaveQuota);
-        $("#leaveQuota").html("<p>Jatah Cuti Normal yang tersedia:  " + (data.leaveQuota + data.prevLeaveQuota) + " Hari</p>");
+        totalQuota = data.leaveQuota + data.prevLeaveQuota;
+        sessionStorage.setItem("totalQuota", totalQuota);
+        $("#leaveQuota").html("<p>Jatah Cuti Normal yang tersedia:  " + totalQuota + " Hari</p>");
     }).fail((error) => {
         console.log(error)
     })
@@ -418,8 +418,24 @@ $(function () {
             beforeShowDay: $.datepicker.noWeekends
         })
             .on("change", function () {
+                var totalday = totalDays();
+                var totalQuota = sessionStorage.getItem("totalQuota");
+                console.log(totalday + ", " + totalQuota);
                 from.datepicker("option", "maxDate", getDate(this));
-                $("#totalLeave").html("<p>Jumlah Cuti yang diambil:  " + totalDays() + " Hari</p>");
+                if (totalday > totalQuota) {
+                    swalIcon = 'error';
+                    swalTitle = 'Oops...';
+                    swalFooter = `<a href=${'/leaves'}/>Ketentuan Cuti</a>`;
+                    Swal.fire({
+                        title: swalTitle,
+                        icon: swalIcon,
+                        footer: swalFooter,
+                        text: "Jatah cuti kurang"
+                    })
+                }
+                else {
+                    $("#totalLeave").html("<p>Jumlah Cuti yang diambil:  " + totalday + " Hari</p>");
+                }
             });
 
     function getDate(element) {
