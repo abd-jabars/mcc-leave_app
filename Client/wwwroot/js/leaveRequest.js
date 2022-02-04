@@ -432,6 +432,8 @@ $(function () {
                         footer: swalFooter,
                         text: "Jatah cuti kurang"
                     })
+                    from.datepicker("option", "maxDate", null);
+                    $("#endDate").val("");
                 }
                 else {
                     $("#totalLeave").html("<p>Jumlah Cuti yang diambil:  " + totalday + " Hari</p>");
