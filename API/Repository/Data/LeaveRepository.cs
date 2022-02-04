@@ -310,8 +310,8 @@ namespace API.Repository.Data
                             $"Dengan alasan {leaveRequest.managerNote}\n\n" +
                             $"Hormat saya,\n\n" +
                             $"{man.FirstName} {man.LastName}\n" +
-                            $"NIK. {man.NIK}";
-
+                            $"Manager Departemen {department.Name}\n\n" +
+                            $"NIK {man.NIK}";
 
             // email message
             MailMessage mailMessage = new MailMessage(from, to);
