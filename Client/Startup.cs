@@ -38,6 +38,7 @@ namespace Client
             services.AddScoped<LoginRepository>();
             services.AddScoped<DepartmentRepository>();
             services.AddScoped<LoginRepository>();
+            services.AddScoped<AccountRepository>();
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>

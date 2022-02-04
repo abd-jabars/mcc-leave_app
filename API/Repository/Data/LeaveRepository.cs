@@ -65,7 +65,7 @@ namespace API.Repository.Data
             }
             else
             {
-                if (leave.Period <= leaveRequest.totalLeave)
+                if (leave.Period < leaveRequest.totalLeave)
                 {
                     return 3; // jatah cuti kurang
                 }
@@ -118,6 +118,7 @@ namespace API.Repository.Data
                 else
                 {
                     temp.Status = Approval.Ditolak;
+                    temp.managerNote = leaveApproval.managerNote;
                     myContext.Entry(temp).State = EntityState.Modified;
                     var result = myContext.SaveChanges();
                     return 3; //approval declined saved
@@ -201,7 +202,7 @@ namespace API.Repository.Data
                 int formula = countAccountRole2 + 1;
                 formatedId = formula;
             }
-            if (leaveRequest.StartDate < leaveRequest.EndDate)
+            if (leaveRequest.StartDate <= leaveRequest.EndDate)
             {
                 var leaveEmployee = new LeaveEmployee
                 {
@@ -210,6 +211,7 @@ namespace API.Repository.Data
                     EndDate = leaveRequest.EndDate,
                     Attachment = leaveRequest.Attachment,
                     NIK = leaveRequest.NIK,
+
                     LeaveId = leaveRequest.LeaveId,
                     Status = 0
                 };

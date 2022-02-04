@@ -188,7 +188,7 @@ function detailLeave(data) {
                    </tr>
                     <tr>
                         <td>Total Leave : </td>
-                        <td>${leaveDetails[i].totalLeave} Days</td>
+                        <td>${totalDays(leaveDetails[i].startDate, leaveDetails[i].endDate)} Days</td>
                    </tr>
                     <tr>
                         <td>Date : </td>
@@ -202,6 +202,19 @@ function detailLeave(data) {
         }
         $("#infoTable").html(text)
         $('#leaveDetailModal').modal('show');
+    }).fail((error) => {
+        console.log(error)
+    })
+}
+
+function getLeaveQuota() {
+    $.ajax({
+        url: '/accounts/get/' + nik,
+        dataSrc: ''
+    }).done((data) => {
+        console.log(data);
+        console.log(data.leaveQuota + data.prevLeaveQuota);
+        $("#leaveQuota").html("<p>Jatah Cuti Normal yang tersedia:  " + (data.leaveQuota + data.prevLeaveQuota) + " Hari</p>");
     }).fail((error) => {
         console.log(error)
     })
@@ -394,7 +407,7 @@ $(function () {
                 to.datepicker("option", "minDate", getDate(this));
             })
             .on("click", function () {
-                from.datepicker._clearDate(this);
+                //from.datepicker("option", "maxDate", null);
             }),
         to = $("#endDate").datepicker({
             defaultDate: null,
@@ -406,6 +419,7 @@ $(function () {
         })
             .on("change", function () {
                 from.datepicker("option", "maxDate", getDate(this));
+                $("#totalLeave").html("<p>Jumlah Cuti yang diambil:  " + totalDays() + " Hari</p>");
             });
 
     function getDate(element) {
