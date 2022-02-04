@@ -282,6 +282,7 @@ namespace API.Repository.Data
         public int SendEmailApproval(LeaveVM leaveRequest)
         {
             var emp = myContext.Employees.Where(e => e.NIK == leaveRequest.NIK).FirstOrDefault();
+            var man = myContext.Employees.Where(e => e.NIK == emp.ManagerId).FirstOrDefault();
             var le = myContext.LeaveEmployees.Where(e => e.NIK == leaveRequest.NIK).FirstOrDefault();
             var leave = myContext.Leaves.Where(l => l.Id == le.LeaveId).FirstOrDefault();
 
@@ -306,7 +307,11 @@ namespace API.Repository.Data
                             $"dengan ini saya sampaikan bahwa pengajuan untuk cuti {leave.Name}, " +
                             $"terhitung mulai tanggal {le.StartDate.ToString("dd MMMM yyyy")} sampai dengan {le.EndDate.ToString("dd MMMM yyyy")}.\n\n" +
                             $"Diputuskan untuk {status}\n\n" +
-                            $"Dengan alasan {leaveRequest.managerNote}\n\n";
+                            $"Dengan alasan {leaveRequest.managerNote}\n\n" +
+                            $"Hormat saya,\n\n" +
+                            $"{man.FirstName} {man.LastName}\n" +
+                            $"NIK. {man.NIK}";
+
 
             // email message
             MailMessage mailMessage = new MailMessage(from, to);
