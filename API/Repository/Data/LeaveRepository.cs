@@ -95,6 +95,7 @@ namespace API.Repository.Data
             var temp = myContext.LeaveEmployees.AsNoTracking().Where(le => le.Id == leaveApproval.LeaveId).FirstOrDefault();
             var leave = myContext.Leaves.AsNoTracking().Where(l => l.Id == temp.LeaveId).FirstOrDefault();
             var totalLeave = acc.LeaveQuota;
+            var tempPrev = 0;
             if (temp != null)
             {
 
@@ -103,12 +104,25 @@ namespace API.Repository.Data
                 if (leave.Type == leaveType.normal)
                 //cuti normal
                 {
-                    totalLeave = (acc.LeaveQuota + acc.PrevLeaveQuota) - Convert.ToInt32((temp.EndDate - temp.StartDate).TotalDays);
+                    if (acc.PrevLeaveQuota < 1)
+                    {
+                        totalLeave = acc.LeaveQuota - leaveApproval.totalLeave;
+                    }
+                    else
+                    {
+                        if (acc.PrevLeaveQuota >= leaveApproval.totalLeave)
+                        {
+                            tempPrev = acc.PrevLeaveQuota - leaveApproval.totalLeave;
+                        }
+                        totalLeave = ((acc.LeaveQuota + acc.PrevLeaveQuota) - leaveApproval.totalLeave);
+                        tempPrev = 0;
+                    }
                 }
 
                 if (leaveApproval.LeaveStatus == 1)
                 {
                     acc.LeaveQuota = totalLeave;
+                    acc.PrevLeaveQuota = tempPrev;
                     temp.Status = Approval.Disetujui;
                     myContext.Entry(acc).State = EntityState.Modified;
                     myContext.Entry(temp).State = EntityState.Modified;
