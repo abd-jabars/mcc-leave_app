@@ -113,7 +113,6 @@ namespace API.Repository.Data
                     myContext.Entry(acc).State = EntityState.Modified;
                     myContext.Entry(temp).State = EntityState.Modified;
                     var result = myContext.SaveChanges();
-                    return 1; //approval approved saved
                 }
                 else
                 {
@@ -121,6 +120,14 @@ namespace API.Repository.Data
                     temp.managerNote = leaveApproval.managerNote;
                     myContext.Entry(temp).State = EntityState.Modified;
                     var result = myContext.SaveChanges();
+                }
+                // kirim email
+                if (SendEmailApproval(leaveApproval) == 1)
+                {
+                    return 1; // approval approved saved
+                }
+                else
+                {
                     return 3; //approval declined saved
                 }
             }
@@ -250,6 +257,60 @@ namespace API.Repository.Data
             // email message
             MailMessage mailMessage = new MailMessage(from, to);
             mailMessage.Subject = $"Pengajuan Cuti - {employee.FirstName} {employee.LastName}";
+            //mailMessage.Body = $"Tipe Cuti: {leave.Type}. Body: {leaveRequest.Attachment}";
+            mailMessage.Body = emailBody;
+
+            // set smtp  
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential(from, pwdFrom),
+                EnableSsl = true
+            };
+
+            // send email
+            try
+            {
+                client.Send(mailMessage);
+                return 1;
+            }
+            catch (SmtpException)
+            {
+                return 2;
+            }
+        }
+
+        public int SendEmailApproval(LeaveVM leaveRequest)
+        {
+            var emp = myContext.Employees.Where(e => e.NIK == leaveRequest.NIK).FirstOrDefault();
+            var le = myContext.LeaveEmployees.Where(e => e.NIK == leaveRequest.NIK).FirstOrDefault();
+            var leave = myContext.Leaves.Where(l => l.Id == le.LeaveId).FirstOrDefault();
+
+            var status = "";
+
+            string from = "mccreg61net@gmail.com";
+            string pwdFrom = "61mccregnet";
+            string to = emp.Email;
+
+            if (leaveRequest.LeaveStatus == 1)
+            {
+                status = "Disetujui";
+            }
+            else
+            {
+                status = "Ditolak";
+            }
+
+            // set body
+            var department = myContext.Departments.Where(d => d.Id == emp.DepartmentId).FirstOrDefault();
+            var emailBody = $"Yth. {emp.FirstName} {emp.LastName},\n" +
+                            $"dengan ini saya sampaikan bahwa pengajuan untuk cuti {leave.Name}, " +
+                            $"terhitung mulai tanggal {le.StartDate.ToString("dd MMMM yyyy")} sampai dengan {le.EndDate.ToString("dd MMMM yyyy")}.\n\n" +
+                            $"Diputuskan untuk {status}\n\n" +
+                            $"Dengan alasan {leaveRequest.managerNote}\n\n";
+
+            // email message
+            MailMessage mailMessage = new MailMessage(from, to);
+            mailMessage.Subject = $"Hasil Keputusan Pengajuan Cuti - {emp.FirstName} {emp.LastName}";
             //mailMessage.Body = $"Tipe Cuti: {leave.Type}. Body: {leaveRequest.Attachment}";
             mailMessage.Body = emailBody;
 
