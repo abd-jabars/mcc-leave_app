@@ -183,7 +183,7 @@ function FormatDate(date) {
     return [day, month, year].join('/');
 }
 
-function totalDays(startDate, endDate) {
+function totalDay(startDate, endDate) {
     var sDate = new Date(FormatDate(startDate));
     var eDate = new Date(FormatDate(endDate));
     console.log(sDate + ", " + eDate);
